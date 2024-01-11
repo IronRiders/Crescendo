@@ -1,4 +1,4 @@
-package org.ironriders.lib;
+package org.ironriders.lib.SendableChooser;
 
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 import static edu.wpi.first.util.ErrorMessages.requireNonNullParam;
 
-public class ItemDeletableSendableChooser<V> implements Sendable, AutoCloseable {
+public class CustomSendableChooser<V> implements Sendable, AutoCloseable {
     /**
      * The key for the default value.
      */
@@ -23,37 +23,24 @@ public class ItemDeletableSendableChooser<V> implements Sendable, AutoCloseable 
      */
     private static final String SELECTED = "selected";
 
-    /**
-     * The key for the active option.
-     */
+    /** The key for the active option. */
     private static final String ACTIVE = "active";
 
-    /**
-     * The key for the option array.
-     */
+    /** The key for the option array. */
     private static final String OPTIONS = "options";
 
-    /**
-     * The key for the instance number.
-     */
+    /** The key for the instance number. */
     private static final String INSTANCE = ".instance";
     private static final AtomicInteger s_instances = new AtomicInteger();
+    private final int m_instance;
     /**
      * A map linking strings to the objects they represent.
      */
     private final Map<String, V> m_map = new LinkedHashMap<>();
-    private final int m_instance;
-    private final ReentrantLock m_mutex = new ReentrantLock();
-    private String m_defaultChoice = "";
     private String m_previousVal;
     private Consumer<V> m_listener;
-    private String m_selected;
-
-    @SuppressWarnings("this-escape")
-    public ItemDeletableSendableChooser() {
-        m_instance = s_instances.getAndIncrement();
-        SendableRegistry.add(this, "SendableChooser", m_instance);
-    }
+    private final ReentrantLock m_mutex = new ReentrantLock();
+    private String m_defaultChoice = "";
 
     @Override
     public void close() {
@@ -93,6 +80,13 @@ public class ItemDeletableSendableChooser<V> implements Sendable, AutoCloseable 
         m_mutex.lock();
         m_listener = listener;
         m_mutex.unlock();
+    }
+    private String m_selected;
+
+    @SuppressWarnings("this-escape")
+    public CustomSendableChooser() {
+        m_instance = s_instances.getAndIncrement();
+        SendableRegistry.add(this, "SendableChooser", m_instance);
     }
 
     @Override

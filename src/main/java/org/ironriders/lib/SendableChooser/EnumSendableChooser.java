@@ -1,9 +1,8 @@
-package org.ironriders.lib;
+package org.ironriders.lib.SendableChooser;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class EnumSendableChooser<E extends Enum<?>> extends SendableChooser<E> {
+public class EnumSendableChooser<E extends Enum<?>> extends CustomSendableChooser<E> {
     public EnumSendableChooser(Class<E> enumType, E defaultOption, String name) {
         E[] options = enumType.getEnumConstants();
 
