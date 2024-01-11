@@ -1,4 +1,4 @@
-package org.ironriders.lib.SendableChooser;
+package org.ironriders.lib.sendable_choosers;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
