@@ -1,4 +1,3 @@
-
 I see this story in the world of words, feelings, desires.
 
 The singers stood up, their ears full of beautiful songs. A group of people working together to improve their lives.
