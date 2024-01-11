@@ -19,3 +19,5 @@ It's not about results, it's about relationships and education. Join this ship w
 There are many stories. This story has many different aspects. The legacy of the robotics community is the technological foundation that turns dreams into reality.
 
 You are here
+
+By salvo.
