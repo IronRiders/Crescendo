@@ -6,6 +6,8 @@ import edu.wpi.first.math.util.Units;
 public class Auto {
     public static final String DEFAULT_AUTO = "TEST";
 
+    public static final String DASHBOARD_PREFIX = "auto/";
+
     public enum PathfindingConstraintProfile {
         SLOW(new PathConstraints(
                 1,
