@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import static org.ironriders.constants.Robot.LIMELIGHT_POSITION;
 import static org.ironriders.constants.Vision.CAMERA;
-import static org.photonvision.PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY;
+import static org.photonvision.PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
 public class VisionSubsystem extends SubsystemBase {
     private final PhotonCamera camera = new PhotonCamera(CAMERA);
@@ -23,7 +23,7 @@ public class VisionSubsystem extends SubsystemBase {
     private boolean useVisionForEstimation = false;
 
     public VisionSubsystem() {
-        estimator = new PhotonPoseEstimator(tagLayout, LOWEST_AMBIGUITY, camera, LIMELIGHT_POSITION);
+        estimator = new PhotonPoseEstimator(tagLayout, MULTI_TAG_PNP_ON_COPROCESSOR, camera, LIMELIGHT_POSITION);
 
         camera.setLED(VisionLEDMode.kOff);
         camera.setDriverMode(false);
