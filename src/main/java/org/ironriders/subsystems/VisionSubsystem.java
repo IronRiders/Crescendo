@@ -12,8 +12,8 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import java.util.Optional;
 
-import static org.ironriders.constants.Robot.LIMELIGHT_POSITION;
 import static org.ironriders.constants.Vision.CAMERA;
+import static org.ironriders.constants.Vision.LIMELIGHT_POSITION;
 import static org.photonvision.PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
 public class VisionSubsystem extends SubsystemBase {
