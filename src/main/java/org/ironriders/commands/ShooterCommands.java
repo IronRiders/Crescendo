@@ -1,5 +1,6 @@
 package org.ironriders.commands;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.ironriders.subsystems.ShooterSubsystem;
 
@@ -10,6 +11,9 @@ public class ShooterCommands {
 
     public ShooterCommands(ShooterSubsystem shooter) {
         this.shooter = shooter;
+
+        NamedCommands.registerCommand("Shooter Initialize", initialize());
+        NamedCommands.registerCommand("Shooter Stop", stop());
     }
 
     /**
