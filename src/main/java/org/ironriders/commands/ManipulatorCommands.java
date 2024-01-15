@@ -13,12 +13,12 @@ public class ManipulatorCommands {
     private final ManipulatorSubsystem manipulator;
 
     public ManipulatorCommands(ManipulatorSubsystem manipulator) {
+        this.manipulator = manipulator;
+
         NamedCommands.registerCommand("Manipulator Grab", set(GRAB));
         NamedCommands.registerCommand("Manipulator Eject to Shooter", set(EJECT_TO_SHOOTER));
         NamedCommands.registerCommand("Manipulator Eject to Amp", set(EJECT_TO_AMP));
         NamedCommands.registerCommand("Manipulator Stop", set(STOP));
-
-        this.manipulator = manipulator;
     }
 
     public Command set(Manipulator.State state) {
