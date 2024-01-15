@@ -1,6 +1,8 @@
 package org.ironriders.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.ShooterCommands;
@@ -9,6 +11,7 @@ import org.ironriders.constants.Identifiers;
 import static com.revrobotics.CANSparkMax.IdleMode.kCoast;
 import static com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
+import static org.ironriders.constants.Shooter.CONTROL.*;
 import static org.ironriders.constants.Shooter.*;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -17,6 +20,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private final CANSparkMax leader = new CANSparkMax(Identifiers.Shooter.LEADER, kBrushless);
     @SuppressWarnings("FieldCanBeLocal")
     private final CANSparkMax follower = new CANSparkMax(Identifiers.Shooter.FOLLOWER, kBrushless);
+
+    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(S, V);
+    private final PIDController PID = new PIDController(P, I, D);
+    private double setPoint = 0;
 
     public ShooterSubsystem() {
         leader.setSmartCurrentLimit(CURRENT_LIMIT);
@@ -34,18 +41,23 @@ public class ShooterSubsystem extends SubsystemBase {
         commands = new ShooterCommands(this);
     }
 
+    @Override
+    public void periodic() {
+        leader.set(feedforward.calculate(getVelocity()) + PID.calculate(getVelocity(), setPoint));
+    }
+
     public void run() {
-        leader.set(LAUNCH_SPEED);
+        set(LAUNCH_SPEED);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", true);
     }
 
     public void stop() {
-        leader.set(0);
+        set(0);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
     }
 
-    public boolean isWithinInitiationVelocityThreshold() {
-        return getVelocity() > INITIATION_VELOCITY_THRESHOLD;
+    private void set(double setPoint) {
+        this.setPoint = setPoint;
     }
 
     public double getVelocity() {
