@@ -1,5 +1,3 @@
-import edu.wpi.first.gradlerio.deploy.roborio.RoboRIO
-
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2024.1.1"
@@ -7,8 +5,8 @@ plugins {
 }
 
 def javaVersion = JavaVersion.VERSION_11
-sourceCompatibility = javaVersion
-targetCompatibility = javaVersion
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
 
 def ROBOT_MAIN_CLASS = "org.ironriders.robot.Main"
 
