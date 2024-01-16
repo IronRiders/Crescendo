@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.ironriders.constants.Auto.DASHBOARD_PREFIX;
 import static org.ironriders.constants.Auto.PathfindingConstraintProfile;
 import static org.ironriders.constants.Drive.MAX_SPEED;
 import static org.ironriders.constants.Robot.Dimensions;
@@ -36,7 +37,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,
             PathfindingConstraintProfile.getDefault(),
-            "auto/Pathfinding Constraint Profile"
+            DASHBOARD_PREFIX + "pathfindingConstraintProfile"
     );
 
     public DriveSubsystem() {

@@ -17,6 +17,8 @@ import swervelib.math.SwerveMath;
  * IN = Inches
  */
 public class Robot {
+    public static final double COMPENSATED_VOLTAGE = 10;
+
     public static final Transform3d LIMELIGHT_POSITION =
             new Transform3d(Units.inchesToMeters(0), 0, Units.inchesToMeters(0), new Rotation3d());
 
