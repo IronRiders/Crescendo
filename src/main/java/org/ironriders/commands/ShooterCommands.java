@@ -24,7 +24,6 @@ public class ShooterCommands {
     public Command initialize() {
         return shooter
                 .run(shooter::run)
-                .until(shooter::isWithinInitiationVelocityThreshold)
                 .handleInterrupt(shooter::stop)
                 .withTimeout(INITIATION_TIMEOUT);
     }

@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.ManipulatorCommands;
 import org.ironriders.constants.Identifiers;
 
-import static com.revrobotics.CANSparkMax.IdleMode.kBrake;
-import static com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless;
+import static com.revrobotics.CANSparkBase.IdleMode.kBrake;
+import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
 import static org.ironriders.constants.Manipulator.*;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
 

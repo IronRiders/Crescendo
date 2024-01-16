@@ -71,6 +71,8 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         PathPlannerLogging.setLogActivePathCallback((poses) -> {
+            if (poses.isEmpty()) return;
+
             List<Trajectory.State> states = new ArrayList<>();
             for (Pose2d pose : poses) {
                 Trajectory.State state = new Trajectory.State();

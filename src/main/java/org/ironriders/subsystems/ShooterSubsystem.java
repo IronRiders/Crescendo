@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.ShooterCommands;
 import org.ironriders.constants.Identifiers;
 
-import static com.revrobotics.CANSparkMax.IdleMode.kCoast;
-import static com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless;
+import static com.revrobotics.CANSparkBase.IdleMode.kCoast;
+import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
 import static org.ironriders.constants.Shooter.CONTROL.*;
 import static org.ironriders.constants.Shooter.*;
@@ -32,6 +32,8 @@ public class ShooterSubsystem extends SubsystemBase {
         follower.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         leader.setIdleMode(kCoast);
         follower.setIdleMode(kCoast);
+        leader.setControlFramePeriodMs(1);
+        follower.setControlFramePeriodMs(1);
 
         follower.follow(leader, true);
 
