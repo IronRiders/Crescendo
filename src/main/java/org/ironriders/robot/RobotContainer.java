@@ -47,9 +47,9 @@ public class RobotContainer {
         // Secondary Controller
         climber.setDefaultCommand(
                 climber.getCommands().set(
-                        () -> climberControlCurve(secondaryController.getX() * 0.5 + 0.5) *
+                        () -> (climberControlCurve(secondaryController.getX()) * 0.5 + 0.5) *
                                 climberControlCurve(secondaryController.getY()),
-                        () -> climberControlCurve(secondaryController.getX() * -0.5 + 0.5) *
+                        () -> (climberControlCurve(secondaryController.getX()) * -0.5 + 0.5) *
                                 climberControlCurve(secondaryController.getY())
                 )
         );

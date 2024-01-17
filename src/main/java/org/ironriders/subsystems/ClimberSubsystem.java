@@ -15,8 +15,8 @@ import static org.ironriders.constants.Climber.*;
 public class ClimberSubsystem extends SubsystemBase {
     private final ClimberCommands commands;
 
-    private final CANSparkMax right = new CANSparkMax(Identifiers.Shooter.LEADER, kBrushless);
-    private final CANSparkMax left = new CANSparkMax(Identifiers.Shooter.FOLLOWER, kBrushless);
+    private final CANSparkMax right = new CANSparkMax(Identifiers.Climber.LEADER, kBrushless);
+    private final CANSparkMax left = new CANSparkMax(Identifiers.Climber.FOLLOWER, kBrushless);
 
     public ClimberSubsystem() {
         right.setSmartCurrentLimit(CURRENT_LIMIT);
@@ -47,6 +47,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void set(double right, double left) {
         this.right.set(right * SPEED);
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "right", right);
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "left", left);
         this.left.set(left * SPEED);
     }
 
