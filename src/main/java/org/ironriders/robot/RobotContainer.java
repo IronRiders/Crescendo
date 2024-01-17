@@ -24,6 +24,8 @@ public class RobotContainer {
     private final PivotSubsystem pivot = new PivotSubsystem();
     private final ManipulatorSubsystem manipulator = new ManipulatorSubsystem();
     private final ClimberSubsystem climber = new ClimberSubsystem();
+    @SuppressWarnings("unused")
+    private final LightingSubsystem lighting = new LightingSubsystem();
 
     private final CommandXboxController primaryController =
             new CommandXboxController(Identifiers.Controllers.PRIMARY_CONTROLLER);

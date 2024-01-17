@@ -25,4 +25,8 @@ public class Identifiers {
         public static final int LEADER = 14;
         public static final int FOLLOWER = 15;
     }
+
+    public static class Lighting {
+        public static final int PORT = 0;
+    }
 }
