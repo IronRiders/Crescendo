@@ -30,9 +30,7 @@ public class ManipulatorCommands {
                     .finallyDo(() -> manipulator.set(STOP));
         }
 
-        return manipulator
-                .run(() -> manipulator.set(state))
-                .finallyDo(() -> manipulator.set(STOP));
+        return command.finallyDo(() -> manipulator.set(STOP));
     }
 
     public ManipulatorSubsystem getManipulator() {

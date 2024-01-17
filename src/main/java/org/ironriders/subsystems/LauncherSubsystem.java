@@ -19,7 +19,6 @@ public class LauncherSubsystem extends SubsystemBase {
 
     private final CANSparkMax right = new CANSparkMax(Identifiers.Launcher.LEADER, kBrushless);
     private final PIDController rightPID = new PIDController(P, I, D);
-    @SuppressWarnings("FieldCanBeLocal")
     private final CANSparkMax left = new CANSparkMax(Identifiers.Launcher.FOLLOWER, kBrushless);
     private final PIDController leftPID = new PIDController(P, I, D);
 
