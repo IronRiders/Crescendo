@@ -52,6 +52,8 @@ public class Utils {
                         new Translation2d(offset * Math.cos(angle), offset * Math.sin(angle)),
                         new Rotation2d()
                 )
+        ).plus(
+                new Transform2d(new Translation2d(), Rotation2d.fromDegrees(180))
         );
     }
 

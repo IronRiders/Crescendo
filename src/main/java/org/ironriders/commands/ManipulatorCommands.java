@@ -27,8 +27,7 @@ public class ManipulatorCommands {
         if (state.equals(EJECT_TO_SHOOTER) || state.equals(EJECT_TO_AMP)) {
             return command
                     .deadlineWith(Commands.waitSeconds(DISCHARGE_TIMEOUT))
-                    .finallyDo(() -> manipulator.set(STOP)
-                    );
+                    .finallyDo(() -> manipulator.set(STOP));
         }
 
         return manipulator

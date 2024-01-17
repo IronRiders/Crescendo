@@ -2,50 +2,54 @@ package org.ironriders.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.ShooterCommands;
 import org.ironriders.constants.Identifiers;
+import org.ironriders.lib.Utils;
 
 import static com.revrobotics.CANSparkBase.IdleMode.kCoast;
 import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
-import static org.ironriders.constants.Shooter.CONTROL.*;
 import static org.ironriders.constants.Shooter.*;
+import static org.ironriders.constants.Shooter.PID.*;
 
 public class ShooterSubsystem extends SubsystemBase {
     private final ShooterCommands commands;
 
-    private final CANSparkMax leader = new CANSparkMax(Identifiers.Shooter.LEADER, kBrushless);
+    private final CANSparkMax right = new CANSparkMax(Identifiers.Shooter.LEADER, kBrushless);
+    private final PIDController rightPID = new PIDController(P, I, D);
     @SuppressWarnings("FieldCanBeLocal")
-    private final CANSparkMax follower = new CANSparkMax(Identifiers.Shooter.FOLLOWER, kBrushless);
+    private final CANSparkMax left = new CANSparkMax(Identifiers.Shooter.FOLLOWER, kBrushless);
+    private final PIDController leftPID = new PIDController(P, I, D);
 
-    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(S, V);
-    private final PIDController PID = new PIDController(P, I, D);
     private double setPoint = 0;
 
     public ShooterSubsystem() {
-        leader.setSmartCurrentLimit(CURRENT_LIMIT);
-        follower.setSmartCurrentLimit(CURRENT_LIMIT);
-        leader.enableVoltageCompensation(COMPENSATED_VOLTAGE);
-        follower.enableVoltageCompensation(COMPENSATED_VOLTAGE);
-        leader.setIdleMode(kCoast);
-        follower.setIdleMode(kCoast);
-        leader.setControlFramePeriodMs(1);
-        follower.setControlFramePeriodMs(1);
+        right.setSmartCurrentLimit(CURRENT_LIMIT);
+        left.setSmartCurrentLimit(CURRENT_LIMIT);
+        right.enableVoltageCompensation(COMPENSATED_VOLTAGE);
+        left.enableVoltageCompensation(COMPENSATED_VOLTAGE);
+        right.setIdleMode(kCoast);
+        left.setIdleMode(kCoast);
+        right.setControlFramePeriodMs(1);
+        left.setControlFramePeriodMs(1);
 
-        follower.follow(leader, true);
-
+        SmartDashboard.putData(DASHBOARD_PREFIX + "rightPID", rightPID);
+        SmartDashboard.putData(DASHBOARD_PREFIX + "leftPID", leftPID);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "velocity", getVelocity());
 
         commands = new ShooterCommands(this);
     }
 
     @Override
     public void periodic() {
-        leader.set(feedforward.calculate(getVelocity()) + PID.calculate(getVelocity(), setPoint));
+        right.set(rightPID.calculate(getRightVelocity()));
+        left.set(leftPID.calculate(getLeftVelocity()));
+
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightVelocity", getRightVelocity());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftVelocity", getLeftVelocity());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "minVelocity", getMinVelocity());
     }
 
     public void run() {
@@ -60,10 +64,24 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private void set(double setPoint) {
         this.setPoint = setPoint;
+        rightPID.setSetpoint(setPoint);
+        leftPID.setSetpoint(setPoint);
     }
 
-    public double getVelocity() {
-        return leader.getEncoder().getVelocity();
+    public boolean atSpeed() {
+        return Utils.isWithinTolerance(getMinVelocity(), setPoint, TOLERANCE);
+    }
+
+    private double getRightVelocity() {
+        return right.getEncoder().getVelocity();
+    }
+
+    private double getLeftVelocity() {
+        return left.getEncoder().getVelocity();
+    }
+
+    private double getMinVelocity() {
+        return Math.min(getRightVelocity(), getLeftVelocity());
     }
 
     public ShooterCommands getCommands() {

@@ -20,10 +20,16 @@ public class ManipulatorSubsystem extends SubsystemBase {
         motor.setSmartCurrentLimit(CURRENT_LIMIT);
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);
+        motor.setControlFramePeriodMs(1);
 
         SmartDashboard.putString(DASHBOARD_PREFIX + "state", "STOP");
 
         commands = new ManipulatorCommands(this);
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "velocity", getVelocity());
     }
 
     public void set(State state) {
@@ -50,6 +56,10 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     private void stop() {
         motor.set(0);
+    }
+
+    public double getVelocity() {
+        return motor.getEncoder().getVelocity();
     }
 
     public ManipulatorCommands getCommands() {
