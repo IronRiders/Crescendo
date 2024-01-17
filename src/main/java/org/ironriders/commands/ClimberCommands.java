@@ -13,6 +13,10 @@ public class ClimberCommands {
     }
 
     public Command set(DoubleSupplier right, DoubleSupplier left) {
-        return climber.runOnce(() -> climber.set(right.getAsDouble(), left.getAsDouble()));
+        return climber.run(() -> climber.set(right.getAsDouble(), left.getAsDouble()));
+    }
+
+    public ClimberSubsystem getClimber() {
+        return climber;
     }
 }

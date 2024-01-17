@@ -34,4 +34,8 @@ public class ManipulatorCommands {
                 .run(() -> manipulator.set(state))
                 .finallyDo(() -> manipulator.set(STOP));
     }
+
+    public ManipulatorSubsystem getManipulator() {
+        return manipulator;
+    }
 }

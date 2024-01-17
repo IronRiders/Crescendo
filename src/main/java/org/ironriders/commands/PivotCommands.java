@@ -26,4 +26,8 @@ public class PivotCommands {
     public Command reset() {
         return pivot.runOnce(pivot::reset);
     }
+
+    public PivotSubsystem getPivot() {
+        return pivot;
+    }
 }

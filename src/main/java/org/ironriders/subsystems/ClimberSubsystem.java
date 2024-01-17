@@ -1,6 +1,7 @@
 package org.ironriders.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.ClimberCommands;
@@ -46,10 +47,8 @@ public class ClimberSubsystem extends SubsystemBase {
     }
 
     public void set(double right, double left) {
-        this.right.set(right * SPEED);
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "right", right);
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "left", left);
-        this.left.set(left * SPEED);
+        this.right.set(MathUtil.clamp(right * SPEED, -1, 1));
+        this.left.set(MathUtil.clamp(left * SPEED, -1, 1));
     }
 
     public ClimberCommands getCommands() {

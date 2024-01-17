@@ -32,4 +32,8 @@ public class ShooterCommands {
     public Command stop() {
         return shooter.runOnce(shooter::stop);
     }
+
+    public ShooterSubsystem getShooter() {
+        return shooter;
+    }
 }
