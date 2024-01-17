@@ -13,7 +13,7 @@ public class PivotCommands {
 
         NamedCommands.registerCommand("Pivot Ground", set(State.GROUND));
         NamedCommands.registerCommand("Pivot Amp", set(State.AMP));
-        NamedCommands.registerCommand("Pivot Shooter", set(State.SHOOTER));
+        NamedCommands.registerCommand("Pivot Launcher", set(State.LAUNCHER));
     }
 
     public Command set(State state) {

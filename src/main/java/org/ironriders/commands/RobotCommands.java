@@ -9,15 +9,15 @@ import org.ironriders.subsystems.*;
 
 public class RobotCommands {
     private final DriveCommands drive;
-    private final ShooterCommands shooter;
+    private final LauncherCommands launcher;
     private final PivotCommands pivot;
     private final ManipulatorCommands manipulator;
     private final ClimberCommands climber;
 
-    public RobotCommands(DriveSubsystem drive, ShooterSubsystem shooter, PivotSubsystem pivot,
+    public RobotCommands(DriveSubsystem drive, LauncherSubsystem launcher, PivotSubsystem pivot,
                          ManipulatorSubsystem manipulator, ClimberSubsystem climber) {
         this.drive = drive.getCommands();
-        this.shooter = shooter.getCommands();
+        this.launcher = launcher.getCommands();
         this.pivot = pivot.getCommands();
         this.manipulator = manipulator.getCommands();
         this.climber = climber.getCommands();
@@ -43,8 +43,8 @@ public class RobotCommands {
     public Command launchAt(Game.Location location) {
         return Commands.sequence(
                 Commands.parallel(
-                        shooter.initialize(),
-                        pivot.set(Pivot.State.SHOOTER),
+                        launcher.initialize(),
+                        pivot.set(Pivot.State.LAUNCHER),
                         drive.pathFindTo(location.getRobotPose())
                 ),
                 launch()
@@ -54,11 +54,11 @@ public class RobotCommands {
     public Command launch() {
         return Commands.sequence(
                 Commands.parallel(
-                        shooter.initialize(),
-                        pivot.set(Pivot.State.SHOOTER)
+                        launcher.initialize(),
+                        pivot.set(Pivot.State.LAUNCHER)
                 ),
-                manipulator.set(Manipulator.State.EJECT_TO_SHOOTER),
-                shooter.stop()
+                manipulator.set(Manipulator.State.EJECT_TO_LAUNCHER),
+                launcher.stop()
         );
     }
 
@@ -66,13 +66,13 @@ public class RobotCommands {
         return Commands.parallel(
                 pivot.set(Pivot.State.GROUND),
                 manipulator.set(Manipulator.State.GRAB),
-                shooter.initialize()
+                launcher.initialize()
         );
     }
 
     public Command endGroundPickup() {
         return Commands.parallel(
-                pivot.set(Pivot.State.SHOOTER),
+                pivot.set(Pivot.State.LAUNCHER),
                 manipulator.set(Manipulator.State.STOP)
         );
     }

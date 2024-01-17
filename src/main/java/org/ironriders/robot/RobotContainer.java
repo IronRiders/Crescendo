@@ -23,13 +23,13 @@ import static org.ironriders.constants.Teleop.Speed.MIN_MULTIPLIER;
 
 public class RobotContainer {
     private final DriveSubsystem drive = new DriveSubsystem();
-    private final ShooterSubsystem shooter = new ShooterSubsystem();
+    private final LauncherSubsystem launcher = new LauncherSubsystem();
     private final PivotSubsystem pivot = new PivotSubsystem();
     private final ManipulatorSubsystem manipulator = new ManipulatorSubsystem();
     private final ClimberSubsystem climber = new ClimberSubsystem();
     @SuppressWarnings("unused")
     private final LightingSubsystem lighting = new LightingSubsystem();
-    private final RobotCommands commands = new RobotCommands(drive, shooter, pivot, manipulator, climber);
+    private final RobotCommands commands = new RobotCommands(drive, launcher, pivot, manipulator, climber);
 
     private final CommandXboxController primaryController =
             new CommandXboxController(Identifiers.Controllers.PRIMARY_CONTROLLER);

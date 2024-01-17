@@ -13,7 +13,7 @@ public class Pivot {
     public enum State {
         GROUND(0),
         AMP(0),
-        SHOOTER(0);
+        LAUNCHER(0);
 
         final int position;
 

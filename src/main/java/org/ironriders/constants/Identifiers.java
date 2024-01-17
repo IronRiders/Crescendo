@@ -6,7 +6,7 @@ public class Identifiers {
         public static final int SECONDARY_CONTROLLER = 1;
     }
 
-    public static class Shooter {
+    public static class Launcher {
         public static final int LEADER = 10;
         public static final int FOLLOWER = 11;
     }

@@ -4,28 +4,28 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import org.ironriders.commands.ShooterCommands;
+import org.ironriders.commands.LauncherCommands;
 import org.ironriders.constants.Identifiers;
 import org.ironriders.lib.Utils;
 
 import static com.revrobotics.CANSparkBase.IdleMode.kCoast;
 import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
+import static org.ironriders.constants.Launcher.*;
+import static org.ironriders.constants.Launcher.PID.*;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
-import static org.ironriders.constants.Shooter.*;
-import static org.ironriders.constants.Shooter.PID.*;
 
-public class ShooterSubsystem extends SubsystemBase {
-    private final ShooterCommands commands;
+public class LauncherSubsystem extends SubsystemBase {
+    private final LauncherCommands commands;
 
-    private final CANSparkMax right = new CANSparkMax(Identifiers.Shooter.LEADER, kBrushless);
+    private final CANSparkMax right = new CANSparkMax(Identifiers.Launcher.LEADER, kBrushless);
     private final PIDController rightPID = new PIDController(P, I, D);
     @SuppressWarnings("FieldCanBeLocal")
-    private final CANSparkMax left = new CANSparkMax(Identifiers.Shooter.FOLLOWER, kBrushless);
+    private final CANSparkMax left = new CANSparkMax(Identifiers.Launcher.FOLLOWER, kBrushless);
     private final PIDController leftPID = new PIDController(P, I, D);
 
     private double setPoint = 0;
 
-    public ShooterSubsystem() {
+    public LauncherSubsystem() {
         right.setSmartCurrentLimit(CURRENT_LIMIT);
         left.setSmartCurrentLimit(CURRENT_LIMIT);
         right.enableVoltageCompensation(COMPENSATED_VOLTAGE);
@@ -39,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putData(DASHBOARD_PREFIX + "leftPID", leftPID);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
 
-        commands = new ShooterCommands(this);
+        commands = new LauncherCommands(this);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ShooterSubsystem extends SubsystemBase {
         return Math.min(getRightVelocity(), getLeftVelocity());
     }
 
-    public ShooterCommands getCommands() {
+    public LauncherCommands getCommands() {
         return commands;
     }
 }

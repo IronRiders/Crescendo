@@ -35,7 +35,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
     public void set(State state) {
         switch (state) {
             case GRAB -> intake();
-            case EJECT_TO_SHOOTER -> dischargeForShooter();
+            case EJECT_TO_LAUNCHER -> dischargeForLauncher();
             case EJECT_TO_AMP -> dischargeForAmp();
             case STOP -> stop();
         }
@@ -46,8 +46,8 @@ public class ManipulatorSubsystem extends SubsystemBase {
         motor.set(INTAKE_SPEED);
     }
 
-    private void dischargeForShooter() {
-        motor.set(DISCHARGE_FOR_SHOOTER_SPEED);
+    private void dischargeForLauncher() {
+        motor.set(DISCHARGE_FOR_LAUNCHER_SPEED);
     }
 
     private void dischargeForAmp() {
