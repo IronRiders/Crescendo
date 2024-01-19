@@ -32,13 +32,13 @@ public class PivotSubsystem extends SubsystemBase {
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);
 
+        encoder.setPositionConversionFactor(360.0 / GEARING);
+        encoder.setPosition(absoluteEncoder.getDistance() + ENCODER_OFFSET);
+
         motor.setSoftLimit(kReverse, Limit.REVERSE);
         motor.enableSoftLimit(kReverse, true);
         motor.setSoftLimit(kForward, Limit.FORWARD);
         motor.enableSoftLimit(kForward, true);
-
-        encoder.setPositionConversionFactor(360.0 / GEARING);
-        encoder.setPosition(absoluteEncoder.getDistance() + ENCODER_OFFSET);
 
         SmartDashboard.putData(DASHBOARD_PREFIX + "pid", pid);
 

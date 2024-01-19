@@ -1,0 +1,117 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.4764760692715828,
+        "y": 5.454226550814213
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.3934568987903333,
+        "y": 4.995575502799575
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.025917532737843,
+        "y": 4.0367328390906785
+      },
+      "prevControl": {
+        "x": 1.322004293314142,
+        "y": 4.048113252476505
+      },
+      "nextControl": {
+        "x": 2.4180276531553853,
+        "y": 4.030393456602616
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4887946529365281,
+        "y": 5.451412039976858
+      },
+      "prevControl": {
+        "x": 1.1769958001721559,
+        "y": 3.66297395789236
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+      {
+        "name": "Start Ground Pickup",
+        "waypointRelativePos": 0,
+        "command": {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Start Ground Pickup"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "End Ground Pickup",
+        "waypointRelativePos": 1.6,
+        "command": {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "End Ground Pickup"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "name": "Launch",
+        "waypointRelativePos": 1.9,
+        "command": {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Launch"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+  "globalConstraints": {
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.5,
+    "maxAngularVelocity": 360.0,
+    "maxAngularAcceleration": 180.0
+  },
+  "goalEndState": {
+    "velocity": 2.0,
+    "rotation": 0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": null,
+  "useDefaultConstraints": true
+}

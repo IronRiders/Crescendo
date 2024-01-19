@@ -1,5 +1,6 @@
 package org.ironriders.commands;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Game;
@@ -21,6 +22,10 @@ public class RobotCommands {
         this.pivot = pivot.getCommands();
         this.manipulator = manipulator.getCommands();
         this.climber = climber.getCommands();
+
+        NamedCommands.registerCommand("Launch", launch());
+        NamedCommands.registerCommand("Start Ground Pickup", startGroundPickup());
+        NamedCommands.registerCommand("End Ground Pickup", endGroundPickup());
     }
 
     public Command amp() {

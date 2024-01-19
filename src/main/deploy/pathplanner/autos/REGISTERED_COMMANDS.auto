@@ -1,0 +1,91 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": -0.4176897242683374,
+      "y": -0.41768972426833717
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Start Ground Pickup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "End Ground Pickup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launcher Initialize"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launcher Stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Manipulator Grab"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Manipulator Eject to Launcher"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Manipulator Eject to Amp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Manipulator Stop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pivot Ground"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pivot Amp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Pivot Launcher"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
