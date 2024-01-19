@@ -3,41 +3,73 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4473112105946433,
-        "y": 5.5480435787260465
+        "x": 1.4382373353532956,
+        "y": 5.4698878812125304
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6915791010144108,
-        "y": 5.531411873384252
+        "x": 1.4825537810797844,
+        "y": 4.476449169912229
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.2072291366804957,
-        "y": 5.5480435787260465
+        "x": 4.925924235529027,
+        "y": 1.9803451672875574
       },
       "prevControl": {
-        "x": 1.9360351198375132,
-        "y": 5.555483891712991
+        "x": 3.013803841660688,
+        "y": 2.4847394013501853
       },
       "nextControl": {
-        "x": 2.478423153523478,
-        "y": 5.540603265739102
+        "x": 5.845983749259164,
+        "y": 1.7376445950808572
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4473112105946433,
-        "y": 5.5480435787260465
+        "x": 7.618880836720007,
+        "y": 2.453917208181639
       },
       "prevControl": {
-        "x": 2.018656338226728,
-        "y": 5.567642962711983
+        "x": 6.098723623162997,
+        "y": 2.4425147333441934
+      },
+      "nextControl": {
+        "x": 7.7385179423136625,
+        "y": 2.454814588448621
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.916991222871334,
+        "y": 1.9498750282222792
+      },
+      "prevControl": {
+        "x": 5.268030067310135,
+        "y": 1.8302379226286238
+      },
+      "nextControl": {
+        "x": 3.4019232867982523,
+        "y": 2.4662234196355177
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.4382373353532956,
+        "y": 5.4698878812125304
+      },
+      "prevControl": {
+        "x": 1.5106173094290631,
+        "y": 4.19479413611605
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +81,7 @@
   "eventMarkers": [
     {
       "name": "Start Ground Pickup",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.7,
       "command": {
         "type": "sequential",
         "data": {
@@ -66,7 +98,7 @@
     },
     {
       "name": "End Ground Pickup",
-      "waypointRelativePos": 1.6,
+      "waypointRelativePos": 2.35,
       "command": {
         "type": "sequential",
         "data": {
@@ -83,7 +115,7 @@
     },
     {
       "name": "Launch",
-      "waypointRelativePos": 1.9,
+      "waypointRelativePos": 3.85,
       "command": {
         "type": "sequential",
         "data": {
@@ -100,8 +132,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 180.0
   },
@@ -113,5 +145,5 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": null,
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

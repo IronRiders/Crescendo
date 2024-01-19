@@ -118,6 +118,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return AutoBuilder.buildAuto("5 Piece").repeatedly();
+        return AutoBuilder.buildAuto("5_1C_1A_1B_2A").repeatedly();
     }
 }

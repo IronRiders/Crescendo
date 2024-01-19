@@ -8,24 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6316492129512037,
-        "y": 5.337444746070048
+        "x": 2.886913108895662,
+        "y": 5.4664635544548865
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.632259960700478,
-        "y": 7.449877894547456
+        "x": 4.671090185567921,
+        "y": 6.644939374322614
       },
       "prevControl": {
-        "x": 5.5803711853634175,
-        "y": 7.444897880345594
+        "x": 2.8060672906661557,
+        "y": 5.797565166802722
       },
       "nextControl": {
-        "x": 8.419670229716452,
-        "y": 7.451788970025584
+        "x": 5.941779849944188,
+        "y": 7.222277942282269
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.575521053819885,
+        "y": 7.45159107505715
+      },
+      "prevControl": {
+        "x": 6.6613849766270885,
+        "y": 7.417562964632442
+      },
+      "nextControl": {
+        "x": 8.362388668594537,
+        "y": 7.48088170120485
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +52,8 @@
         "y": 5.4698878812125304
       },
       "prevControl": {
-        "x": 1.317068701845737,
-        "y": 6.465492531679508
+        "x": 1.388124902985917,
+        "y": 6.264193821790421
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +65,7 @@
   "eventMarkers": [
     {
       "name": "Start Ground Pickup",
-      "waypointRelativePos": 0.4,
+      "waypointRelativePos": 0.8,
       "command": {
         "type": "sequential",
         "data": {
@@ -66,7 +82,7 @@
     },
     {
       "name": "End Ground Pickup",
-      "waypointRelativePos": 1.25,
+      "waypointRelativePos": 2.25,
       "command": {
         "type": "sequential",
         "data": {
@@ -83,7 +99,7 @@
     },
     {
       "name": "Launch",
-      "waypointRelativePos": 1.9,
+      "waypointRelativePos": 2.9,
       "command": {
         "type": "sequential",
         "data": {

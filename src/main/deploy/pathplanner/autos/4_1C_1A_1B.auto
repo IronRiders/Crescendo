@@ -12,12 +12,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "Launch"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "SPEAKER_NOTE1C"
@@ -33,12 +27,6 @@
           "type": "path",
           "data": {
             "pathName": "SPEAKER_NOTE1B"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SPEAKER_NOTE2A"
           }
         }
       ]
