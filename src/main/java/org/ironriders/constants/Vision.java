@@ -7,6 +7,8 @@ import edu.wpi.first.math.util.Units;
 public class Vision {
     public static final String VISION_CAMERA = "VISION_CAMERA";
 
+    public static final String DASHBOARD_PREFIX = "vision/";
+
     public static final Transform3d LIMELIGHT_POSITION =
             new Transform3d(Units.inchesToMeters(0), 0, Units.inchesToMeters(0), new Rotation3d());
 }

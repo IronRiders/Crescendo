@@ -6,6 +6,7 @@
 package org.ironriders.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -41,6 +42,16 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        drive.setDefaultCommand(
+                drive.getCommands().teleopCommand(
+                        () -> -driveControlCurve(primaryController.getLeftY()),
+                        () -> -driveControlCurve(primaryController.getLeftX()),
+                        () -> -driveControlCurve(primaryController.getRightX())
+                )
+        );
+
+        if (RobotBase.isSimulation()) return;
+
         Command speakerRight = commands.launchAt(SPEAKER_RIGHT);
         Command speakerCenter = commands.launchAt(SPEAKER_CENTER);
         Command speakerLeft = commands.launchAt(SPEAKER_LEFT);
@@ -62,14 +73,6 @@ public class RobotContainer {
         });
 
         // Primary Driver
-        drive.setDefaultCommand(
-                drive.getCommands().teleopCommand(
-                        () -> -driveControlCurve(primaryController.getLeftY()),
-                        () -> -driveControlCurve(primaryController.getLeftX()),
-                        () -> -driveControlCurve(primaryController.getRightX())
-                )
-        );
-
         primaryController.rightBumper().onTrue(cancelAuto);
         primaryController.leftBumper().onTrue(cancelAuto);
 
