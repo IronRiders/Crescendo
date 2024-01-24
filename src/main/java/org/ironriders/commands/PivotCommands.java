@@ -23,10 +23,6 @@ public class PivotCommands {
                 .handleInterrupt(pivot::reset);
     }
 
-    public Command reset() {
-        return pivot.runOnce(pivot::reset);
-    }
-
     public PivotSubsystem getPivot() {
         return pivot;
     }

@@ -116,10 +116,6 @@ public class RobotContainer {
         return Utils.controlCurve(input, Joystick.EXPONENT, Joystick.DEADBAND);
     }
 
-    public Command getEnableCommand() {
-        return pivot.getCommands().reset();
-    }
-
     public Command getAutonomousCommand() {
         return AutoBuilder.buildAuto("5_1C_1A_1B_2A").repeatedly();
     }
