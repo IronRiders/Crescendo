@@ -2,13 +2,11 @@ package org.ironriders.commands;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.*;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.DriveSubsystem;
 import org.ironriders.subsystems.VisionSubsystem;
-import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 
 import java.util.Optional;
@@ -37,15 +35,19 @@ public class DriveCommands {
      * @return a command to control the swerve drive during teleop.
      */
     public Command teleopCommand(DoubleSupplier x, DoubleSupplier y, DoubleSupplier a) {
-        return drive(
-                () -> swerve.getSwerveController().getTargetSpeeds(
-                        x.getAsDouble(),
-                        y.getAsDouble(),
-                        a.getAsDouble() * 2 + swerve.getYaw().getRadians(),
-                        swerve.getYaw().getRadians(),
-                        MAX_SPEED
-                )
-        );
+        return drive.runOnce(() -> {
+            if (x.getAsDouble() == 0 && y.getAsDouble() == 0 && a.getAsDouble() == 0) {
+                swerve.lockPose();
+                return;
+            }
+
+            swerve.drive(
+                    new Translation2d(x.getAsDouble() * MAX_SPEED, y.getAsDouble() * MAX_SPEED),
+                    a.getAsDouble() * swerve.getSwerveController().config.maxAngularVelocity,
+                    true,
+                    false
+            );
+        });
     }
 
     /**
@@ -59,16 +61,6 @@ public class DriveCommands {
     }
 
     /**
-     * Creates a command to drive the swerve robot using specified speeds. Must be repeated to work.
-     *
-     * @param speeds The supplier providing the desired chassis speeds.
-     * @return A command to drive the swerve robot with the specified speeds.
-     */
-    public Command drive(Supplier<ChassisSpeeds> speeds) {
-        return drive(speeds, true, false);
-    }
-
-    /**
      * Creates a command to drive the swerve robot using specified speeds and control options. Must be repeated to
      * work.
      *
@@ -77,10 +69,11 @@ public class DriveCommands {
      * @param openLoop     Whether the control is open loop.
      * @return A command to drive the swerve robot with the specified speeds and control options.
      */
-    public Command drive(Supplier<ChassisSpeeds> speeds, boolean fieldCentric, boolean openLoop) {
+    public Command drive(Supplier<Translation2d> speeds, DoubleSupplier rotation, boolean fieldCentric,
+                         boolean openLoop) {
         return drive.runOnce(() -> swerve.drive(
-                SwerveController.getTranslation2d(speeds.get()),
-                speeds.get().omegaRadiansPerSecond,
+                speeds.get(),
+                rotation.getAsDouble(),
                 fieldCentric,
                 openLoop
         ));
