@@ -2,6 +2,7 @@ package org.ironriders.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkLimitSwitch;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +15,7 @@ import static com.revrobotics.CANSparkBase.IdleMode.kBrake;
 import static com.revrobotics.CANSparkBase.SoftLimitDirection.kForward;
 import static com.revrobotics.CANSparkBase.SoftLimitDirection.kReverse;
 import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
+import static com.revrobotics.SparkLimitSwitch.Type.kNormallyOpen;
 import static org.ironriders.constants.Pivot.*;
 import static org.ironriders.constants.Pivot.Control.*;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
@@ -26,6 +28,9 @@ public class PivotSubsystem extends SubsystemBase {
     @SuppressWarnings("FieldCanBeLocal")
     private final DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(Identifiers.Pivot.ENCODER);
     private final RelativeEncoder encoder = motor.getEncoder();
+
+    private final SparkLimitSwitch forwardSwitch = motor.getForwardLimitSwitch(kNormallyOpen);
+    private final SparkLimitSwitch reverseSwitch = motor.getReverseLimitSwitch(kNormallyOpen);
 
     public PivotSubsystem() {
         motor.setSmartCurrentLimit(CURRENT_LIMIT);
@@ -40,6 +45,9 @@ public class PivotSubsystem extends SubsystemBase {
         motor.setSoftLimit(kForward, Limit.FORWARD);
         motor.enableSoftLimit(kForward, true);
 
+        forwardSwitch.enableLimitSwitch(true);
+        reverseSwitch.enableLimitSwitch(true);
+
         SmartDashboard.putData(DASHBOARD_PREFIX + "pid", pid);
 
         reset();
@@ -50,7 +58,10 @@ public class PivotSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         motor.set(pid.calculate(getRotation()));
+
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "forwardSwitch", forwardSwitch.isPressed());
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseSwitch.isPressed());
     }
 
     public void set(State state) {
