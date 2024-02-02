@@ -65,8 +65,6 @@ public class DriveSubsystem extends SubsystemBase {
                 this
         );
 
-        swerveDrive.setHeadingCorrection(true);
-
         commands = new DriveCommands(this);
     }
 
