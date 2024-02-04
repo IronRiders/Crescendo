@@ -1,9 +1,12 @@
 package org.ironriders.commands;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import org.ironriders.constants.Drive;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.DriveSubsystem;
 import org.ironriders.subsystems.VisionSubsystem;
@@ -13,12 +16,16 @@ import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import static org.ironriders.constants.Drive.HeadingController.*;
 import static org.ironriders.constants.Drive.MAX_SPEED;
 
 public class DriveCommands {
     private final DriveSubsystem drive;
     private final SwerveDrive swerve;
     private final VisionSubsystem vision;
+
+    private final PIDController headingController = new PIDController(P, I, D);
+    private Double heading = Drive.HeadingMode.STRAIGHT.getHeading();
 
     public DriveCommands(DriveSubsystem drive) {
         this.drive = drive;
@@ -36,18 +43,30 @@ public class DriveCommands {
      */
     public Command teleopCommand(DoubleSupplier x, DoubleSupplier y, DoubleSupplier a) {
         return drive.runOnce(() -> {
-            if (x.getAsDouble() == 0 && y.getAsDouble() == 0 && a.getAsDouble() == 0) {
-                swerve.lockPose();
-                return;
+            double calculatedAngle = a.getAsDouble();
+
+            if (heading != null) {
+                calculatedAngle = MathUtil.clamp(
+                        headingController.calculate(
+                                Utils.rotationalError(heading, swerve.getYaw().getDegrees()),
+                                0
+                        ),
+                        -SPEED_CAP,
+                        SPEED_CAP
+                );
             }
 
             swerve.drive(
                     new Translation2d(x.getAsDouble() * MAX_SPEED, y.getAsDouble() * MAX_SPEED),
-                    a.getAsDouble() * swerve.getSwerveController().config.maxAngularVelocity,
+                    calculatedAngle * swerve.getSwerveController().config.maxAngularVelocity,
                     true,
                     false
             );
         });
+    }
+
+    public Command heading(Drive.HeadingMode heading) {
+        return drive.runOnce(() -> this.heading = heading.getHeading());
     }
 
     /**

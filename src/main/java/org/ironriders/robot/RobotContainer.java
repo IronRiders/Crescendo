@@ -8,22 +8,23 @@ package org.ironriders.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import org.ironriders.commands.DriveCommands;
 import org.ironriders.commands.RobotCommands;
 import org.ironriders.constants.Identifiers;
 import org.ironriders.constants.Teleop;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
-import static org.ironriders.constants.Game.KeyLocations.*;
+import static org.ironriders.constants.Drive.HeadingMode;
 import static org.ironriders.constants.Teleop.Controllers.Joystick;
 import static org.ironriders.constants.Teleop.Speed.DEADBAND;
 import static org.ironriders.constants.Teleop.Speed.MIN_MULTIPLIER;
 
 public class RobotContainer {
     private final DriveSubsystem drive = new DriveSubsystem();
+    private final DriveCommands driveCommands = drive.getCommands();
     private final LauncherSubsystem launcher = new LauncherSubsystem();
     private final PivotSubsystem pivot = new PivotSubsystem();
     private final ManipulatorSubsystem manipulator = new ManipulatorSubsystem();
@@ -42,6 +43,7 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        // Primary Driver
         drive.setDefaultCommand(
                 drive.getCommands().teleopCommand(
                         () -> -driveControlCurve(primaryController.getLeftY()),
@@ -52,34 +54,10 @@ public class RobotContainer {
 
         if (RobotBase.isSimulation()) return;
 
-        Command speakerRight = commands.launchAt(SPEAKER_RIGHT);
-        Command speakerCenter = commands.launchAt(SPEAKER_CENTER);
-        Command speakerLeft = commands.launchAt(SPEAKER_LEFT);
-
-        Command stageRight = commands.onStage(STAGE_RIGHT);
-        Command centerStage = commands.onStage(CENTER_STAGE);
-        Command stageLeft = commands.onStage(STAGE_LEFT);
-
-        Command amp = commands.amp();
-
-        Command cancelAuto = Commands.runOnce(() -> {
-            speakerRight.cancel();
-            speakerCenter.cancel();
-            speakerLeft.cancel();
-            stageRight.cancel();
-            centerStage.cancel();
-            stageLeft.cancel();
-            amp.cancel();
-        });
-
-        // Primary Driver
-        primaryController.rightBumper().onTrue(cancelAuto);
-        primaryController.leftBumper().onTrue(cancelAuto);
-
         primaryController.a().onTrue(commands.startGroundPickup()).onFalse(commands.endGroundPickup());
-        primaryController.b().onTrue(speakerRight);
-        primaryController.x().onTrue(speakerRight);
-        primaryController.y().onTrue(speakerCenter);
+        primaryController.b().onTrue(driveCommands.heading(HeadingMode.STRAIGHT));
+        primaryController.x().onTrue(commands.launch());
+        primaryController.y().onTrue(commands.initializeLauncher());
 
         // Secondary Controller
         climber.setDefaultCommand(
@@ -91,14 +69,15 @@ public class RobotContainer {
                 )
         );
 
-        secondaryController.button(7).onTrue(speakerRight);
-        secondaryController.button(9).onTrue(speakerCenter);
-        secondaryController.button(11).onTrue(speakerLeft);
-
-        secondaryController.button(8).onTrue(stageRight);
-        secondaryController.button(10).onTrue(stageLeft);
-
-        secondaryController.button(12).onTrue(cancelAuto);
+        // looking into a keypad
+//        secondaryController.button(7).onTrue(speakerRight);
+//        secondaryController.button(9).onTrue(speakerCenter);
+//        secondaryController.button(11).onTrue(speakerLeft);
+//
+//        secondaryController.button(8).onTrue(stageRight);
+//        secondaryController.button(10).onTrue(stageLeft);
+//
+//        secondaryController.button(12).onTrue(cancelAuto);
     }
 
     private double driveControlCurve(double input) {

@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 4.694155386574662,
-        "y": 2.157373819955974
+        "x": 4.263651939340916,
+        "y": 1.9196000197555954
       },
       "prevControl": {
-        "x": 3.189809015585104,
-        "y": 3.0578311401394846
+        "x": 3.4015689235082176,
+        "y": 2.465223685077
       },
       "nextControl": {
-        "x": 6.098025234244913,
-        "y": 1.3170587799508942
+        "x": 5.27755750567038,
+        "y": 1.2778858678347353
       },
       "isLocked": false,
       "linkedName": null
@@ -48,16 +48,16 @@
     },
     {
       "anchor": {
-        "x": 4.821542594474078,
-        "y": 2.312742976180398
+        "x": 4.599767518979482,
+        "y": 2.0878953470869903
       },
       "prevControl": {
-        "x": 5.573343308144951,
-        "y": 1.9045981147517863
+        "x": 5.340888794584021,
+        "y": 1.6606649691491444
       },
       "nextControl": {
-        "x": 3.41483435998956,
-        "y": 3.0764303829544315
+        "x": 2.6457839443456663,
+        "y": 3.2142982295223845
       },
       "isLocked": false,
       "linkedName": null
@@ -79,6 +79,23 @@
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
+    {
+      "name": "Initialize Launcher",
+      "waypointRelativePos": 2.35,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Initialize Launcher "
+              }
+            }
+          ]
+        }
+      }
+    },
     {
       "name": "Start Ground Pickup",
       "waypointRelativePos": 0.6,

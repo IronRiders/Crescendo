@@ -14,6 +14,18 @@
         {
           "type": "named",
           "data": {
+            "name": "Amp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Initialize Launcher "
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Launch"
           }
         },
@@ -27,12 +39,6 @@
           "type": "named",
           "data": {
             "name": "End Ground Pickup"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Launcher Initialize"
           }
         },
         {
