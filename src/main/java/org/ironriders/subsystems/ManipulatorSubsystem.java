@@ -26,7 +26,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
         motor.setSmartCurrentLimit(CURRENT_LIMIT);
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);
-        motor.setControlFramePeriodMs(1);
+        motor.setControlFramePeriodMs(VELOCITY_FILTERING);
 
         limitSwitch.enableLimitSwitch(false);
 

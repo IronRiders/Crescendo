@@ -31,8 +31,8 @@ public class LauncherSubsystem extends SubsystemBase {
         left.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         right.setIdleMode(kCoast);
         left.setIdleMode(kCoast);
-        right.setControlFramePeriodMs(1);
-        left.setControlFramePeriodMs(1);
+        right.setControlFramePeriodMs(VELOCITY_FILTERING);
+        left.setControlFramePeriodMs(VELOCITY_FILTERING);
 
         SmartDashboard.putData(DASHBOARD_PREFIX + "rightPID", rightPID);
         SmartDashboard.putData(DASHBOARD_PREFIX + "leftPID", leftPID);

@@ -5,6 +5,7 @@ public class Launcher {
     public static final double LAUNCH_SPEED = 0.5;
     public static final int CURRENT_LIMIT = 40;
     public static final int TOLERANCE = 1;
+    public static final int VELOCITY_FILTERING = 16;
 
     public static final String DASHBOARD_PREFIX = "launcher/";
 
