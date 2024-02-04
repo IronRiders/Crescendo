@@ -1,6 +1,8 @@
 package org.ironriders.constants;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import org.ironriders.lib.Utils;
 import swervelib.math.SwerveMath;
 
 public class Drive {
@@ -10,11 +12,11 @@ public class Drive {
     public enum HeadingMode {
         FREE(null),
         AMP(-180.0),
-        SPEAKER_CCW(0.0),
+        SPEAKER_CCW(-77.5),
         STRAIGHT(0.0),
-        SPEAKER_CW(0.0),
-        STAGE_LEFT(0.0),
-        STAGE_RIGHT(0.0);
+        SPEAKER_CW(77.5),
+        STAGE_LEFT(60.0),
+        STAGE_RIGHT(-60.0);
 
         private final Double heading;
 
@@ -22,8 +24,9 @@ public class Drive {
             this.heading = heading;
         }
 
+        @SuppressWarnings("DataFlowIssue")
         public Double getHeading() {
-            return heading;
+            return Utils.getAlliance().equals(DriverStation.Alliance.Red) && heading != null ? heading + 180 : heading;
         }
     }
 

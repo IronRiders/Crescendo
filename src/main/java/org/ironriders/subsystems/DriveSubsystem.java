@@ -7,12 +7,12 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.DriveCommands;
 import org.ironriders.constants.Drive;
+import org.ironriders.lib.Utils;
 import org.ironriders.lib.sendable_choosers.EnumSendableChooser;
 import swervelib.SwerveDrive;
 import swervelib.parser.SwerveParser;
@@ -61,7 +61,7 @@ public class DriveSubsystem extends SubsystemBase {
                         Dimensions.DRIVEBASE_RADIUS,
                         new ReplanningConfig()
                 ),
-                () -> DriverStation.getAlliance().orElse(Alliance.Blue).equals(Alliance.Red),
+                () -> Utils.getAlliance().equals(Alliance.Red),
                 this
         );
 

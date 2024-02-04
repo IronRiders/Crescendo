@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * Utility class containing various helper methods for mathematical and control operations.
@@ -24,6 +25,10 @@ public class Utils {
             error += 360;
         }
         return error;
+    }
+
+    public static DriverStation.Alliance getAlliance() {
+        return DriverStation.getAlliance().orElse(DriverStation.Alliance.Blue);
     }
 
     /**
