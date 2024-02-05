@@ -12,9 +12,9 @@ public class Drive {
     public enum HeadingMode {
         FREE(null),
         AMP(-180.0),
-        SPEAKER_CCW(-77.5),
         STRAIGHT(0.0),
-        SPEAKER_CW(77.5),
+        SPEAKER_LEFT(-77.5),
+        SPEAKER_RIGHT(77.5),
         STAGE_LEFT(60.0),
         STAGE_RIGHT(-60.0);
 
@@ -27,6 +27,10 @@ public class Drive {
         @SuppressWarnings("DataFlowIssue")
         public Double getHeading() {
             return Utils.getAlliance().equals(DriverStation.Alliance.Red) && heading != null ? heading + 180 : heading;
+        }
+
+        public boolean isFree() {
+            return heading == null;
         }
     }
 

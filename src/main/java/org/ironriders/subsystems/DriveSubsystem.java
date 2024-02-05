@@ -4,8 +4,10 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
@@ -25,6 +27,8 @@ import java.util.List;
 
 import static org.ironriders.constants.Auto.DASHBOARD_PREFIX;
 import static org.ironriders.constants.Auto.PathfindingConstraintProfile;
+import static org.ironriders.constants.Drive.HeadingController.*;
+import static org.ironriders.constants.Drive.HeadingMode;
 import static org.ironriders.constants.Drive.MAX_SPEED;
 import static org.ironriders.constants.Drive.Wheels.DRIVE_CONVERSION_FACTOR;
 import static org.ironriders.constants.Drive.Wheels.STEERING_CONVERSION_FACTOR;
@@ -34,6 +38,10 @@ public class DriveSubsystem extends SubsystemBase {
     private final DriveCommands commands;
     private final VisionSubsystem vision = new VisionSubsystem();
     private final SwerveDrive swerveDrive;
+
+    private final PIDController headingController = new PIDController(P, I, D);
+    private HeadingMode headingMode = HeadingMode.STRAIGHT;
+
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,
             PathfindingConstraintProfile.getDefault(),
@@ -83,23 +91,33 @@ public class DriveSubsystem extends SubsystemBase {
             swerveDrive.postTrajectory(new Trajectory(states));
         });
 
-        getVision().getPoseEstimate().ifPresent(estimatedRobotPose -> {
-            swerveDrive.resetOdometry(estimatedRobotPose.estimatedPose.toPose2d());
-            swerveDrive.setGyro(estimatedRobotPose.estimatedPose.getRotation());
-//            swerveDrive.addVisionMeasurement(
-//                    estimatedRobotPose.estimatedPose.toPose2d(),
-//                    estimatedRobotPose.timestampSeconds
-//            );
-//            swerveDrive.setGyro(estimatedRobotPose.estimatedPose.getRotation());
-        });
+        getVision().getPoseEstimate().ifPresent(estimatedRobotPose -> swerveDrive.addVisionMeasurement(
+                estimatedRobotPose.estimatedPose.toPose2d(),
+                estimatedRobotPose.timestampSeconds
+        ));
+    }
+
+    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+        if (!headingMode.isFree()) {
+            rotation = MathUtil.clamp(
+                    headingController.calculate(
+                            Utils.rotationalError(headingMode.getHeading(), swerveDrive.getYaw().getDegrees()),
+                            0
+                    ),
+                    -SPEED_CAP,
+                    SPEED_CAP
+            );
+        }
+
+        swerveDrive.drive(translation, rotation, fieldRelative, isOpenLoop);
+    }
+
+    public void setHeadingMode(HeadingMode headingMode) {
+        this.headingMode = headingMode;
     }
 
     public DriveCommands getCommands() {
         return commands;
-    }
-
-    public void setGyro(Rotation3d rotation) {
-        swerveDrive.setGyro(new Rotation3d());
     }
 
     public VisionSubsystem getVision() {
