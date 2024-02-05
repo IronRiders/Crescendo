@@ -19,7 +19,7 @@ import org.ironriders.constants.Identifiers;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
-import static org.ironriders.constants.Drive.CLIMBER_MODE_SPEED;
+import static org.ironriders.constants.Drive.CLIMBING_MODE_SPEED;
 import static org.ironriders.constants.Teleop.Controllers.Joystick;
 
 public class RobotContainer {
@@ -67,7 +67,7 @@ public class RobotContainer {
         primaryController.x().onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_LEFT));
         primaryController.y().onTrue(driveCommands.headingMode(Drive.HeadingMode.STRAIGHT));
         primaryController.b().onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_RIGHT));
-        primaryController.a().onTrue(commands.toggleClimberMode());
+        primaryController.a().onTrue(commands.toggleClimbingMode());
 
         // Secondary Controller
         secondaryController.button(1).onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_LEFT));
@@ -84,7 +84,7 @@ public class RobotContainer {
 
     private double controlCurve(double input) {
         return Utils.controlCurve(input, Joystick.EXPONENT, Joystick.DEADBAND) *
-                (climber.getClimberMode() ? CLIMBER_MODE_SPEED : 1);
+                (climber.getClimbingMode() ? CLIMBING_MODE_SPEED : 1);
     }
 
     public Command getAutonomousCommand() {

@@ -26,7 +26,7 @@ public class ClimberSubsystem extends SubsystemBase {
     private final PIDController pid = new PIDController(P, I, D);
     private double rightPower = 0;
     private double leftPower = 0;
-    private boolean climberMode = false;
+    private boolean climbingMode = false;
 
     public ClimberSubsystem(DriveSubsystem drive) {
         this.drive = drive;
@@ -53,7 +53,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (climberMode) {
+        if (climbingMode) {
             double calculation = pid.calculate(drive.getSwerveDrive().getRoll().getDegrees(), 0);
 
             right.set(MathUtil.clamp(rightPower - calculation, -SPEED, SPEED));
@@ -78,12 +78,12 @@ public class ClimberSubsystem extends SubsystemBase {
         this.rightPower = rightPower;
     }
 
-    public void toggleClimberMode() {
-        climberMode = !climberMode;
+    public void toggleClimbingMode() {
+        climbingMode = !climbingMode;
     }
 
-    public boolean getClimberMode() {
-        return climberMode;
+    public boolean getClimbingMode() {
+        return climbingMode;
     }
 
     public ClimberCommands getCommands() {
