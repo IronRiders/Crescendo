@@ -18,8 +18,8 @@ public class ClimberCommands {
         return climber.startEnd(() -> climber.setRightPower(1), () -> climber.setRightPower(0));
     }
 
-    public Command toggleClimbingMode() {
-        return climber.runOnce(climber::toggleClimbingMode);
+    public Command setClimbingMode(boolean isEnabled) {
+        return climber.runOnce(() -> climber.setClimbingMode(isEnabled));
     }
 
     public ClimberSubsystem getClimber() {

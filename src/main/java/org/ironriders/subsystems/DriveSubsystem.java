@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.DriveCommands;
+import org.ironriders.constants.Auto;
 import org.ironriders.constants.Drive;
 import org.ironriders.lib.Utils;
 import org.ironriders.lib.sendable_choosers.EnumSendableChooser;
@@ -44,7 +45,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,
             PathfindingConstraintProfile.getDefault(),
-            DASHBOARD_PREFIX + "pathfindingConstraintProfile"
+            Auto.DASHBOARD_PREFIX + "pathfindingConstraintProfile"
     );
 
     public DriveSubsystem() {

@@ -7,6 +7,8 @@ package org.ironriders.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -19,6 +21,7 @@ import org.ironriders.constants.Identifiers;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
+import static org.ironriders.constants.Auto.DEFAULT_AUTO;
 import static org.ironriders.constants.Drive.CLIMBING_MODE_SPEED;
 import static org.ironriders.constants.Teleop.Controllers.Joystick;
 
@@ -40,9 +43,16 @@ public class RobotContainer {
     private final CommandGenericHID secondaryController =
             new CommandGenericHID(Identifiers.Controllers.SECONDARY_CONTROLLER);
 
-
+    private final SendableChooser<String> autoOptionsSelector = new SendableChooser<>();
 
     public RobotContainer() {
+        for (String auto : AutoBuilder.getAllAutoNames()) {
+            if (auto.equals("REGISTERED_COMMANDS")) continue;
+            autoOptionsSelector.addOption(auto, auto);
+        }
+        autoOptionsSelector.setDefaultOption(DEFAULT_AUTO, DEFAULT_AUTO);
+        SmartDashboard.putData("auto/Auto Option", autoOptionsSelector);
+
         configureBindings();
     }
 
@@ -64,10 +74,8 @@ public class RobotContainer {
         primaryController.leftBumper().whileTrue(climberCommands.left());
         primaryController.rightBumper().whileTrue(climberCommands.right());
 
-        primaryController.x().onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_LEFT));
-        primaryController.y().onTrue(driveCommands.headingMode(Drive.HeadingMode.STRAIGHT));
-        primaryController.b().onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_RIGHT));
-        primaryController.a().onTrue(commands.toggleClimbingMode());
+        primaryController.a().onTrue(commands.setClimbingMode(true));
+        primaryController.b().onTrue(commands.setClimbingMode(false));
 
         // Secondary Controller
         secondaryController.button(1).onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_LEFT));
@@ -88,6 +96,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return AutoBuilder.buildAuto("5_1C_1A_1B_2A").repeatedly();
+        return AutoBuilder.buildAuto(autoOptionsSelector.getSelected());
     }
 }

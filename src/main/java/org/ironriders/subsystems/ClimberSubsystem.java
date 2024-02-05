@@ -1,7 +1,6 @@
 package org.ironriders.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -56,8 +55,8 @@ public class ClimberSubsystem extends SubsystemBase {
         if (climbingMode) {
             double calculation = pid.calculate(drive.getSwerveDrive().getRoll().getDegrees(), 0);
 
-            right.set(MathUtil.clamp(rightPower - calculation, -SPEED, SPEED));
-            left.set(MathUtil.clamp(rightPower + calculation, -SPEED, SPEED));
+            right.set((rightPower - calculation) * SPEED);
+            left.set((rightPower + calculation) * SPEED);
         } else {
             right.stopMotor();
             left.stopMotor();
@@ -78,8 +77,8 @@ public class ClimberSubsystem extends SubsystemBase {
         this.rightPower = rightPower;
     }
 
-    public void toggleClimbingMode() {
-        climbingMode = !climbingMode;
+    public void setClimbingMode(boolean isEnabled) {
+        climbingMode = isEnabled;
     }
 
     public boolean getClimbingMode() {

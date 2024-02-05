@@ -61,10 +61,10 @@ public class RobotCommands {
         );
     }
 
-    public Command toggleClimbingMode() {
+    public Command setClimbingMode(boolean isEnabled) {
         return Commands.parallel(
                 drive.headingMode(Drive.HeadingMode.FREE),
-                climber.toggleClimbingMode()
+                climber.setClimbingMode(isEnabled)
         );
     }
 }
