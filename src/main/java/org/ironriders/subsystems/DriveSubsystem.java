@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.DriveCommands;
 import org.ironriders.constants.Drive;
@@ -25,11 +26,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ironriders.constants.Auto.DASHBOARD_PREFIX;
 import static org.ironriders.constants.Auto.PathfindingConstraintProfile;
+import static org.ironriders.constants.Drive.*;
 import static org.ironriders.constants.Drive.HeadingController.*;
-import static org.ironriders.constants.Drive.HeadingMode;
-import static org.ironriders.constants.Drive.MAX_SPEED;
 import static org.ironriders.constants.Drive.Wheels.DRIVE_CONVERSION_FACTOR;
 import static org.ironriders.constants.Drive.Wheels.STEERING_CONVERSION_FACTOR;
 import static org.ironriders.constants.Robot.Dimensions;
@@ -39,7 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final VisionSubsystem vision = new VisionSubsystem();
     private final SwerveDrive swerveDrive;
 
-    private final PIDController headingController = new PIDController(P, I, D);
+    private final PIDController headingPID = new PIDController(P, I, D);
     private HeadingMode headingMode = HeadingMode.STRAIGHT;
 
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
@@ -95,12 +94,15 @@ public class DriveSubsystem extends SubsystemBase {
                 estimatedRobotPose.estimatedPose.toPose2d(),
                 estimatedRobotPose.timestampSeconds
         ));
+
+        SmartDashboard.putData(DASHBOARD_PREFIX + "headingPID", headingPID);
+        SmartDashboard.putString(DASHBOARD_PREFIX + "headingMode", headingMode.toString());
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         if (!headingMode.isFree()) {
             rotation = MathUtil.clamp(
-                    headingController.calculate(
+                    headingPID.calculate(
                             Utils.rotationalError(headingMode.getHeading(), swerveDrive.getYaw().getDegrees()),
                             0
                     ),
@@ -116,10 +118,6 @@ public class DriveSubsystem extends SubsystemBase {
         this.headingMode = headingMode;
     }
 
-    public DriveCommands getCommands() {
-        return commands;
-    }
-
     public VisionSubsystem getVision() {
         return vision;
     }
@@ -130,5 +128,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     public SwerveDrive getSwerveDrive() {
         return swerveDrive;
+    }
+
+    public DriveCommands getCommands() {
+        return commands;
     }
 }

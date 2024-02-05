@@ -13,6 +13,7 @@ public class RobotCommands {
     private final LauncherCommands launcher;
     private final PivotCommands pivot;
     private final ManipulatorCommands manipulator;
+    private final ClimberCommands climber;
 
     public RobotCommands(DriveSubsystem drive, LauncherSubsystem launcher, PivotSubsystem pivot,
                          ManipulatorSubsystem manipulator, ClimberSubsystem climber) {
@@ -20,9 +21,9 @@ public class RobotCommands {
         this.launcher = launcher.getCommands();
         this.pivot = pivot.getCommands();
         this.manipulator = manipulator.getCommands();
+        this.climber = climber.getCommands();
 
         NamedCommands.registerCommand("Apm", amp());
-        NamedCommands.registerCommand("Initialize Launcher", launch());
         NamedCommands.registerCommand("Launch", launch());
         NamedCommands.registerCommand("Start Ground Pickup", startGroundPickup());
         NamedCommands.registerCommand("End Ground Pickup", endGroundPickup());
@@ -30,27 +31,23 @@ public class RobotCommands {
 
     public Command amp() {
         return Commands.sequence(
-                drive.heading(Drive.HeadingMode.AMP),
+                drive.headingMode(Drive.HeadingMode.AMP),
                 pivot.set(Pivot.State.AMP),
                 manipulator.set(Manipulator.State.EJECT_TO_AMP)
         );
     }
 
-    public Command initializeLauncher() {
-        return launcher.initialize();
-    }
-
     public Command launch() {
         return Commands.sequence(
-                initializeLauncher(),
+                launcher.initialize(),
                 manipulator.set(Manipulator.State.EJECT_TO_LAUNCHER),
-                launcher.stop()
+                launcher.deactivate()
         );
     }
 
     public Command startGroundPickup() {
         return Commands.parallel(
-                drive.heading(Drive.HeadingMode.FREE),
+                drive.headingMode(Drive.HeadingMode.FREE),
                 pivot.set(Pivot.State.GROUND),
                 manipulator.set(Manipulator.State.GRAB),
                 launcher.initialize()
@@ -59,9 +56,15 @@ public class RobotCommands {
 
     public Command endGroundPickup() {
         return Commands.parallel(
-                drive.heading(Drive.HeadingMode.STRAIGHT),
                 pivot.set(Pivot.State.LAUNCHER),
                 manipulator.set(Manipulator.State.STOP)
+        );
+    }
+
+    public Command toggleClimberMode() {
+        return Commands.parallel(
+                drive.headingMode(Drive.HeadingMode.FREE),
+                climber.toggleClimberMode()
         );
     }
 }

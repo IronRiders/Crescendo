@@ -3,8 +3,6 @@ package org.ironriders.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.ironriders.subsystems.ClimberSubsystem;
 
-import java.util.function.DoubleSupplier;
-
 public class ClimberCommands {
     private final ClimberSubsystem climber;
 
@@ -12,8 +10,16 @@ public class ClimberCommands {
         this.climber = climber;
     }
 
-    public Command set(DoubleSupplier right, DoubleSupplier left) {
-        return climber.run(() -> climber.set(right.getAsDouble(), left.getAsDouble()));
+    public Command left() {
+        return climber.startEnd(() -> climber.setLeftPower(1), () -> climber.setLeftPower(0));
+    }
+
+    public Command right() {
+        return climber.startEnd(() -> climber.setRightPower(1), () -> climber.setRightPower(0));
+    }
+
+    public Command toggleClimberMode() {
+        return climber.runOnce(climber::toggleClimberMode);
     }
 
     public ClimberSubsystem getClimber() {

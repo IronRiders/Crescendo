@@ -64,7 +64,7 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Initialize Launcher",
+      "name": "Launcher Initialize",
       "waypointRelativePos": 1.1500000000000001,
       "command": {
         "type": "sequential",
@@ -73,7 +73,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Initialize Launcher "
+                "name": "Launcher Initialize"
               }
             }
           ]

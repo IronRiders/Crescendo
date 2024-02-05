@@ -56,7 +56,7 @@ public class LauncherSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", true);
     }
 
-    public void stop() {
+    public void deactivate() {
         set(0);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
     }

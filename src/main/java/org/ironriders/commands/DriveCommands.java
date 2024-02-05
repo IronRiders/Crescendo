@@ -44,7 +44,7 @@ public class DriveCommands {
         ));
     }
 
-    public Command heading(Drive.HeadingMode heading) {
+    public Command headingMode(Drive.HeadingMode heading) {
         return drive.runOnce(() -> drive.setHeadingMode(heading));
     }
 

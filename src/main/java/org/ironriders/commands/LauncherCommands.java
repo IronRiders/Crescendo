@@ -13,7 +13,7 @@ public class LauncherCommands {
         this.launcher = launcher;
 
         NamedCommands.registerCommand("Launcher Initialize", initialize());
-        NamedCommands.registerCommand("Launcher Stop", stop());
+        NamedCommands.registerCommand("Launcher Deactivate", deactivate());
     }
 
     /**
@@ -25,12 +25,12 @@ public class LauncherCommands {
         return launcher
                 .run(launcher::run)
                 .until(launcher::atSpeed)
-                .handleInterrupt(launcher::stop)
+                .handleInterrupt(launcher::deactivate)
                 .withTimeout(INITIATION_TIMEOUT);
     }
 
-    public Command stop() {
-        return launcher.runOnce(launcher::stop);
+    public Command deactivate() {
+        return launcher.runOnce(launcher::deactivate);
     }
 
     public LauncherSubsystem getLauncher() {

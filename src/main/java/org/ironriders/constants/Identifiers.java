@@ -22,8 +22,8 @@ public class Identifiers {
     }
 
     public static class Climber {
-        public static final int LEADER = 14;
-        public static final int FOLLOWER = 15;
+        public static final int RIGHT = 14;
+        public static final int LEFT = 15;
     }
 
     public static class Lighting {

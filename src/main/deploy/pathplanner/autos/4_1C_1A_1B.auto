@@ -28,6 +28,12 @@
           "data": {
             "pathName": "SPEAKER_NOTE1B"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launcher Stop"
+          }
         }
       ]
     }

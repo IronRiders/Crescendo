@@ -8,91 +8,83 @@ package org.ironriders.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import org.ironriders.commands.ClimberCommands;
 import org.ironriders.commands.DriveCommands;
+import org.ironriders.commands.LauncherCommands;
 import org.ironriders.commands.RobotCommands;
+import org.ironriders.constants.Drive;
 import org.ironriders.constants.Identifiers;
-import org.ironriders.constants.Teleop;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
-import static org.ironriders.constants.Drive.HeadingMode;
+import static org.ironriders.constants.Drive.CLIMBER_MODE_SPEED;
 import static org.ironriders.constants.Teleop.Controllers.Joystick;
-import static org.ironriders.constants.Teleop.Speed.DEADBAND;
-import static org.ironriders.constants.Teleop.Speed.MIN_MULTIPLIER;
 
 public class RobotContainer {
     private final DriveSubsystem drive = new DriveSubsystem();
     private final DriveCommands driveCommands = drive.getCommands();
     private final LauncherSubsystem launcher = new LauncherSubsystem();
+    private final LauncherCommands launcherCommands = launcher.getCommands();
     private final PivotSubsystem pivot = new PivotSubsystem();
     private final ManipulatorSubsystem manipulator = new ManipulatorSubsystem();
-    private final ClimberSubsystem climber = new ClimberSubsystem();
+    private final ClimberSubsystem climber = new ClimberSubsystem(drive);
+    private final ClimberCommands climberCommands = climber.getCommands();
     @SuppressWarnings("unused")
     private final LightingSubsystem lighting = new LightingSubsystem();
     private final RobotCommands commands = new RobotCommands(drive, launcher, pivot, manipulator, climber);
 
     private final CommandXboxController primaryController =
             new CommandXboxController(Identifiers.Controllers.PRIMARY_CONTROLLER);
-    private final CommandJoystick secondaryController =
-            new CommandJoystick(Identifiers.Controllers.SECONDARY_CONTROLLER);
+    private final CommandGenericHID secondaryController =
+            new CommandGenericHID(Identifiers.Controllers.SECONDARY_CONTROLLER);
+
+
 
     public RobotContainer() {
         configureBindings();
     }
 
     private void configureBindings() {
+        if (RobotBase.isSimulation()) return;
+
         // Primary Driver
         drive.setDefaultCommand(
                 drive.getCommands().teleopCommand(
-                        () -> -driveControlCurve(primaryController.getLeftY()),
-                        () -> -driveControlCurve(primaryController.getLeftX()),
-                        () -> -driveControlCurve(primaryController.getRightX())
+                        () -> -controlCurve(primaryController.getLeftY()),
+                        () -> -controlCurve(primaryController.getLeftX()),
+                        () -> -controlCurve(primaryController.getRightX())
                 )
         );
 
-        if (RobotBase.isSimulation()) return;
+        primaryController.leftTrigger().onTrue(commands.launch());
+        primaryController.rightTrigger().onTrue(commands.startGroundPickup()).onFalse(commands.endGroundPickup());
 
-        primaryController.a().onTrue(commands.startGroundPickup()).onFalse(commands.endGroundPickup());
-        primaryController.b().onTrue(driveCommands.heading(HeadingMode.STRAIGHT));
-        primaryController.x().onTrue(commands.launch());
-        primaryController.y().onTrue(commands.initializeLauncher());
+        primaryController.leftBumper().whileTrue(climberCommands.left());
+        primaryController.rightBumper().whileTrue(climberCommands.right());
+
+        primaryController.x().onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_LEFT));
+        primaryController.y().onTrue(driveCommands.headingMode(Drive.HeadingMode.STRAIGHT));
+        primaryController.b().onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_RIGHT));
+        primaryController.a().onTrue(commands.toggleClimberMode());
 
         // Secondary Controller
-        climber.setDefaultCommand(
-                climber.getCommands().set(
-                        () -> (climberControlCurve(secondaryController.getX()) * 0.5 + 0.5) *
-                                climberControlCurve(secondaryController.getY()),
-                        () -> (climberControlCurve(secondaryController.getX()) * -0.5 + 0.5) *
-                                climberControlCurve(secondaryController.getY())
-                )
-        );
+        secondaryController.button(1).onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_LEFT));
+        secondaryController.button(2).onTrue(driveCommands.headingMode(Drive.HeadingMode.STRAIGHT));
+        secondaryController.button(4).onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_RIGHT));
 
-        // looking into a keypad
-//        secondaryController.button(7).onTrue(speakerRight);
-//        secondaryController.button(9).onTrue(speakerCenter);
-//        secondaryController.button(11).onTrue(speakerLeft);
-//
-//        secondaryController.button(8).onTrue(stageRight);
-//        secondaryController.button(10).onTrue(stageLeft);
-//
-//        secondaryController.button(12).onTrue(cancelAuto);
+        secondaryController.button(5).onTrue(driveCommands.headingMode(Drive.HeadingMode.STAGE_LEFT));
+        secondaryController.button(6).onTrue(driveCommands.headingMode(Drive.HeadingMode.STRAIGHT));
+        secondaryController.button(8).onTrue(driveCommands.headingMode(Drive.HeadingMode.STAGE_RIGHT));
+
+        secondaryController.button(13).onTrue(launcherCommands.deactivate());
+        secondaryController.button(17).onTrue(launcherCommands.initialize());
     }
 
-    private double driveControlCurve(double input) {
-        // Multiplier based on trigger axis (whichever one is larger) then scaled to start at 0.35
-        return Utils.controlCurve(input, Joystick.EXPONENT, Joystick.DEADBAND) * (
-                Utils.controlCurve(
-                        Math.max(primaryController.getLeftTriggerAxis(), primaryController.getRightTriggerAxis()),
-                        Teleop.Speed.EXPONENT,
-                        DEADBAND
-                ) * (1 - MIN_MULTIPLIER) + MIN_MULTIPLIER
-        );
-    }
-
-    private double climberControlCurve(double input) {
-        return Utils.controlCurve(input, Joystick.EXPONENT, Joystick.DEADBAND);
+    private double controlCurve(double input) {
+        return Utils.controlCurve(input, Joystick.EXPONENT, Joystick.DEADBAND) *
+                (climber.getClimberMode() ? CLIMBER_MODE_SPEED : 1);
     }
 
     public Command getAutonomousCommand() {

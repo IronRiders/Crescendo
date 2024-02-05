@@ -7,7 +7,9 @@ import swervelib.math.SwerveMath;
 
 public class Drive {
     public static final String SWERVE_CONFIG_LOCATION = "swerve";
+    public static final String DASHBOARD_PREFIX = "drive/";
     public static final double MAX_SPEED = 4.5;
+    public static final double CLIMBER_MODE_SPEED = 0.3;
 
     public enum HeadingMode {
         FREE(null),

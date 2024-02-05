@@ -66,7 +66,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
     }
 
     private void stop() {
-        motor.set(0);
+        motor.stopMotor();
     }
 
     public double getVelocity() {

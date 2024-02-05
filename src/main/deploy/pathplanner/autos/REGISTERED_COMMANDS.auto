@@ -20,12 +20,6 @@
         {
           "type": "named",
           "data": {
-            "name": "Initialize Launcher "
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Launch"
           }
         },
@@ -44,7 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Launcher Stop"
+            "name": "Initialize Launcher"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launcher Deactivate"
           }
         },
         {
