@@ -7,8 +7,8 @@ public class Identifiers {
     }
 
     public static class Launcher {
-        public static final int LEADER = 10;
-        public static final int FOLLOWER = 11;
+        public static final int RIGHT = 10;
+        public static final int LEFT = 11;
     }
 
     public static class Pivot {

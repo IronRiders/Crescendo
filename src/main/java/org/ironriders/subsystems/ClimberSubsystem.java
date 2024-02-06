@@ -23,8 +23,7 @@ public class ClimberSubsystem extends SubsystemBase {
     private final CANSparkMax left = new CANSparkMax(Identifiers.Climber.LEFT, kBrushless);
 
     private final PIDController pid = new PIDController(P, I, D);
-    private double rightPower = 0;
-    private double leftPower = 0;
+    private double input = 0;
     private boolean climbingMode = false;
 
     public ClimberSubsystem(DriveSubsystem drive) {
@@ -55,8 +54,8 @@ public class ClimberSubsystem extends SubsystemBase {
         if (climbingMode) {
             double calculation = pid.calculate(drive.getSwerveDrive().getRoll().getDegrees(), 0);
 
-            right.set((rightPower - calculation) * SPEED);
-            left.set((rightPower + calculation) * SPEED);
+            right.set((input - calculation) * SPEED);
+            left.set((input + calculation) * SPEED);
         } else {
             right.stopMotor();
             left.stopMotor();
@@ -65,16 +64,11 @@ public class ClimberSubsystem extends SubsystemBase {
         SmartDashboard.putData(DASHBOARD_PREFIX + "rollPID", pid);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightPosition", right.getEncoder().getPosition());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftPosition", left.getEncoder().getPosition());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightPower", rightPower);
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftPower", leftPower);
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "input", input);
     }
 
-    public void setLeftPower(double leftPower) {
-        this.leftPower = leftPower;
-    }
-
-    public void setRightPower(double rightPower) {
-        this.rightPower = rightPower;
+    public void set(double input) {
+        this.input = input;
     }
 
     public void setClimbingMode(boolean isEnabled) {

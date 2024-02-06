@@ -71,8 +71,9 @@ public class RobotContainer {
         primaryController.leftTrigger().onTrue(commands.launch());
         primaryController.rightTrigger().onTrue(commands.startGroundPickup()).onFalse(commands.endGroundPickup());
 
-        primaryController.leftBumper().whileTrue(climberCommands.left());
-        primaryController.rightBumper().whileTrue(climberCommands.right());
+        primaryController.leftBumper().whileTrue(climberCommands.set(-1));
+        primaryController.rightBumper().whileTrue(climberCommands.set(1));
+
 
         primaryController.a().onTrue(commands.setClimbingMode(true));
         primaryController.b().onTrue(commands.setClimbingMode(false));

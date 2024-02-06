@@ -17,9 +17,9 @@ import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
 public class LauncherSubsystem extends SubsystemBase {
     private final LauncherCommands commands;
 
-    private final CANSparkMax right = new CANSparkMax(Identifiers.Launcher.LEADER, kBrushless);
+    private final CANSparkMax right = new CANSparkMax(Identifiers.Launcher.RIGHT, kBrushless);
     private final PIDController rightPID = new PIDController(P, I, D);
-    private final CANSparkMax left = new CANSparkMax(Identifiers.Launcher.FOLLOWER, kBrushless);
+    private final CANSparkMax left = new CANSparkMax(Identifiers.Launcher.LEFT, kBrushless);
     private final PIDController leftPID = new PIDController(P, I, D);
 
     private double setPoint = 0;

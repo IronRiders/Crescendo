@@ -10,12 +10,8 @@ public class ClimberCommands {
         this.climber = climber;
     }
 
-    public Command left() {
-        return climber.startEnd(() -> climber.setLeftPower(1), () -> climber.setLeftPower(0));
-    }
-
-    public Command right() {
-        return climber.startEnd(() -> climber.setRightPower(1), () -> climber.setRightPower(0));
+    public Command set(double input) {
+        return climber.startEnd(() -> climber.set(input), () -> climber.set(0));
     }
 
     public Command setClimbingMode(boolean isEnabled) {
