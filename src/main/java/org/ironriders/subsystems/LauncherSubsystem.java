@@ -43,12 +43,19 @@ public class LauncherSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        right.set(rightPID.calculate(getRightVelocity()));
-        left.set(leftPID.calculate(getLeftVelocity()));
+        if (setPoint == 0) {
+            right.set(0);
+            left.set(0);
+        } else {
+            double output = rightPID.calculate(getRightVelocity());
+            right.set(output);
+            left.set(output);
+        }
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightVelocity", getRightVelocity());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftVelocity", getLeftVelocity());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "minVelocity", getMinVelocity());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightVelocity", -getRightVelocity());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftVelocity", -getLeftVelocity());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "minVelocity", -getMinVelocity());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", setPoint);
     }
 
     public void run() {
@@ -63,8 +70,10 @@ public class LauncherSubsystem extends SubsystemBase {
 
     private void set(double setPoint) {
         this.setPoint = setPoint;
-        rightPID.setSetpoint(setPoint);
-        leftPID.setSetpoint(setPoint);
+        rightPID.reset();
+        rightPID.setSetpoint(-setPoint);
+        leftPID.reset();
+        leftPID.setSetpoint(-setPoint);
     }
 
     public boolean atSpeed() {

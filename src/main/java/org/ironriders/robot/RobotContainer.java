@@ -97,6 +97,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return AutoBuilder.buildAuto(autoOptionsSelector.getSelected());
+        return launcherCommands.initialize();
+//        return AutoBuilder.buildAuto(autoOptionsSelector.getSelected());
     }
 }

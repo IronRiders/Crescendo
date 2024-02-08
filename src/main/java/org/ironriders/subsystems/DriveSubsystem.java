@@ -40,7 +40,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     private final PIDController headingPID = new PIDController(P, I, D);
-    private HeadingMode headingMode = HeadingMode.STRAIGHT;
+    private HeadingMode headingMode = HeadingMode.FREE;
 
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,

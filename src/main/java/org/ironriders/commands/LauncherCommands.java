@@ -23,8 +23,8 @@ public class LauncherCommands {
      */
     public Command initialize() {
         return launcher
-                .run(launcher::run)
-                .until(launcher::atSpeed)
+                .runOnce(launcher::run)
+                //.until(launcher::atSpeed)
                 .handleInterrupt(launcher::deactivate)
                 .withTimeout(INITIATION_TIMEOUT);
     }

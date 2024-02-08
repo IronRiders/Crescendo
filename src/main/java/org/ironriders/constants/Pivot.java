@@ -4,7 +4,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class Pivot {
     public static final double TOLERANCE = 0.5;
-    public static final double GEARING = 500;
+    public static final double GEARING = 64 * 5.0 / 3;
     public static final double ENCODER_OFFSET = 0;
     public static final int CURRENT_LIMIT = 20;
 
