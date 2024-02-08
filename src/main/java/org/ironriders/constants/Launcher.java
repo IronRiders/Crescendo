@@ -2,7 +2,7 @@ package org.ironriders.constants;
 
 public class Launcher {
     public static final double INITIATION_TIMEOUT = 100;
-    public static final double LAUNCH_SPEED = 3000;
+    public static final double LAUNCH_VELOCITY = 3000;
     public static final int CURRENT_LIMIT = 40;
     public static final int TOLERANCE = 1;
     public static final int VELOCITY_FILTERING = 5;
