@@ -40,7 +40,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (limitSwitch.isPressed() && state.equals(State.GRAB)) set(STOP);
+        if (hasNote() && state.equals(State.GRAB)) set(STOP);
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "velocity", getVelocity());
     }
@@ -50,6 +50,10 @@ public class ManipulatorSubsystem extends SubsystemBase {
         this.state = state;
 
         SmartDashboard.putString(DASHBOARD_PREFIX + "state", state.name());
+    }
+
+    public boolean hasNote() {
+        return limitSwitch.isPressed();
     }
 
     public double getVelocity() {

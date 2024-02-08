@@ -61,7 +61,7 @@ public class RobotContainer {
 
         // Primary Driver
         drive.setDefaultCommand(
-                drive.getCommands().teleopCommand(
+                driveCommands.teleopCommand(
                         () -> -controlCurve(primaryController.getLeftY()),
                         () -> -controlCurve(primaryController.getLeftX()),
                         () -> -controlCurve(primaryController.getRightX())
@@ -79,13 +79,13 @@ public class RobotContainer {
         primaryController.b().onTrue(commands.setClimbingMode(false));
 
         // Secondary Controller
-        secondaryController.button(1).onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_LEFT));
-        secondaryController.button(2).onTrue(driveCommands.headingMode(Drive.HeadingMode.STRAIGHT));
-        secondaryController.button(4).onTrue(driveCommands.headingMode(Drive.HeadingMode.SPEAKER_RIGHT));
+        secondaryController.button(1).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_LEFT));
+        secondaryController.button(2).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
+        secondaryController.button(4).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_RIGHT));
 
-        secondaryController.button(5).onTrue(driveCommands.headingMode(Drive.HeadingMode.STAGE_LEFT));
-        secondaryController.button(6).onTrue(driveCommands.headingMode(Drive.HeadingMode.STRAIGHT));
-        secondaryController.button(8).onTrue(driveCommands.headingMode(Drive.HeadingMode.STAGE_RIGHT));
+        secondaryController.button(5).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_LEFT));
+        secondaryController.button(6).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
+        secondaryController.button(8).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_RIGHT));
 
         secondaryController.button(13).onTrue(launcherCommands.deactivate());
         secondaryController.button(17).onTrue(launcherCommands.initialize());

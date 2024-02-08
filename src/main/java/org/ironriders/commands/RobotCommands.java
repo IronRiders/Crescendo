@@ -13,6 +13,7 @@ public class RobotCommands {
     private final LauncherCommands launcher;
     private final PivotCommands pivot;
     private final ManipulatorCommands manipulator;
+    private final ManipulatorSubsystem manipulatorSubsystem;
     private final ClimberCommands climber;
 
     public RobotCommands(DriveSubsystem drive, LauncherSubsystem launcher, PivotSubsystem pivot,
@@ -21,6 +22,7 @@ public class RobotCommands {
         this.launcher = launcher.getCommands();
         this.pivot = pivot.getCommands();
         this.manipulator = manipulator.getCommands();
+        manipulatorSubsystem = manipulator;
         this.climber = climber.getCommands();
 
         NamedCommands.registerCommand("Apm", amp());
@@ -31,7 +33,7 @@ public class RobotCommands {
 
     public Command amp() {
         return Commands.sequence(
-                drive.headingMode(Drive.HeadingMode.AMP),
+                drive.setHeadingMode(Drive.HeadingMode.AMP),
                 pivot.set(Pivot.State.AMP),
                 manipulator.set(Manipulator.State.EJECT_TO_AMP)
         );
@@ -47,7 +49,7 @@ public class RobotCommands {
 
     public Command startGroundPickup() {
         return Commands.parallel(
-                drive.headingMode(Drive.HeadingMode.FREE),
+                drive.setHeadingMode(Drive.HeadingMode.FREE),
                 pivot.set(Pivot.State.GROUND),
                 manipulator.set(Manipulator.State.GRAB),
                 launcher.initialize()
@@ -56,15 +58,23 @@ public class RobotCommands {
 
     public Command endGroundPickup() {
         return Commands.parallel(
+                drive.setHeadingMode(Drive.HeadingMode.STRAIGHT).onlyIf(manipulatorSubsystem::hasNote),
                 pivot.set(Pivot.State.LAUNCHER),
                 manipulator.set(Manipulator.State.STOP)
         );
     }
 
     public Command setClimbingMode(boolean isEnabled) {
-        return Commands.parallel(
-                drive.headingMode(Drive.HeadingMode.FREE),
-                climber.setClimbingMode(isEnabled)
-        );
+        if (isEnabled) {
+            return Commands.parallel(
+                    drive.setHeadingMode(Drive.HeadingMode.FREE),
+                    climber.setClimbingMode(true)
+            );
+        } else {
+            return Commands.parallel(
+                    drive.setHeadingMode(Drive.HeadingMode.STRAIGHT),
+                    climber.setClimbingMode(false)
+            );
+        }
     }
 }
