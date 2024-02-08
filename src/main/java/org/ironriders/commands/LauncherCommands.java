@@ -24,8 +24,6 @@ public class LauncherCommands {
     public Command initialize() {
         return launcher
                 .runOnce(launcher::run)
-                //.until(launcher::atSpeed)
-                .handleInterrupt(launcher::deactivate)
                 .withTimeout(INITIATION_TIMEOUT);
     }
 

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.LauncherCommands;
 import org.ironriders.constants.Identifiers;
-import org.ironriders.lib.Utils;
 
 import static com.revrobotics.CANSparkBase.IdleMode.kCoast;
 import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
@@ -25,14 +24,8 @@ public class LauncherSubsystem extends SubsystemBase {
     private double setPoint = 0;
 
     public LauncherSubsystem() {
-        right.setSmartCurrentLimit(CURRENT_LIMIT);
-        left.setSmartCurrentLimit(CURRENT_LIMIT);
-        right.enableVoltageCompensation(COMPENSATED_VOLTAGE);
-        left.enableVoltageCompensation(COMPENSATED_VOLTAGE);
-        right.setIdleMode(kCoast);
-        left.setIdleMode(kCoast);
-        right.setControlFramePeriodMs(VELOCITY_FILTERING);
-        left.setControlFramePeriodMs(VELOCITY_FILTERING);
+        applyConfig(right);
+        applyConfig(left);
 
         SmartDashboard.putData(DASHBOARD_PREFIX + "rightPID", rightPID);
         SmartDashboard.putData(DASHBOARD_PREFIX + "leftPID", leftPID);
@@ -41,25 +34,34 @@ public class LauncherSubsystem extends SubsystemBase {
         commands = new LauncherCommands(this);
     }
 
+    private void applyConfig(CANSparkMax motor) {
+        motor.restoreFactoryDefaults();
+
+        motor.setSmartCurrentLimit(CURRENT_LIMIT);
+        motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
+        motor.setIdleMode(kCoast);
+        motor.setControlFramePeriodMs(VELOCITY_FILTERING);
+
+        motor.setInverted(true);
+    }
+
     @Override
     public void periodic() {
         if (setPoint == 0) {
             right.set(0);
             left.set(0);
         } else {
-            double output = rightPID.calculate(getRightVelocity());
-            right.set(output);
-            left.set(output);
+            right.set(rightPID.calculate(getRightVelocity()));
+            left.set(leftPID.calculate(getLeftVelocity()));
         }
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightVelocity", -getRightVelocity());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftVelocity", -getLeftVelocity());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "minVelocity", -getMinVelocity());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightVelocity", getRightVelocity());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftVelocity", getLeftVelocity());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", setPoint);
     }
 
     public void run() {
-        set(LAUNCH_SPEED);
+        set(LAUNCH_VELOCITY);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", true);
     }
 
@@ -71,13 +73,9 @@ public class LauncherSubsystem extends SubsystemBase {
     private void set(double setPoint) {
         this.setPoint = setPoint;
         rightPID.reset();
-        rightPID.setSetpoint(-setPoint);
+        rightPID.setSetpoint(setPoint);
         leftPID.reset();
-        leftPID.setSetpoint(-setPoint);
-    }
-
-    public boolean atSpeed() {
-        return Utils.isWithinTolerance(getMinVelocity(), setPoint, TOLERANCE);
+        leftPID.setSetpoint(setPoint);
     }
 
     private double getRightVelocity() {
@@ -86,10 +84,6 @@ public class LauncherSubsystem extends SubsystemBase {
 
     private double getLeftVelocity() {
         return left.getEncoder().getVelocity();
-    }
-
-    private double getMinVelocity() {
-        return Math.min(getRightVelocity(), getLeftVelocity());
     }
 
     public LauncherCommands getCommands() {
