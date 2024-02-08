@@ -29,24 +29,24 @@ public class ClimberSubsystem extends SubsystemBase {
     public ClimberSubsystem(DriveSubsystem drive) {
         this.drive = drive;
 
-        right.setSmartCurrentLimit(CURRENT_LIMIT);
-        left.setSmartCurrentLimit(CURRENT_LIMIT);
-        right.setIdleMode(kBrake);
-        left.setIdleMode(kBrake);
-
-        right.getEncoder().setPositionConversionFactor(1.0 / GEARING);
-        left.getEncoder().setPositionConversionFactor(1.0 / GEARING);
-
-        right.setSoftLimit(kReverse, Limit.REVERSE);
-        right.enableSoftLimit(kReverse, true);
-        right.setSoftLimit(kForward, Limit.FORWARD);
-        right.enableSoftLimit(kForward, true);
-        left.setSoftLimit(kReverse, Limit.REVERSE);
-        left.enableSoftLimit(kReverse, true);
-        left.setSoftLimit(kForward, Limit.FORWARD);
-        left.enableSoftLimit(kForward, true);
+        applyConfig(right);
+        applyConfig(left);
 
         commands = new ClimberCommands(this);
+    }
+
+    private void applyConfig(CANSparkMax motor) {
+        motor.restoreFactoryDefaults();
+
+        motor.setSmartCurrentLimit(CURRENT_LIMIT);
+        motor.setIdleMode(kBrake);
+
+        motor.getEncoder().setPositionConversionFactor(1.0 / GEARING);
+
+        motor.setSoftLimit(kReverse, Limit.REVERSE);
+        motor.enableSoftLimit(kReverse, true);
+        motor.setSoftLimit(kForward, Limit.FORWARD);
+        motor.enableSoftLimit(kForward, true);
     }
 
     @Override

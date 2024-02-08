@@ -33,6 +33,8 @@ public class PivotSubsystem extends SubsystemBase {
     private final SparkLimitSwitch reverseSwitch = motor.getReverseLimitSwitch(kNormallyOpen);
 
     public PivotSubsystem() {
+        motor.restoreFactoryDefaults();
+
         motor.setSmartCurrentLimit(CURRENT_LIMIT);
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);

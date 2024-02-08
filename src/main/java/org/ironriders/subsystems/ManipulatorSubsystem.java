@@ -24,6 +24,8 @@ public class ManipulatorSubsystem extends SubsystemBase {
     private State state = STOP;
 
     public ManipulatorSubsystem() {
+        motor.restoreFactoryDefaults();
+
         motor.setSmartCurrentLimit(CURRENT_LIMIT);
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);
