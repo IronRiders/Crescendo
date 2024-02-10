@@ -1,7 +1,6 @@
 package org.ironriders.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkLimitSwitch;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -27,12 +26,9 @@ public class PivotSubsystem extends SubsystemBase {
     private final ProfiledPIDController pid = new ProfiledPIDController(P, I, D, PROFILE);
     @SuppressWarnings("FieldCanBeLocal")
     private final DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(Identifiers.Pivot.ENCODER);
-    private final RelativeEncoder encoder = motor.getEncoder();
 
     private final SparkLimitSwitch forwardSwitch = motor.getForwardLimitSwitch(kNormallyClosed);
     private final SparkLimitSwitch reverseSwitch = motor.getReverseLimitSwitch(kNormallyClosed);
-
-
 
     public PivotSubsystem() {
         motor.restoreFactoryDefaults();
@@ -40,49 +36,40 @@ public class PivotSubsystem extends SubsystemBase {
         motor.setSmartCurrentLimit(CURRENT_LIMIT);
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);
-
         absoluteEncoder.setDistancePerRotation(360);
-
-        encoder.setPositionConversionFactor(360.0 / GEARING);
-        encoder.setPosition(absoluteEncoder.getDistance() - ENCODER_OFFSET);
 
         motor.setSoftLimit(kReverse, Limit.REVERSE);
         motor.enableSoftLimit(kReverse, true);
         motor.setSoftLimit(kForward, Limit.FORWARD);
         motor.enableSoftLimit(kForward, true);
 
-        forwardSwitch.enableLimitSwitch(false);
-        reverseSwitch.enableLimitSwitch(false);
+        forwardSwitch.enableLimitSwitch(true);
+        reverseSwitch.enableLimitSwitch(true);
 
-        SmartDashboard.putData(DASHBOARD_PREFIX + "pid", pid);
-
-        reset();
+        set(getRotation());
 
         commands = new PivotCommands(this);
     }
 
     @Override
     public void periodic() {
-        if (forwardSwitch.isPressed()) {
-            encoder.setPosition(Limit.FORWARD);
-            reset();
-        }
-        if (reverseSwitch.isPressed()) {
-            encoder.setPosition(Limit.REVERSE);
-            reset();
-        }
-        motor.set(pid.calculate(getRotation()));
+        double output = pid.calculate(getRotation());
+        motor.set(output);
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", Utils.absoluteRotation(getRotation()));
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", pid.getGoal().position);
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "abs", absoluteEncoder.getDistance());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "forwardSwitch", forwardSwitch.isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseSwitch.isPressed());
     }
 
     public void set(State state) {
+        set(state.getPosition());
+    }
+
+    public void set(double position) {
         reset();
-        pid.setGoal(state.getPosition());
+        pid.setGoal(position);
     }
 
     public void reset() {
@@ -94,7 +81,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     private double getRotation() {
-        return encoder.getPosition();
+        return absoluteEncoder.getDistance() - ENCODER_OFFSET;
     }
 
     public PivotCommands getCommands() {
