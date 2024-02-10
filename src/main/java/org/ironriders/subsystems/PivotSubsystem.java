@@ -15,7 +15,7 @@ import static com.revrobotics.CANSparkBase.IdleMode.kBrake;
 import static com.revrobotics.CANSparkBase.SoftLimitDirection.kForward;
 import static com.revrobotics.CANSparkBase.SoftLimitDirection.kReverse;
 import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
-import static com.revrobotics.SparkLimitSwitch.Type.kNormallyOpen;
+import static com.revrobotics.SparkLimitSwitch.Type.kNormallyClosed;
 import static org.ironriders.constants.Pivot.*;
 import static org.ironriders.constants.Pivot.Control.*;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
@@ -29,8 +29,10 @@ public class PivotSubsystem extends SubsystemBase {
     private final DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(Identifiers.Pivot.ENCODER);
     private final RelativeEncoder encoder = motor.getEncoder();
 
-    private final SparkLimitSwitch forwardSwitch = motor.getForwardLimitSwitch(kNormallyOpen);
-    private final SparkLimitSwitch reverseSwitch = motor.getReverseLimitSwitch(kNormallyOpen);
+    private final SparkLimitSwitch forwardSwitch = motor.getForwardLimitSwitch(kNormallyClosed);
+    private final SparkLimitSwitch reverseSwitch = motor.getReverseLimitSwitch(kNormallyClosed);
+
+
 
     public PivotSubsystem() {
         motor.restoreFactoryDefaults();
@@ -39,16 +41,18 @@ public class PivotSubsystem extends SubsystemBase {
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);
 
+        absoluteEncoder.setDistancePerRotation(360);
+
         encoder.setPositionConversionFactor(360.0 / GEARING);
-        encoder.setPosition(absoluteEncoder.getDistance() + ENCODER_OFFSET);
+        encoder.setPosition(absoluteEncoder.getDistance() - ENCODER_OFFSET);
 
         motor.setSoftLimit(kReverse, Limit.REVERSE);
         motor.enableSoftLimit(kReverse, true);
         motor.setSoftLimit(kForward, Limit.FORWARD);
         motor.enableSoftLimit(kForward, true);
 
-        forwardSwitch.enableLimitSwitch(true);
-        reverseSwitch.enableLimitSwitch(true);
+        forwardSwitch.enableLimitSwitch(false);
+        reverseSwitch.enableLimitSwitch(false);
 
         SmartDashboard.putData(DASHBOARD_PREFIX + "pid", pid);
 
@@ -59,15 +63,26 @@ public class PivotSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if (forwardSwitch.isPressed()) {
+            encoder.setPosition(Limit.FORWARD);
+            reset();
+        }
+        if (reverseSwitch.isPressed()) {
+            encoder.setPosition(Limit.REVERSE);
+            reset();
+        }
         motor.set(pid.calculate(getRotation()));
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", pid.getGoal().position);
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "abs", absoluteEncoder.getDistance());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "forwardSwitch", forwardSwitch.isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseSwitch.isPressed());
     }
 
     public void set(State state) {
-        pid.reset(state.getPosition());
+        reset();
+        pid.setGoal(state.getPosition());
     }
 
     public void reset() {
@@ -75,7 +90,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public boolean atPosition() {
-        return Utils.isWithinTolerance(getRotation(), pid.getSetpoint().position, TOLERANCE);
+        return Utils.isWithinTolerance(getRotation(), pid.getGoal().position, TOLERANCE);
     }
 
     private double getRotation() {

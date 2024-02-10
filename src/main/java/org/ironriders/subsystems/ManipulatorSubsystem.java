@@ -9,9 +9,8 @@ import org.ironriders.constants.Identifiers;
 
 import static com.revrobotics.CANSparkBase.IdleMode.kBrake;
 import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
-import static com.revrobotics.SparkLimitSwitch.Type.kNormallyOpen;
+import static com.revrobotics.SparkLimitSwitch.Type.kNormallyClosed;
 import static org.ironriders.constants.Manipulator.*;
-import static org.ironriders.constants.Manipulator.State.STOP;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
 
 public class ManipulatorSubsystem extends SubsystemBase {
@@ -19,9 +18,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     private final CANSparkMax motor = new CANSparkMax(Identifiers.Manipulator.MOTOR, kBrushless);
 
-    private final SparkLimitSwitch limitSwitch = motor.getForwardLimitSwitch(kNormallyOpen);
-
-    private State state = STOP;
+    private final SparkLimitSwitch limitSwitch = motor.getForwardLimitSwitch(kNormallyClosed);
 
     public ManipulatorSubsystem() {
         motor.restoreFactoryDefaults();
@@ -31,8 +28,6 @@ public class ManipulatorSubsystem extends SubsystemBase {
         motor.setIdleMode(kBrake);
         motor.setControlFramePeriodMs(VELOCITY_FILTERING);
 
-        limitSwitch.enableLimitSwitch(false);
-
         SmartDashboard.putString(DASHBOARD_PREFIX + "state", "STOP");
 
         commands = new ManipulatorCommands(this);
@@ -40,14 +35,12 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (hasNote() && state.equals(State.GRAB)) set(STOP);
-
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "velocity", getVelocity());
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "hasNote", hasNote());
     }
 
     public void set(State state) {
         motor.set(state.getSpeed());
-        this.state = state;
 
         SmartDashboard.putString(DASHBOARD_PREFIX + "state", state.name());
     }

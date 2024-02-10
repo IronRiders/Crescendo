@@ -27,8 +27,8 @@ public class LauncherSubsystem extends SubsystemBase {
         applyConfig(right);
         applyConfig(left);
 
-        SmartDashboard.putData(DASHBOARD_PREFIX + "rightPID", rightPID);
-        SmartDashboard.putData(DASHBOARD_PREFIX + "leftPID", leftPID);
+        left.setInverted(true);
+
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
 
         commands = new LauncherCommands(this);
@@ -41,8 +41,6 @@ public class LauncherSubsystem extends SubsystemBase {
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kCoast);
         motor.setControlFramePeriodMs(VELOCITY_FILTERING);
-
-        motor.setInverted(true);
     }
 
     @Override

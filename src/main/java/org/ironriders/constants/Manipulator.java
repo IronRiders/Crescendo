@@ -7,9 +7,9 @@ public class Manipulator {
     public static final String DASHBOARD_PREFIX = "manipulator/";
 
     public enum State {
-        GRAB(0.5),
-        EJECT_TO_LAUNCHER(1),
-        EJECT_TO_AMP(1),
+        GRAB(1),
+        EJECT_TO_LAUNCHER(-1),
+        EJECT_TO_AMP(-1),
         STOP(0);
 
         private final double speed;
