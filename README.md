@@ -20,4 +20,4 @@ In the end, it wasn't just victory they sought, But the bonds they forged, the l
 
 Their epic tale echoes in the halls of time, A saga of innovation, in every line. In the heart of technology, where dreams find a home, The robotics team's legacy continues to roam.
 
-by Salvo
+by Salvo (with great assistance from ChatGPT)

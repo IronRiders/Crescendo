@@ -11,8 +11,6 @@ import org.ironriders.constants.Identifiers;
 import org.ironriders.lib.Utils;
 
 import static com.revrobotics.CANSparkBase.IdleMode.kBrake;
-import static com.revrobotics.CANSparkBase.SoftLimitDirection.kForward;
-import static com.revrobotics.CANSparkBase.SoftLimitDirection.kReverse;
 import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
 import static com.revrobotics.SparkLimitSwitch.Type.kNormallyClosed;
 import static org.ironriders.constants.Pivot.*;
@@ -24,7 +22,6 @@ public class PivotSubsystem extends SubsystemBase {
 
     private final CANSparkMax motor = new CANSparkMax(Identifiers.Pivot.MOTOR, kBrushless);
     private final ProfiledPIDController pid = new ProfiledPIDController(P, I, D, PROFILE);
-    @SuppressWarnings("FieldCanBeLocal")
     private final DutyCycleEncoder absoluteEncoder = new DutyCycleEncoder(Identifiers.Pivot.ENCODER);
 
     private final SparkLimitSwitch forwardSwitch = motor.getForwardLimitSwitch(kNormallyClosed);
@@ -36,12 +33,10 @@ public class PivotSubsystem extends SubsystemBase {
         motor.setSmartCurrentLimit(CURRENT_LIMIT);
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);
-        absoluteEncoder.setDistancePerRotation(360);
 
-        motor.setSoftLimit(kReverse, Limit.REVERSE);
-        motor.enableSoftLimit(kReverse, true);
-        motor.setSoftLimit(kForward, Limit.FORWARD);
-        motor.enableSoftLimit(kForward, true);
+        absoluteEncoder.setPositionOffset(ENCODER_OFFSET);
+
+        absoluteEncoder.setDistancePerRotation(360);
 
         forwardSwitch.enableLimitSwitch(true);
         reverseSwitch.enableLimitSwitch(true);
@@ -56,8 +51,8 @@ public class PivotSubsystem extends SubsystemBase {
         double output = pid.calculate(getRotation());
         motor.set(output);
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", Utils.absoluteRotation(getRotation()));
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", Utils.absoluteRotation(getRotation()));
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", pid.getGoal().position);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "forwardSwitch", forwardSwitch.isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseSwitch.isPressed());
@@ -81,7 +76,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     private double getRotation() {
-        return absoluteEncoder.getDistance() - ENCODER_OFFSET;
+        return absoluteEncoder.getDistance();
     }
 
     public PivotCommands getCommands() {

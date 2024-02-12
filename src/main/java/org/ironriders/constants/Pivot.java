@@ -26,11 +26,6 @@ public class Pivot {
         }
     }
 
-    public static class Limit {
-        public static final float REVERSE = 0;
-        public static final float FORWARD = 218;
-    }
-
     public static class Control {
         public static final double P = 0.025;
         public static final double I = 0;
