@@ -40,7 +40,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     private final PIDController headingPID = new PIDController(P, I, D);
-    private HeadingMode headingMode = HeadingMode.FREE;
+    private HeadingMode headingMode = HeadingMode.STRAIGHT;
 
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,
@@ -96,20 +96,20 @@ public class DriveSubsystem extends SubsystemBase {
                 estimatedRobotPose.timestampSeconds
         ));
 
-        SmartDashboard.putData(DASHBOARD_PREFIX + "headingPID", headingPID);
+        headingPID.enableContinuousInput(0, 360);
+
         SmartDashboard.putString(DASHBOARD_PREFIX + "headingMode", headingMode.toString());
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         if (!headingMode.isFree()) {
             rotation = MathUtil.clamp(
-                    headingPID.calculate(
-                            Utils.rotationalError(headingMode.getHeading(), swerveDrive.getYaw().getDegrees()),
-                            0
-                    ),
+                    headingPID.calculate(swerveDrive.getYaw().getDegrees(), headingMode.getHeading()),
                     -SPEED_CAP,
                     SPEED_CAP
             );
+
+            SmartDashboard.putNumber(DASHBOARD_PREFIX + "headingModeSetpoint", headingMode.getHeading());
         }
 
         swerveDrive.drive(translation, rotation, fieldRelative, isOpenLoop);

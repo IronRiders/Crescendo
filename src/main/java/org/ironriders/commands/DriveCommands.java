@@ -45,7 +45,7 @@ public class DriveCommands {
     }
 
     public Command setHeadingMode(Drive.HeadingMode heading) {
-        return drive.runOnce(() -> drive.setHeadingMode(heading));
+        return Commands.runOnce(() -> drive.setHeadingMode(heading));
     }
 
     public Command zeroGyro() {

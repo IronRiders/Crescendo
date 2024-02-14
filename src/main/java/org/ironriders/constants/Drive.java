@@ -1,7 +1,6 @@
 package org.ironriders.constants;
 
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
 import org.ironriders.lib.Utils;
 import swervelib.math.SwerveMath;
 
@@ -15,10 +14,10 @@ public class Drive {
         FREE(null),
         AMP(-180.0),
         STRAIGHT(0.0),
-        SPEAKER_LEFT(-77.5),
-        SPEAKER_RIGHT(77.5),
-        STAGE_LEFT(60.0),
-        STAGE_RIGHT(-60.0);
+        SPEAKER_LEFT(77.5),
+        SPEAKER_RIGHT(-77.5),
+        STAGE_LEFT(-60.0),
+        STAGE_RIGHT(60.0);
 
         private final Double heading;
 
@@ -26,9 +25,8 @@ public class Drive {
             this.heading = heading;
         }
 
-        @SuppressWarnings("DataFlowIssue")
         public Double getHeading() {
-            return Utils.getAlliance().equals(DriverStation.Alliance.Red) && heading != null ? heading + 180 : heading;
+            return Utils.absoluteRotation(heading);
         }
 
         public boolean isFree() {
@@ -37,9 +35,9 @@ public class Drive {
     }
 
     public static class HeadingController {
-        public static final double SPEED_CAP = 0.3;
+        public static final double SPEED_CAP = 2;
 
-        public static final double P = 0.001;
+        public static final double P = 0.1;
         public static final double I = 0;
         public static final double D = 0;
     }

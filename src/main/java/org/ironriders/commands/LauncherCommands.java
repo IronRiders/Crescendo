@@ -17,7 +17,7 @@ public class LauncherCommands {
     }
 
     /**
-     * Initializes launcher and ends when the launcher's velocity passes the velocity threshold. The launcher is ready to
+     * Initializes the launcher and ends when the launcher's velocity passes the velocity threshold. The launcher is ready to
      * launch when this command is over. Should be used in sequence with other commands that launch the note. Only
      * stops the launcher if the command is interrupted.
      */

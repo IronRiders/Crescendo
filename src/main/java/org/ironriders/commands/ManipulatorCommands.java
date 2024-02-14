@@ -2,7 +2,6 @@ package org.ironriders.commands;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Manipulator;
 import org.ironriders.subsystems.ManipulatorSubsystem;
 
@@ -26,7 +25,7 @@ public class ManipulatorCommands {
 
         if (state.equals(EJECT_TO_LAUNCHER) || state.equals(EJECT_TO_AMP)) {
             return command
-                    .deadlineWith(Commands.waitSeconds(DISCHARGE_TIMEOUT))
+                    .withTimeout(DISCHARGE_TIMEOUT)
                     .finallyDo(() -> manipulator.set(STOP));
         }
 

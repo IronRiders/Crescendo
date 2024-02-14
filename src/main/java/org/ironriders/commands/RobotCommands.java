@@ -41,7 +41,10 @@ public class RobotCommands {
 
     public Command launch() {
         return Commands.sequence(
-                launcher.initialize(),
+                Commands.parallel(
+                        launcher.initialize(),
+                        pivot.set(Pivot.State.LAUNCHER)
+                ),
                 manipulator.set(Manipulator.State.EJECT_TO_LAUNCHER),
                 launcher.deactivate()
         );
@@ -51,8 +54,7 @@ public class RobotCommands {
         return Commands.parallel(
                 drive.setHeadingMode(Drive.HeadingMode.FREE),
                 pivot.set(Pivot.State.GROUND),
-                manipulator.set(Manipulator.State.GRAB),
-                launcher.initialize()
+                manipulator.set(Manipulator.State.GRAB)
         );
     }
 

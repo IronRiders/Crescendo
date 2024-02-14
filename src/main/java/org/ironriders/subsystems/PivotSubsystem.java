@@ -34,10 +34,6 @@ public class PivotSubsystem extends SubsystemBase {
         motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
         motor.setIdleMode(kBrake);
 
-        absoluteEncoder.setPositionOffset(ENCODER_OFFSET);
-
-        absoluteEncoder.setDistancePerRotation(360);
-
         forwardSwitch.enableLimitSwitch(true);
         reverseSwitch.enableLimitSwitch(true);
 
@@ -48,11 +44,9 @@ public class PivotSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double output = pid.calculate(getRotation());
-        motor.set(output);
+        motor.set(pid.calculate(getRotation()));
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", Utils.absoluteRotation(getRotation()));
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", pid.getGoal().position);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "forwardSwitch", forwardSwitch.isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseSwitch.isPressed());
@@ -68,6 +62,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public void reset() {
+        pid.setGoal(getRotation());
         pid.reset(getRotation());
     }
 
@@ -76,7 +71,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     private double getRotation() {
-        return absoluteEncoder.getDistance();
+        return Utils.absoluteRotation(absoluteEncoder.getAbsolutePosition() * 360 - ENCODER_OFFSET);
     }
 
     public PivotCommands getCommands() {

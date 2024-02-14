@@ -27,7 +27,7 @@ public class LauncherSubsystem extends SubsystemBase {
         applyConfig(right);
         applyConfig(left);
 
-        left.setInverted(true);
+        right.setInverted(true);
 
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
 

@@ -16,9 +16,8 @@ import org.ironriders.commands.ClimberCommands;
 import org.ironriders.commands.DriveCommands;
 import org.ironriders.commands.LauncherCommands;
 import org.ironriders.commands.RobotCommands;
+import org.ironriders.constants.Drive;
 import org.ironriders.constants.Identifiers;
-import org.ironriders.constants.Manipulator;
-import org.ironriders.constants.Pivot;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
@@ -60,41 +59,39 @@ public class RobotContainer {
     private void configureBindings() {
         if (RobotBase.isSimulation()) return;
 
-        primaryController.a().onTrue(pivot.getCommands().set(Pivot.State.LAUNCHER));
-        primaryController.b().onTrue(pivot.getCommands().set(Pivot.State.GROUND));
-        primaryController.x().onTrue(manipulator.getCommands().set(Manipulator.State.EJECT_TO_LAUNCHER));
-        primaryController.y().onTrue(manipulator.getCommands().set(Manipulator.State.GRAB));
+        // Primary Driver
+        drive.setDefaultCommand(
+                driveCommands.teleopCommand(
+                        () -> controlCurve(primaryController.getLeftY()),
+                        () -> controlCurve(primaryController.getLeftX()),
+                        () -> -controlCurve(primaryController.getRightX()) * 0.5
+                )
+        );
 
-//        // Primary Driver
-//        drive.setDefaultCommand(
-//                driveCommands.teleopCommand(
-//                        () -> -controlCurve(primaryController.getLeftY()),
-//                        () -> -controlCurve(primaryController.getLeftX()),
-//                        () -> -controlCurve(primaryController.getRightX())
-//                )
-//        );
-//
-//        primaryController.leftTrigger().onTrue(commands.launch());
-//        primaryController.rightTrigger().onTrue(commands.startGroundPickup()).onFalse(commands.endGroundPickup());
-//
-//        primaryController.leftBumper().whileTrue(climberCommands.set(-1));
-//        primaryController.rightBumper().whileTrue(climberCommands.set(1));
-//
-//
-//        primaryController.a().onTrue(commands.setClimbingMode(true));
-//        primaryController.b().onTrue(commands.setClimbingMode(false));
-//
-//        // Secondary Controller
-//        secondaryController.button(1).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_LEFT));
-//        secondaryController.button(2).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
-//        secondaryController.button(4).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_RIGHT));
-//
-//        secondaryController.button(5).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_LEFT));
-//        secondaryController.button(6).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
-//        secondaryController.button(8).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_RIGHT));
-//
-//        secondaryController.button(13).onTrue(launcherCommands.deactivate());
-//        secondaryController.button(17).onTrue(launcherCommands.initialize());
+        primaryController.leftTrigger().onTrue(commands.launch());
+        primaryController.rightTrigger().onTrue(commands.startGroundPickup()).onFalse(commands.endGroundPickup());
+
+        primaryController.leftBumper().whileTrue(climberCommands.set(-1));
+        primaryController.rightBumper().whileTrue(climberCommands.set(1));
+
+
+        primaryController.a().onTrue(commands.setClimbingMode(true));
+        primaryController.b().onTrue(commands.setClimbingMode(false));
+
+        // Secondary Controller
+        secondaryController.button(1).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_LEFT));
+        secondaryController.button(2).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
+        secondaryController.button(4).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_RIGHT));
+
+        secondaryController.button(5).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_LEFT));
+        secondaryController.button(6).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
+        secondaryController.button(8).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_RIGHT));
+
+        secondaryController.button(9).onTrue(commands.setClimbingMode(true));
+        secondaryController.button(10).onTrue(commands.setClimbingMode(false));
+
+        secondaryController.button(13).onTrue(launcherCommands.deactivate());
+        secondaryController.button(16).onTrue(launcherCommands.initialize());
     }
 
     private double controlCurve(double input) {
@@ -107,7 +104,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return pivot.getCommands().set(Pivot.State.LAUNCHER);
-//        return AutoBuilder.buildAuto(autoOptionsSelector.getSelected());
+        return AutoBuilder.buildAuto(autoOptionsSelector.getSelected());
     }
 }
