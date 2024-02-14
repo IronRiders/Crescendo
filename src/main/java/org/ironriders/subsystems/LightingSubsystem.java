@@ -1,24 +1,30 @@
 package org.ironriders.subsystems;
 
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static org.ironriders.constants.Identifiers.Lighting.PORT;
-import static org.ironriders.constants.Lighting.COLOR;
-import static org.ironriders.constants.Lighting.LENGTH;
+import static org.ironriders.constants.Lighting.*;
+
 
 public class LightingSubsystem extends SubsystemBase {
-    @SuppressWarnings("FieldCanBeLocal")
-    private final AddressableLED ledStrip = new AddressableLED(PORT);
+
+    public PWM redChannel = new PWM(LIGHTCHANNELRED, false);
+    public PWM greenChannel = new PWM(LIGHTCHANNELGREEN, false);
+    public PWM blueChannel = new PWM(LIGHTCHANNELBLUE, false);
 
     public LightingSubsystem() {
-        AddressableLEDBuffer buffer = new AddressableLEDBuffer(LENGTH);
-        for (int i = 0; i < LENGTH; i++) {
-            buffer.setLED(i, COLOR);
-        }
-
-        ledStrip.setData(buffer);
-        ledStrip.start();
+        setColorRGB(RED,GREEN,BLUE);
     }
+
+
+    public void setColorRGB(int r, int g, int b) {
+        redChannel.setPulseTimeMicroseconds((int) Math.round(r*RGBTOPULSEWIDTH));
+        greenChannel.setPulseTimeMicroseconds((int) Math.round(g*RGBTOPULSEWIDTH));
+        blueChannel.setPulseTimeMicroseconds((int) Math.round(b*RGBTOPULSEWIDTH));
+
+    }
+
+
+
 }
