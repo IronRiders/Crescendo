@@ -69,7 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
                         Dimensions.DRIVEBASE_RADIUS,
                         new ReplanningConfig()
                 ),
-                () -> Utils.getAlliance().equals(Alliance.Red),
+                () -> Utils.getAlliance() == Alliance.Red,
                 this
         );
 

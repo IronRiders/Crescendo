@@ -51,10 +51,16 @@ public class RobotCommands {
     }
 
     public Command startGroundPickup() {
-        return Commands.parallel(
-                drive.setHeadingMode(Drive.HeadingMode.FREE),
-                pivot.set(Pivot.State.GROUND),
-                manipulator.set(Manipulator.State.GRAB)
+        return Commands.sequence(
+                Commands.deadline(
+                        Commands.waitUntil(manipulatorSubsystem::hasNote),
+                        Commands.parallel(
+                                drive.setHeadingMode(Drive.HeadingMode.FREE),
+                                pivot.set(Pivot.State.GROUND),
+                                manipulator.set(Manipulator.State.GRAB)
+                        )
+                ),
+                endGroundPickup()
         );
     }
 

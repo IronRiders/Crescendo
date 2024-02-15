@@ -14,8 +14,8 @@ public class Drive {
         FREE(null),
         AMP(-180.0),
         STRAIGHT(0.0),
-        SPEAKER_LEFT(77.5),
-        SPEAKER_RIGHT(-77.5),
+        SPEAKER_LEFT(58.0),
+        SPEAKER_RIGHT(-58.0),
         STAGE_LEFT(-60.0),
         STAGE_RIGHT(60.0);
 
@@ -35,7 +35,7 @@ public class Drive {
     }
 
     public static class HeadingController {
-        public static final double SPEED_CAP = 2;
+        public static final double SPEED_CAP = 2.5;
 
         public static final double P = 0.1;
         public static final double I = 0;
