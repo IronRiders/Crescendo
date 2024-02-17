@@ -13,7 +13,6 @@ public class RobotCommands {
     private final LauncherCommands launcher;
     private final PivotCommands pivot;
     private final ManipulatorCommands manipulator;
-    private final ManipulatorSubsystem manipulatorSubsystem;
     private final ClimberCommands climber;
 
     public RobotCommands(DriveSubsystem drive, LauncherSubsystem launcher, PivotSubsystem pivot,
@@ -22,7 +21,6 @@ public class RobotCommands {
         this.launcher = launcher.getCommands();
         this.pivot = pivot.getCommands();
         this.manipulator = manipulator.getCommands();
-        manipulatorSubsystem = manipulator;
         this.climber = climber.getCommands();
 
         NamedCommands.registerCommand("Apm", amp());
@@ -53,7 +51,7 @@ public class RobotCommands {
     public Command startGroundPickup() {
         return Commands.sequence(
                 Commands.deadline(
-                        Commands.waitUntil(manipulatorSubsystem::hasNote),
+                        Commands.waitUntil(manipulator.getManipulator()::hasNote),
                         Commands.parallel(
                                 drive.setHeadingMode(Drive.HeadingMode.FREE),
                                 pivot.set(Pivot.State.GROUND),
@@ -66,7 +64,7 @@ public class RobotCommands {
 
     public Command endGroundPickup() {
         return Commands.parallel(
-                drive.setHeadingMode(Drive.HeadingMode.STRAIGHT).onlyIf(manipulatorSubsystem::hasNote),
+                drive.setHeadingMode(Drive.HeadingMode.STRAIGHT).onlyIf(manipulator.getManipulator()::hasNote),
                 pivot.set(Pivot.State.LAUNCHER),
                 manipulator.set(Manipulator.State.STOP)
         );

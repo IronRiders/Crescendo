@@ -14,8 +14,6 @@ import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-import static org.ironriders.constants.Drive.MAX_SPEED;
-
 public class DriveCommands {
     private final DriveSubsystem drive;
     private final SwerveDrive swerve;
@@ -36,12 +34,14 @@ public class DriveCommands {
      * @return a command to control the swerve drive during teleop.
      */
     public Command teleopCommand(DoubleSupplier x, DoubleSupplier y, DoubleSupplier r) {
-        return drive.runOnce(() -> drive.drive(
-                new Translation2d(x.getAsDouble() * MAX_SPEED, y.getAsDouble() * MAX_SPEED),
-                r.getAsDouble() * swerve.getSwerveController().config.maxAngularVelocity,
-                true,
-                false
-        ));
+        return drive.runOnce(() -> {
+            drive.drive(
+                    new Translation2d(x.getAsDouble(), y.getAsDouble()),
+                    r.getAsDouble() * swerve.getSwerveController().config.maxAngularVelocity,
+                    true,
+                    false
+            );
+        });
     }
 
     public Command setHeadingMode(Drive.HeadingMode heading) {
@@ -136,10 +136,11 @@ public class DriveCommands {
      * @return A new Command object representing the sequence of actions including vision-based pose estimation.
      */
     public Command useVisionForPoseEstimation(Command command) {
-        return vision
-                .runOnce(() -> vision.useVisionForPoseEstimation(true))
-                .andThen(command)
-                .finallyDo(() -> vision.useVisionForPoseEstimation(false));
+        return Commands.sequence(
+                Commands.runOnce(() -> vision.useVisionForPoseEstimation(true)),
+                command,
+                Commands.runOnce(() -> vision.useVisionForPoseEstimation(false))
+        );
     }
 
     public Command resetOdometry() {

@@ -14,13 +14,13 @@ public class Pivot {
         AMP(30),
         LAUNCHER(246);
 
-        final int position;
+        final double position;
 
         State(int position) {
             this.position = position;
         }
 
-        public int getPosition() {
+        public double getPosition() {
             return position;
         }
     }

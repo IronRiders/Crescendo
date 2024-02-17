@@ -18,7 +18,7 @@ public class PivotCommands {
 
     public Command set(State state) {
         return pivot
-                .runOnce(() -> pivot.set(state))
+                .runOnce(() -> pivot.set(state.getPosition()))
                 .until(pivot::atPosition)
                 .handleInterrupt(pivot::reset);
     }

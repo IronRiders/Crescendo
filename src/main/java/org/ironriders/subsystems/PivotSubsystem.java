@@ -52,12 +52,7 @@ public class PivotSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseSwitch.isPressed());
     }
 
-    public void set(State state) {
-        set(state.getPosition());
-    }
-
     public void set(double position) {
-        reset();
         pid.setGoal(position);
     }
 

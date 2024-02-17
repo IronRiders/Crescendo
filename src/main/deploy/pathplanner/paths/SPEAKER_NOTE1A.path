@@ -48,23 +48,6 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Launcher Initialize",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launcher Initialize"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Start Ground Pickup",
       "waypointRelativePos": 0,
       "command": {
@@ -75,23 +58,6 @@
               "type": "named",
               "data": {
                 "name": "Start Ground Pickup"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "End Ground Pickup",
-      "waypointRelativePos": 0.85,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "End Ground Pickup"
               }
             }
           ]
@@ -117,8 +83,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 180.0
   },

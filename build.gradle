@@ -10,6 +10,10 @@ targetCompatibility = JavaVersion.VERSION_14
 
 def ROBOT_MAIN_CLASS = "org.ironriders.robot.Main"
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
 deploy {
@@ -64,6 +68,8 @@ dependencies {
     nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
     nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
     simulationRelease wpi.sim.enableRelease()
+
+    implementation 'com.github.shueja:Monologue:v1.0.0-beta5'
 }
 
 // Simulation configuration (e.g. environment variables).

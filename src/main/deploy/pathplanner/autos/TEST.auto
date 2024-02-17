@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3024658775011995,
-      "y": 5.524222211638868
+      "x": 1.2940223449891344,
+      "y": 5.546534348277031
     },
     "rotation": 0
   },
@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TEST"
+            "pathName": "SPEAKER_NOTE2A"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch"
           }
         }
       ]

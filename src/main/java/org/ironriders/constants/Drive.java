@@ -14,10 +14,10 @@ public class Drive {
         FREE(null),
         AMP(-180.0),
         STRAIGHT(0.0),
-        SPEAKER_LEFT(58.0),
-        SPEAKER_RIGHT(-58.0),
-        STAGE_LEFT(-60.0),
-        STAGE_RIGHT(60.0);
+        SPEAKER_LEFT(-58.0),
+        SPEAKER_RIGHT(58.0),
+        STAGE_LEFT(60.0),
+        STAGE_RIGHT(-60.0);
 
         private final Double heading;
 
