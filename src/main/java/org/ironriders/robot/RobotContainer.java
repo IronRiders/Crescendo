@@ -63,9 +63,9 @@ public class RobotContainer {
         // Primary Driver
         drive.setDefaultCommand(
                 driveCommands.teleopCommand(
-                        () -> controlCurve(primaryController.getLeftY()),
-                        () -> controlCurve(primaryController.getLeftX()),
-                        () -> controlCurve(primaryController.getRightX()) * 0.5
+                        () -> -controlCurve(primaryController.getLeftY()),
+                        () -> -controlCurve(primaryController.getLeftX()),
+                        () -> -controlCurve(primaryController.getRightX()) * 0.5
                 )
         );
 
@@ -74,7 +74,6 @@ public class RobotContainer {
 
         primaryController.leftBumper().whileTrue(climberCommands.set(-1));
         primaryController.rightBumper().whileTrue(climberCommands.set(1));
-
 
         primaryController.a().onTrue(commands.setClimbingMode(true));
         primaryController.b().onTrue(commands.setClimbingMode(false));

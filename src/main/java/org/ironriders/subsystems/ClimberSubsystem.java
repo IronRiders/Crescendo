@@ -32,6 +32,8 @@ public class ClimberSubsystem extends SubsystemBase {
         applyConfig(right);
         applyConfig(left);
 
+        left.setInverted(true);
+
         commands = new ClimberCommands(this);
     }
 
@@ -52,18 +54,21 @@ public class ClimberSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (climbingMode) {
-            double calculation = pid.calculate(drive.getSwerveDrive().getRoll().getDegrees(), 0);
+            double calculation = pid.calculate(getRoll(), 0) * 0;
 
-            right.set((input - calculation) * SPEED);
-            left.set((input + calculation) * SPEED);
+            right.set(input * SPEED - calculation);
+            left.set(input * SPEED + calculation);
+
+            SmartDashboard.putNumber(DASHBOARD_PREFIX + "calculation", calculation);
         } else {
             right.stopMotor();
             left.stopMotor();
         }
 
-        SmartDashboard.putData(DASHBOARD_PREFIX + "rollPID", pid);
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "climbingModeEnabled", climbingMode);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightPosition", right.getEncoder().getPosition());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftPosition", left.getEncoder().getPosition());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "roll", getRoll());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "input", input);
     }
 
@@ -73,6 +78,10 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void setClimbingMode(boolean isEnabled) {
         climbingMode = isEnabled;
+    }
+
+    private double getRoll() {
+        return drive.getSwerveDrive().getRoll().getDegrees();
     }
 
     public boolean getClimbingMode() {

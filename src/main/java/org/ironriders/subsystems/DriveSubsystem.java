@@ -98,6 +98,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         headingPID.enableContinuousInput(0, 360);
 
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "heading", swerveDrive.getYaw().getDegrees());
         SmartDashboard.putString(DASHBOARD_PREFIX + "headingMode", headingMode.toString());
     }
 
