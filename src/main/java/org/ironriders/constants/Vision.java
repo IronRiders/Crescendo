@@ -9,6 +9,10 @@ public class Vision {
 
     public static final String DASHBOARD_PREFIX = "vision/";
 
-    public static final Transform3d LIMELIGHT_POSITION =
-            new Transform3d(Units.inchesToMeters(0), 0, Units.inchesToMeters(0), new Rotation3d());
+    public static final Transform3d CAMERA_POSITION =
+            new Transform3d(
+                    Units.inchesToMeters(13.5),
+                    0,
+                    Units.inchesToMeters(20),
+                    new Rotation3d(0, Units.degreesToRadians(-20), 0));
 }

@@ -32,7 +32,7 @@ public class Robot extends TimedRobot implements Logged {
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
 
-        Monologue.setupMonologue(this, "Robot", true, false);
+        Monologue.setupMonologue(this, "Robot", true, true);
     }
 
     /**

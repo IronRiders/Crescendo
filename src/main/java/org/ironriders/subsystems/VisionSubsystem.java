@@ -8,11 +8,10 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.common.hardware.VisionLEDMode;
-import org.photonvision.targeting.PhotonPipelineResult;
 
 import java.util.Optional;
 
-import static org.ironriders.constants.Vision.LIMELIGHT_POSITION;
+import static org.ironriders.constants.Vision.CAMERA_POSITION;
 import static org.ironriders.constants.Vision.VISION_CAMERA;
 import static org.photonvision.PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
@@ -23,7 +22,7 @@ public class VisionSubsystem extends SubsystemBase {
     private boolean useVisionForEstimation = false;
 
     public VisionSubsystem() {
-        estimator = new PhotonPoseEstimator(aprilTagLayout, MULTI_TAG_PNP_ON_COPROCESSOR, camera, LIMELIGHT_POSITION);
+        estimator = new PhotonPoseEstimator(aprilTagLayout, MULTI_TAG_PNP_ON_COPROCESSOR, camera, CAMERA_POSITION);
 
         camera.setLED(VisionLEDMode.kOff);
         camera.setDriverMode(false);
@@ -62,9 +61,5 @@ public class VisionSubsystem extends SubsystemBase {
 
     public void useVisionForPoseEstimation(boolean useVision) {
         useVisionForEstimation = useVision;
-    }
-
-    public PhotonPipelineResult getResult() {
-        return camera.getLatestResult();
     }
 }

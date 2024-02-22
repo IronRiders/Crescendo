@@ -33,7 +33,7 @@ public class RobotContainer {
     private final LauncherCommands launcherCommands = launcher.getCommands();
     private final PivotSubsystem pivot = new PivotSubsystem();
     private final ManipulatorSubsystem manipulator = new ManipulatorSubsystem();
-    private final ClimberSubsystem climber = new ClimberSubsystem(drive);
+    private final ClimberSubsystem climber = new ClimberSubsystem();
     private final ClimberCommands climberCommands = climber.getCommands();
     @SuppressWarnings("unused")
     private final LightingSubsystem lighting = new LightingSubsystem();
@@ -63,8 +63,8 @@ public class RobotContainer {
         // Primary Driver
         drive.setDefaultCommand(
                 driveCommands.teleopCommand(
-                        () -> -controlCurve(primaryController.getLeftY()),
-                        () -> -controlCurve(primaryController.getLeftX()),
+                        () -> controlCurve(primaryController.getLeftY()),
+                        () -> controlCurve(primaryController.getLeftX()),
                         () -> -controlCurve(primaryController.getRightX()) * 0.5
                 )
         );
