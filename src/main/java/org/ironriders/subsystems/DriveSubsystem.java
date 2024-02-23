@@ -104,7 +104,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         if (!headingMode.isFree()) {
-            rotation = -MathUtil.clamp(
+            rotation = MathUtil.clamp(
                     headingPID.calculate(swerveDrive.getYaw().getDegrees(), headingMode.getHeading()),
                     -SPEED_CAP,
                     SPEED_CAP

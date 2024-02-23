@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4764760692715828,
-        "y": 5.454226550814213
+        "x": 1.3248595941636327,
+        "y": 5.482657189272713
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3934568987903333,
-        "y": 4.995575502799575
+        "x": 1.3473445187631117,
+        "y": 5.010497511735765
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.208167306959614,
-        "y": 4.105667959599809
+        "x": 2.20253894674456,
+        "y": 4.113140175354425
       },
       "prevControl": {
-        "x": 1.5141835478988406,
-        "y": 4.118600768420909
+        "x": 1.004826125322465,
+        "y": 4.148570135978089
       },
       "nextControl": {
-        "x": 2.453315279894449,
-        "y": 4.101099478240624
+        "x": 2.439423230698313,
+        "y": 4.1061328187471196
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4887946529365281,
-        "y": 5.451412039976858
+        "x": 1.3820249955314727,
+        "y": 5.4758334979632926
       },
       "prevControl": {
-        "x": 1.5948078944769002,
-        "y": 3.967104288375243
+        "x": 1.4235090258374965,
+        "y": 4.505807248304311
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,25 +48,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Launcher Initialize",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launcher Initialize"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Start Ground Pickup",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -82,25 +65,8 @@
       }
     },
     {
-      "name": "End Ground Pickup",
-      "waypointRelativePos": 1.6,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "End Ground Pickup"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Launch",
-      "waypointRelativePos": 1.9,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -108,7 +74,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Launch"
+                "name": "Launcher Initialize"
               }
             }
           ]
@@ -117,13 +83,13 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.75,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
-    "velocity": 2.0,
+    "velocity": 0.0,
     "rotation": 0,
     "rotateFast": false
   },

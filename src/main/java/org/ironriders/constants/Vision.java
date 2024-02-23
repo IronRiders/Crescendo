@@ -11,8 +11,8 @@ public class Vision {
 
     public static final Transform3d CAMERA_POSITION =
             new Transform3d(
-                    Units.inchesToMeters(13.5),
+                    Units.inchesToMeters(-13.5),
                     0,
                     Units.inchesToMeters(20),
-                    new Rotation3d(0, Units.degreesToRadians(-20), 0));
+                    new Rotation3d(0, Units.degreesToRadians(-20), Units.degreesToRadians(180)));
 }

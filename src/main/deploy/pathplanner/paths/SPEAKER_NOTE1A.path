@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4350540757671544,
-        "y": 5.523515574291654
+        "x": 1.3248595941636327,
+        "y": 5.482657189272713
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.455591583058166,
-        "y": 6.100340343041798
+        "x": 1.2889643834843225,
+        "y": 6.547072555950668
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.1829590794598253,
-        "y": 6.9924994884712
+        "x": 2.580661697781729,
+        "y": 6.985769136468829
       },
       "prevControl": {
-        "x": 1.3630798355346712,
-        "y": 6.986340196638727
+        "x": 1.1332689071628144,
+        "y": 7.054296356856603
       },
       "nextControl": {
-        "x": 2.4780882526772907,
-        "y": 6.994716628031192
+        "x": 2.875468967483983,
+        "y": 6.971811403036865
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4350540757671544,
-        "y": 5.523515574291654
+        "x": 1.4070514686168263,
+        "y": 5.479557148350408
       },
       "prevControl": {
-        "x": 1.3701365076341263,
-        "y": 6.962437249527277
+        "x": 1.449595451274235,
+        "y": 7.23952380196427
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "Start Ground Pickup",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -66,7 +66,7 @@
     },
     {
       "name": "Launch",
-      "waypointRelativePos": 1.9,
+      "waypointRelativePos": 0.0,
       "command": {
         "type": "sequential",
         "data": {
@@ -74,7 +74,7 @@
             {
               "type": "named",
               "data": {
-                "name": "Launch"
+                "name": "Launcher Initialize"
               }
             }
           ]
@@ -83,13 +83,13 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.75,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 180.0
   },
   "goalEndState": {
-    "velocity": 1.0,
+    "velocity": 0.0,
     "rotation": 0,
     "rotateFast": false
   },
