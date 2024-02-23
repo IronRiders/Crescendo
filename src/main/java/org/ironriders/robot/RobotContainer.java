@@ -87,8 +87,8 @@ public class RobotContainer {
         secondaryController.button(6).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
         secondaryController.button(8).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_RIGHT));
 
-        secondaryController.button(9).onTrue(commands.setClimbingMode(true));
-        secondaryController.button(10).onTrue(commands.setClimbingMode(false));
+        secondaryController.button(9).onTrue(commands.setClimbingMode(false));
+        secondaryController.button(10).onTrue(commands.setClimbingMode(true));
 
         secondaryController.button(13).onTrue(launcherCommands.deactivate());
         secondaryController.button(16).onTrue(launcherCommands.initialize(false));

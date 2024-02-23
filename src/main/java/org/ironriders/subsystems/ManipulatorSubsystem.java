@@ -20,6 +20,10 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     private final SparkLimitSwitch limitSwitch = motor.getForwardLimitSwitch(kNormallyClosed);
 
+    private State state = State.STOP;
+    ;
+    private int ticksSinceReverse = 0;
+
     public ManipulatorSubsystem() {
         motor.restoreFactoryDefaults();
 
@@ -35,12 +39,27 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if (state == State.CENTER_NOTE) {
+            if (limitSwitch.isPressed()) {
+                motor.set(-CENTER_NOTE_SPEED);
+                ticksSinceReverse = 0;
+            }
+            if (ticksSinceReverse > 50) {
+                motor.set(CENTER_NOTE_SPEED);
+            }
+            ticksSinceReverse++;
+        }
+
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "velocity", getVelocity());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "hasNote", hasNote());
     }
 
     public void set(State state) {
-        motor.set(state.getSpeed());
+        if (state != State.CENTER_NOTE) {
+            motor.set(state.getSpeed());
+        }
+
+        this.state = state;
 
         SmartDashboard.putString(DASHBOARD_PREFIX + "state", state.name());
     }

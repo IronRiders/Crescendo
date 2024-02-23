@@ -12,9 +12,39 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Launch"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "SPEAKER_NOTE1C"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SPEAKER_NOTE1A"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SPEAKER_NOTE1B"
           }
         },
         {

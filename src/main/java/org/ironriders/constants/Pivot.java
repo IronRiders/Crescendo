@@ -3,7 +3,7 @@ package org.ironriders.constants;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class Pivot {
-    public static final double TOLERANCE = 7;
+    public static final double TOLERANCE = 10;
     public static final double ENCODER_OFFSET = 150;
     public static final int CURRENT_LIMIT = 40;
 
@@ -12,6 +12,7 @@ public class Pivot {
     public enum State {
         GROUND(30),
         AMP(30),
+        STOWED_TO_PERIMETER(169),
         LAUNCHER(246);
 
         final double position;
