@@ -40,23 +40,21 @@ public class RobotCommands {
     public Command launch() {
         return Commands.sequence(
                 Commands.parallel(
-                        launcher.initialize(),
+                        launcher.initialize(true),
                         pivot.set(Pivot.State.LAUNCHER)
                 ),
                 manipulator.set(Manipulator.State.EJECT_TO_LAUNCHER),
                 launcher.deactivate()
-        );
+        ).onlyIf(pivot.getPivot()::atPosition);
     }
 
     public Command startGroundPickup() {
         return Commands.sequence(
                 Commands.deadline(
                         Commands.waitUntil(manipulator.getManipulator()::hasNote),
-                        Commands.parallel(
-                                drive.setHeadingMode(Drive.HeadingMode.FREE),
-                                pivot.set(Pivot.State.GROUND),
-                                manipulator.set(Manipulator.State.GRAB)
-                        )
+                        drive.setHeadingMode(Drive.HeadingMode.FREE),
+                        pivot.set(Pivot.State.GROUND),
+                        manipulator.set(Manipulator.State.GRAB)
                 ),
                 endGroundPickup()
         );
@@ -73,7 +71,7 @@ public class RobotCommands {
     public Command setClimbingMode(boolean isEnabled) {
         if (isEnabled) {
             return Commands.parallel(
-                    drive.setHeadingMode(Drive.HeadingMode.FREE),
+                    drive.setHeadingMode(Drive.HeadingMode.STRAIGHT),
                     climber.setClimbingMode(true)
             );
         } else {

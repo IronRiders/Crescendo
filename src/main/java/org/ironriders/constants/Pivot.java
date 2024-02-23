@@ -3,7 +3,7 @@ package org.ironriders.constants;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class Pivot {
-    public static final double TOLERANCE = 0.5;
+    public static final double TOLERANCE = 7;
     public static final double ENCODER_OFFSET = 150;
     public static final int CURRENT_LIMIT = 40;
 
@@ -31,6 +31,6 @@ public class Pivot {
         public static final double D = 0;
 
         public static final TrapezoidProfile.Constraints PROFILE =
-                new TrapezoidProfile.Constraints(300, 280);
+                new TrapezoidProfile.Constraints(360, 410);
     }
 }

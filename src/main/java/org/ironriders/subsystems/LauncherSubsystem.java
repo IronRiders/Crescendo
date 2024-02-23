@@ -22,6 +22,7 @@ public class LauncherSubsystem extends SubsystemBase {
     private final PIDController leftPID = new PIDController(P, I, D);
 
     private double setPoint = 0;
+    private boolean isInitialized = false;
 
     public LauncherSubsystem() {
         applyConfig(right);
@@ -59,12 +60,16 @@ public class LauncherSubsystem extends SubsystemBase {
     }
 
     public void run() {
-        set(LAUNCH_VELOCITY);
+        if (!isInitialized) {
+            set(LAUNCH_VELOCITY);
+        }
+        isInitialized = true;
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", true);
     }
 
     public void deactivate() {
         set(0);
+        isInitialized = false;
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
     }
 
@@ -74,6 +79,10 @@ public class LauncherSubsystem extends SubsystemBase {
         rightPID.setSetpoint(setPoint);
         leftPID.reset();
         leftPID.setSetpoint(setPoint);
+    }
+
+    public boolean isNotInitialized() {
+        return !isInitialized;
     }
 
     private double getRightVelocity() {

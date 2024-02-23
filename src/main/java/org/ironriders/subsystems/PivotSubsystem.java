@@ -39,6 +39,8 @@ public class PivotSubsystem extends SubsystemBase {
 
         set(getRotation());
 
+        pid.setTolerance(TOLERANCE);
+
         commands = new PivotCommands(this);
     }
 
@@ -62,7 +64,7 @@ public class PivotSubsystem extends SubsystemBase {
     }
 
     public boolean atPosition() {
-        return Utils.isWithinTolerance(getRotation(), pid.getGoal().position, TOLERANCE);
+        return pid.atGoal();
     }
 
     private double getRotation() {

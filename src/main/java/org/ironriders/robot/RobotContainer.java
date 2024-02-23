@@ -91,7 +91,7 @@ public class RobotContainer {
         secondaryController.button(10).onTrue(commands.setClimbingMode(false));
 
         secondaryController.button(13).onTrue(launcherCommands.deactivate());
-        secondaryController.button(16).onTrue(launcherCommands.initialize());
+        secondaryController.button(16).onTrue(launcherCommands.initialize(false));
     }
 
     private double controlCurve(double input) {

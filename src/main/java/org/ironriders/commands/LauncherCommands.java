@@ -12,7 +12,7 @@ public class LauncherCommands {
     public LauncherCommands(LauncherSubsystem launcher) {
         this.launcher = launcher;
 
-        NamedCommands.registerCommand("Launcher Initialize", initialize());
+        NamedCommands.registerCommand("Launcher Initialize", initialize(false));
         NamedCommands.registerCommand("Launcher Deactivate", deactivate());
     }
 
@@ -21,10 +21,15 @@ public class LauncherCommands {
      * launch when this command is over. Should be used in sequence with other commands that launch the note. Only
      * stops the launcher if the command is interrupted.
      */
-    public Command initialize() {
-        return launcher
-                .runOnce(launcher::run)
-                .withTimeout(INITIATION_TIMEOUT);
+    public Command initialize(boolean forLaunching) {
+        Command command = launcher
+                .run(launcher::run)
+                .onlyIf(launcher::isNotInitialized);
+        if (forLaunching && launcher.isNotInitialized()) {
+            return command.withTimeout(INITIATION_TIMEOUT);
+        } else {
+            return command;
+        }
     }
 
     public Command deactivate() {
