@@ -19,6 +19,8 @@ import org.ironriders.commands.LauncherCommands;
 import org.ironriders.commands.RobotCommands;
 import org.ironriders.constants.Drive;
 import org.ironriders.constants.Identifiers;
+import org.ironriders.constants.Manipulator;
+import org.ironriders.constants.Pivot;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
@@ -89,6 +91,9 @@ public class RobotContainer {
 
         secondaryController.button(9).onTrue(commands.setClimbingMode(false));
         secondaryController.button(10).onTrue(commands.setClimbingMode(true));
+
+        secondaryController.button(11).onTrue(manipulator.getCommands().set(Manipulator.State.EJECT));
+        secondaryController.button(12).onTrue(pivot.getCommands().set(Pivot.State.GROUND));
 
         secondaryController.button(13).onTrue(launcherCommands.deactivate());
         secondaryController.button(16).onTrue(launcherCommands.initialize(false));

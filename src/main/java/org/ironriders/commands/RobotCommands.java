@@ -40,7 +40,6 @@ public class RobotCommands {
     public Command launch() {
         return Commands.sequence(
                 Commands.parallel(
-                        manipulator.set(Manipulator.State.GRAB),
                         launcher.initialize(true),
                         pivot.set(Pivot.State.LAUNCHER)
                 ),
@@ -57,7 +56,15 @@ public class RobotCommands {
                         pivot.set(Pivot.State.GROUND),
                         manipulator.set(Manipulator.State.GRAB)
                 ),
-                endGroundPickup()
+                Commands.parallel(
+                        Commands.sequence(
+                                manipulator.centerNote().onlyIf(manipulator.getManipulator()::hasNote),
+                                manipulator.centerNote().onlyIf(manipulator.getManipulator()::hasNote),
+                                manipulator.centerNote().onlyIf(manipulator.getManipulator()::hasNote),
+                                manipulator.set(Manipulator.State.STOP).unless(manipulator.getManipulator()::hasNote)
+                        ),
+                        endGroundPickup()
+                )
         );
     }
 
@@ -67,10 +74,6 @@ public class RobotCommands {
                 Commands.sequence(
                         pivot.set(Pivot.State.LAUNCHER).onlyIf(manipulator.getManipulator()::hasNote),
                         pivot.set(Pivot.State.STOWED_TO_PERIMETER).unless(manipulator.getManipulator()::hasNote)
-                ),
-                Commands.sequence(
-                        manipulator.set(Manipulator.State.CENTER_NOTE).onlyIf(manipulator.getManipulator()::hasNote),
-                        manipulator.set(Manipulator.State.STOP).unless(manipulator.getManipulator()::hasNote)
                 )
         );
     }

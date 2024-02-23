@@ -2,9 +2,11 @@ package org.ironriders.commands;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Manipulator;
 import org.ironriders.subsystems.ManipulatorSubsystem;
 
+import static org.ironriders.constants.Manipulator.CENTER_NOTE_TIMEOUT;
 import static org.ironriders.constants.Manipulator.DISCHARGE_TIMEOUT;
 import static org.ironriders.constants.Manipulator.State.*;
 
@@ -30,6 +32,16 @@ public class ManipulatorCommands {
         }
 
         return command.finallyDo(() -> manipulator.set(STOP));
+    }
+
+    public Command centerNote() {
+        return Commands.sequence(
+                Commands.deadline(
+                        Commands.waitSeconds(CENTER_NOTE_TIMEOUT),
+                        set(CENTER_NOTE_OUT)
+                ),
+                set(GRAB).until(manipulator::hasNote)
+        );
     }
 
     public ManipulatorSubsystem getManipulator() {
