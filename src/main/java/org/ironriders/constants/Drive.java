@@ -1,6 +1,7 @@
 package org.ironriders.constants;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import org.ironriders.lib.Utils;
 import swervelib.math.SwerveMath;
 
@@ -26,11 +27,11 @@ public class Drive {
         }
 
         public Double getHeading() {
-            return Utils.absoluteRotation(heading + 180);
+            return Utils.absoluteRotation(heading + (Utils.getAlliance() == DriverStation.Alliance.Red ? 180 : 0));
         }
 
-        public boolean isFree() {
-            return heading == null;
+        public boolean isNotFree() {
+            return heading != null;
         }
     }
 

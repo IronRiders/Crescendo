@@ -9,7 +9,7 @@ public class Manipulator {
 
     public enum State {
         GRAB(1),
-        EJECT_TO_LAUNCHER(-0.5),
+        EJECT_TO_LAUNCHER(-1),
         EJECT_TO_AMP(-0.5),
         EJECT(-1),
         STOP(0),

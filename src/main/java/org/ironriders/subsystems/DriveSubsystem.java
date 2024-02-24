@@ -100,11 +100,13 @@ public class DriveSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "heading", swerveDrive.getYaw().getDegrees());
         SmartDashboard.putString(DASHBOARD_PREFIX + "headingMode", headingMode.toString());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "headingModeSetpoint", headingMode.getHeading());
+        if (headingMode.isNotFree()) {
+            SmartDashboard.putNumber(DASHBOARD_PREFIX + "headingModeSetpoint", headingMode.getHeading());
+        }
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        if (!headingMode.isFree()) {
+        if (headingMode.isNotFree()) {
             rotation = MathUtil.clamp(
                     headingPID.calculate(swerveDrive.getOdometryHeading().getDegrees(), headingMode.getHeading()),
                     -SPEED_CAP,
