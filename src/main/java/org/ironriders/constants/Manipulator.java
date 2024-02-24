@@ -13,7 +13,8 @@ public class Manipulator {
         EJECT_TO_AMP(-0.5),
         EJECT(-1),
         STOP(0),
-        CENTER_NOTE_OUT(-1);
+        CENTER_NOTE_OUT(-1),
+        CENTER_NOTE_IN(1);
 
         private final double speed;
 

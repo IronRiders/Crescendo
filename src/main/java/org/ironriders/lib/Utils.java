@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
 
 /**
  * Utility class containing various helper methods for mathematical and control operations.
@@ -113,5 +114,12 @@ public class Utils {
      */
     public static double sign(double input) {
         return input > 0 ? 1 : -1;
+    }
+
+    public static Command repeat(Command command, int amount) {
+        for (int i = 0; i < amount - 1; i++) {
+            command.andThen(command);
+        }
+        return command;
     }
 }

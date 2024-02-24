@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.ironriders.commands.ClimberCommands;
@@ -19,8 +18,6 @@ import org.ironriders.commands.LauncherCommands;
 import org.ironriders.commands.RobotCommands;
 import org.ironriders.constants.Drive;
 import org.ironriders.constants.Identifiers;
-import org.ironriders.constants.Manipulator;
-import org.ironriders.constants.Pivot;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
@@ -79,8 +76,8 @@ public class RobotContainer {
         primaryController.leftBumper().whileTrue(climberCommands.set(-1));
         primaryController.rightBumper().whileTrue(climberCommands.set(1));
 
-        primaryController.a().onTrue(climber.getCommands().setClimbingMode(true));
-        primaryController.b().onTrue(climber.getCommands().setClimbingMode(false));
+        primaryController.a().onTrue(climberCommands.setClimbingMode(true));
+        primaryController.b().onTrue(climberCommands.setClimbingMode(false));
 
         // Secondary Controller
         secondaryController.button(1).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_LEFT));
@@ -91,11 +88,11 @@ public class RobotContainer {
         secondaryController.button(6).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
         secondaryController.button(8).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_RIGHT));
 
-        secondaryController.button(9).onTrue(climber.getCommands().setClimbingMode(false));
-        secondaryController.button(10).onTrue(climber.getCommands().setClimbingMode(true));
+        secondaryController.button(9).onTrue(climberCommands.setClimbingMode(false));
+        secondaryController.button(10).onTrue(climberCommands.setClimbingMode(true));
 
-        secondaryController.button(11).onTrue(manipulator.getCommands().set(Manipulator.State.EJECT));
-        secondaryController.button(12).onTrue(pivot.getCommands().set(Pivot.State.GROUND));
+        secondaryController.button(11).onTrue(commands.ejectNote());
+        secondaryController.button(12).onTrue(commands.deployPivot());
 
         secondaryController.button(13).onTrue(launcherCommands.deactivate());
         secondaryController.button(16).onTrue(launcherCommands.initialize(false));
@@ -112,9 +109,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return driveCommands.useVisionForPoseEstimation(
-                Commands.sequence(
-                        AutoBuilder.buildAuto(autoOptionsSelector.getSelected())
-                )
+                AutoBuilder.buildAuto(autoOptionsSelector.getSelected())
         );
     }
 }

@@ -34,13 +34,17 @@ public class ManipulatorCommands {
         return command.finallyDo(() -> manipulator.set(STOP));
     }
 
+    public Command setHasNote(boolean hasNote) {
+        return Commands.runOnce(() -> manipulator.setHasNote(hasNote));
+    }
+
     public Command centerNote() {
         return Commands.sequence(
                 Commands.deadline(
                         Commands.waitSeconds(CENTER_NOTE_TIMEOUT),
                         set(CENTER_NOTE_OUT)
                 ),
-                set(GRAB).until(manipulator::hasNote)
+                set(CENTER_NOTE_IN).until(manipulator::hasNoteSwitchTriggered)
         );
     }
 

@@ -20,6 +20,8 @@ public class ManipulatorSubsystem extends SubsystemBase {
 
     private final SparkLimitSwitch limitSwitch = motor.getForwardLimitSwitch(kNormallyClosed);
 
+    private boolean hasNote = false;
+
     public ManipulatorSubsystem() {
         motor.restoreFactoryDefaults();
 
@@ -36,7 +38,8 @@ public class ManipulatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "velocity", getVelocity());
-        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "hasNote", hasNote());
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "hasNote", hasNote);
+        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "hasNoteSwitchTriggered", hasNoteSwitchTriggered());
     }
 
     public void set(State state) {
@@ -45,7 +48,15 @@ public class ManipulatorSubsystem extends SubsystemBase {
         SmartDashboard.putString(DASHBOARD_PREFIX + "state", state.name());
     }
 
+    public void setHasNote(boolean hasNote) {
+        this.hasNote = hasNote;
+    }
+
     public boolean hasNote() {
+        return hasNote;
+    }
+
+    public boolean hasNoteSwitchTriggered() {
         return limitSwitch.isPressed();
     }
 

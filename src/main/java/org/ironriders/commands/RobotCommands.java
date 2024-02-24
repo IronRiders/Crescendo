@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Drive;
 import org.ironriders.constants.Manipulator;
 import org.ironriders.constants.Pivot;
+import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.DriveSubsystem;
 import org.ironriders.subsystems.LauncherSubsystem;
 import org.ironriders.subsystems.ManipulatorSubsystem;
@@ -38,6 +39,26 @@ public class RobotCommands {
         );
     }
 
+    /**
+     * Manual override command
+     */
+    public Command ejectNote() {
+        return Commands.sequence(
+                manipulator.setHasNote(false),
+                manipulator.set(Manipulator.State.EJECT)
+        );
+    }
+
+    /**
+     * Manual override command
+     */
+    public Command deployPivot() {
+        return Commands.sequence(
+                manipulator.setHasNote(false),
+                pivot.set(Pivot.State.GROUND)
+        );
+    }
+
     public Command launch() {
         return Commands.sequence(
                 Commands.parallel(
@@ -45,6 +66,7 @@ public class RobotCommands {
                         pivot.set(Pivot.State.LAUNCHER)
                 ),
                 manipulator.set(Manipulator.State.EJECT_TO_LAUNCHER),
+                manipulator.setHasNote(false),
                 launcher.deactivate()
         ).onlyIf(pivot.getPivot()::atPosition);
     }
@@ -52,17 +74,17 @@ public class RobotCommands {
     public Command startGroundPickup() {
         return Commands.sequence(
                 Commands.deadline(
-                        Commands.waitUntil(manipulator.getManipulator()::hasNote),
+                        Commands.waitUntil(manipulator.getManipulator()::hasNoteSwitchTriggered),
                         drive.setHeadingMode(Drive.HeadingMode.FREE),
                         pivot.set(Pivot.State.GROUND),
                         manipulator.set(Manipulator.State.GRAB)
                 ),
+                manipulator.setHasNote(true),
                 Commands.parallel(
-                        Commands.sequence(
-                                manipulator.centerNote().onlyIf(manipulator.getManipulator()::hasNote),
-                                manipulator.centerNote().onlyIf(manipulator.getManipulator()::hasNote),
-                                manipulator.centerNote().onlyIf(manipulator.getManipulator()::hasNote),
-                                manipulator.set(Manipulator.State.STOP).unless(manipulator.getManipulator()::hasNote)
+                        Commands.either(
+                                Utils.repeat(manipulator.centerNote(), 3),
+                                manipulator.set(Manipulator.State.STOP),
+                                manipulator.getManipulator()::hasNote
                         ),
                         endGroundPickup()
                 )
@@ -70,12 +92,13 @@ public class RobotCommands {
     }
 
     public Command endGroundPickup() {
-        return Commands.parallel(
-                drive.setHeadingMode(Drive.HeadingMode.STRAIGHT).onlyIf(manipulator.getManipulator()::hasNote),
-                Commands.sequence(
-                        pivot.set(Pivot.State.LAUNCHER).onlyIf(manipulator.getManipulator()::hasNote),
-                        pivot.set(Pivot.State.STOWED_TO_PERIMETER).unless(manipulator.getManipulator()::hasNote)
-                )
+        return Commands.either(
+                Commands.parallel(
+                        pivot.set(Pivot.State.LAUNCHER),
+                        drive.setHeadingMode(Drive.HeadingMode.STRAIGHT)
+                ),
+                pivot.set(Pivot.State.STOWED_TO_PERIMETER),
+                manipulator.getManipulator()::hasNote
         );
     }
 }
