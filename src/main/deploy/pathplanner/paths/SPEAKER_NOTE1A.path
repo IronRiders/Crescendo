@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 2.677851508480795,
-        "y": 7.167635043603421
+        "x": 2.5573606054619518,
+        "y": 7.0096725980489
       },
       "prevControl": {
-        "x": 1.5224690495677293,
-        "y": 7.194120476203916
+        "x": 1.5088106426212855,
+        "y": 7.000171097564417
       },
       "nextControl": {
-        "x": 2.972911494619092,
-        "y": 7.160871230187627
+        "x": 2.8524859902183026,
+        "y": 7.012346895016733
       },
       "isLocked": false,
       "linkedName": null
@@ -86,7 +86,7 @@
     "maxVelocity": 2.75,
     "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
-    "maxAngularAcceleration": 180.0
+    "maxAngularAcceleration": 270.0
   },
   "goalEndState": {
     "velocity": 0.0,

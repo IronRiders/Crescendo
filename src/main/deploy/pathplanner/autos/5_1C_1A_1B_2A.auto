@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4764760692715828,
-      "y": 5.454226550814213
+      "x": 1.2890867535207293,
+      "y": 5.518919510061243
     },
     "rotation": 0
   },
@@ -12,9 +12,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Launch"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "SPEAKER_NOTE1C"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch"
           }
         },
         {
@@ -24,9 +36,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Launch"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "SPEAKER_NOTE1B"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Launch"
           }
         },
         {
@@ -38,7 +62,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Launcher Stop"
+            "name": "Launch"
           }
         }
       ]

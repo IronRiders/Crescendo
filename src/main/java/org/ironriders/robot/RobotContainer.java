@@ -39,7 +39,7 @@ public class RobotContainer {
     private final ClimberCommands climberCommands = climber.getCommands();
     @SuppressWarnings("unused")
     private final LightingSubsystem lighting = new LightingSubsystem();
-    private final RobotCommands commands = new RobotCommands(drive, launcher, pivot, manipulator, climber);
+    private final RobotCommands commands = new RobotCommands(drive, launcher, pivot, manipulator);
 
     private final CommandXboxController primaryController =
             new CommandXboxController(Identifiers.Controllers.PRIMARY_CONTROLLER);
@@ -72,13 +72,15 @@ public class RobotContainer {
         );
 
         primaryController.leftTrigger().onTrue(commands.launch());
-        primaryController.rightTrigger().onTrue(commands.startGroundPickup()).onFalse(commands.endGroundPickup());
+        primaryController.rightTrigger()
+                .onTrue(commands.startGroundPickup())
+                .onFalse(commands.endGroundPickup());
 
         primaryController.leftBumper().whileTrue(climberCommands.set(-1));
         primaryController.rightBumper().whileTrue(climberCommands.set(1));
 
-        primaryController.a().onTrue(commands.setClimbingMode(true));
-        primaryController.b().onTrue(commands.setClimbingMode(false));
+        primaryController.a().onTrue(climber.getCommands().setClimbingMode(true));
+        primaryController.b().onTrue(climber.getCommands().setClimbingMode(false));
 
         // Secondary Controller
         secondaryController.button(1).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_LEFT));
@@ -89,8 +91,8 @@ public class RobotContainer {
         secondaryController.button(6).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
         secondaryController.button(8).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_RIGHT));
 
-        secondaryController.button(9).onTrue(commands.setClimbingMode(false));
-        secondaryController.button(10).onTrue(commands.setClimbingMode(true));
+        secondaryController.button(9).onTrue(climber.getCommands().setClimbingMode(false));
+        secondaryController.button(10).onTrue(climber.getCommands().setClimbingMode(true));
 
         secondaryController.button(11).onTrue(manipulator.getCommands().set(Manipulator.State.EJECT));
         secondaryController.button(12).onTrue(pivot.getCommands().set(Pivot.State.GROUND));

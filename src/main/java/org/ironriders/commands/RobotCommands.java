@@ -6,22 +6,23 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Drive;
 import org.ironriders.constants.Manipulator;
 import org.ironriders.constants.Pivot;
-import org.ironriders.subsystems.*;
+import org.ironriders.subsystems.DriveSubsystem;
+import org.ironriders.subsystems.LauncherSubsystem;
+import org.ironriders.subsystems.ManipulatorSubsystem;
+import org.ironriders.subsystems.PivotSubsystem;
 
 public class RobotCommands {
     private final DriveCommands drive;
     private final LauncherCommands launcher;
     private final PivotCommands pivot;
     private final ManipulatorCommands manipulator;
-    private final ClimberCommands climber;
 
     public RobotCommands(DriveSubsystem drive, LauncherSubsystem launcher, PivotSubsystem pivot,
-                         ManipulatorSubsystem manipulator, ClimberSubsystem climber) {
+                         ManipulatorSubsystem manipulator) {
         this.drive = drive.getCommands();
         this.launcher = launcher.getCommands();
         this.pivot = pivot.getCommands();
         this.manipulator = manipulator.getCommands();
-        this.climber = climber.getCommands();
 
         NamedCommands.registerCommand("Apm", amp());
         NamedCommands.registerCommand("Launch", launch());
@@ -76,19 +77,5 @@ public class RobotCommands {
                         pivot.set(Pivot.State.STOWED_TO_PERIMETER).unless(manipulator.getManipulator()::hasNote)
                 )
         );
-    }
-
-    public Command setClimbingMode(boolean isEnabled) {
-        if (isEnabled) {
-            return Commands.parallel(
-                    drive.setHeadingMode(Drive.HeadingMode.STRAIGHT),
-                    climber.setClimbingMode(true)
-            );
-        } else {
-            return Commands.parallel(
-                    drive.setHeadingMode(Drive.HeadingMode.STRAIGHT),
-                    climber.setClimbingMode(false)
-            );
-        }
     }
 }
