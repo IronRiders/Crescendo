@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Drive;
 import org.ironriders.constants.Manipulator;
 import org.ironriders.constants.Pivot;
-import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.DriveSubsystem;
 import org.ironriders.subsystems.LauncherSubsystem;
 import org.ironriders.subsystems.ManipulatorSubsystem;
@@ -82,7 +81,11 @@ public class RobotCommands {
                 manipulator.setHasNote(true),
                 Commands.parallel(
                         Commands.either(
-                                Utils.repeat(manipulator.centerNote(), 3),
+                                Commands.sequence(
+                                        manipulator.centerNote(),
+                                        manipulator.centerNote(),
+                                        manipulator.centerNote()
+                                ),
                                 manipulator.set(Manipulator.State.STOP),
                                 manipulator.getManipulator()::hasNote
                         ),

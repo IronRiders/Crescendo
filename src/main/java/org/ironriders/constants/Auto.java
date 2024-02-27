@@ -4,7 +4,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.util.Units;
 
 public class Auto {
-    public static final String DEFAULT_AUTO = "TEST";
+    public static final String DEFAULT_AUTO = "0_NOTHING";
 
     public static final String DASHBOARD_PREFIX = "auto/";
 

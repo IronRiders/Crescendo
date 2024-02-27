@@ -65,7 +65,7 @@
   "eventMarkers": [
     {
       "name": "Start Ground Pickup",
-      "waypointRelativePos": 0.7,
+      "waypointRelativePos": 0.44999999999999996,
       "command": {
         "type": "sequential",
         "data": {

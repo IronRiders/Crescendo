@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import org.ironriders.commands.ClimberCommands;
@@ -71,7 +72,7 @@ public class RobotContainer {
         primaryController.leftTrigger().onTrue(commands.launch());
         primaryController.rightTrigger()
                 .onTrue(commands.startGroundPickup())
-                .onFalse(commands.endGroundPickup());
+                .onFalse(commands.endGroundPickup().unless(manipulator::hasNote));
 
         primaryController.leftBumper().whileTrue(climberCommands.set(-1));
         primaryController.rightBumper().whileTrue(climberCommands.set(1));
@@ -108,6 +109,10 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
+        if (autoOptionsSelector.getSelected() == null) {
+            return Commands.none();
+        }
+
         return driveCommands.useVisionForPoseEstimation(
                 AutoBuilder.buildAuto(autoOptionsSelector.getSelected())
         );

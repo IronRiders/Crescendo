@@ -100,6 +100,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "heading", swerveDrive.getYaw().getDegrees());
         SmartDashboard.putString(DASHBOARD_PREFIX + "headingMode", headingMode.toString());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "headingModeSetpoint", headingMode.getHeading());
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -109,9 +110,9 @@ public class DriveSubsystem extends SubsystemBase {
                     -SPEED_CAP,
                     SPEED_CAP
             );
-
-            SmartDashboard.putNumber(DASHBOARD_PREFIX + "headingModeSetpoint", headingMode.getHeading());
         }
+
+        translation = Utils.getAlliance() == Alliance.Blue ? Utils.invertTranslation(translation) : translation;
 
         swerveDrive.drive(translation, rotation, fieldRelative, isOpenLoop);
     }

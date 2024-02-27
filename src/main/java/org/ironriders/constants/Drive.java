@@ -26,7 +26,7 @@ public class Drive {
         }
 
         public Double getHeading() {
-            return Utils.absoluteRotation(heading);
+            return Utils.absoluteRotation(heading + 180);
         }
 
         public boolean isFree() {
