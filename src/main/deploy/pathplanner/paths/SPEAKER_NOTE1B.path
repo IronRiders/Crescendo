@@ -60,23 +60,6 @@
   ],
   "eventMarkers": [
     {
-      "name": "Launcher Initialize",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launcher Initialize"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Start Ground Pickup",
       "waypointRelativePos": 0,
       "command": {

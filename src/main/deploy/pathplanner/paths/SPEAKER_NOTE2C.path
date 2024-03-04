@@ -3,89 +3,73 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4382373353532956,
-        "y": 5.4698878812125304
+        "x": 1.4173305516749923,
+        "y": 5.527689362670391
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.886913108895662,
-        "y": 5.4664635544548865
+        "x": 2.850546910617974,
+        "y": 5.345441622710366
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.003963466260266,
-        "y": 6.134971063344904
+        "x": 5.041033649775633,
+        "y": 4.253287013518471
       },
       "prevControl": {
-        "x": 4.105066031312618,
-        "y": 6.687063877599978
+        "x": 3.429787380408094,
+        "y": 5.701169284283013
       },
       "nextControl": {
-        "x": 7.282017096145476,
-        "y": 5.763384787906235
+        "x": 5.531253979568732,
+        "y": 3.812770043661104
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.5246151186746815,
-        "y": 4.105219269466317
+        "x": 7.818140046002314,
+        "y": 4.11349964192984
       },
       "prevControl": {
-        "x": 6.200734484802303,
-        "y": 4.139074979538848
+        "x": 6.494259412129935,
+        "y": 4.147355352002369
       },
       "nextControl": {
-        "x": 7.824832906217139,
-        "y": 4.097541774899511
+        "x": 8.118357833544756,
+        "y": 4.1058221473630345
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.946049586543618,
-        "y": 4.368600377825755
+        "x": 5.053066703355629,
+        "y": 4.280861061722123
       },
       "prevControl": {
-        "x": 7.291908099441199,
-        "y": 3.978892601882426
+        "x": 6.107511413775727,
+        "y": 3.4267898630661695
       },
       "nextControl": {
-        "x": 6.495410265335287,
-        "y": 4.876373473099301
+        "x": 3.689375017638924,
+        "y": 5.38541380034149
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.004616106454435,
-        "y": 6.122693269692095
+        "x": 1.4173305516749923,
+        "y": 5.527689362670391
       },
       "prevControl": {
-        "x": 6.931277828620177,
-        "y": 5.823194356634608
-      },
-      "nextControl": {
-        "x": 5.180974019524103,
-        "y": 6.388896031588323
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.4382373353532956,
-        "y": 5.4698878812125304
-      },
-      "prevControl": {
-        "x": 1.4360531672452235,
-        "y": 6.52573937960376
+        "x": 2.9492995299982123,
+        "y": 5.41755836416607
       },
       "nextControl": null,
       "isLocked": false,
@@ -96,25 +80,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Launcher Initialize",
-      "waypointRelativePos": 1.7999999999999998,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launcher Initialize"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Start Ground Pickup",
-      "waypointRelativePos": 0.7000000000000001,
+      "waypointRelativePos": 1.05,
       "command": {
         "type": "sequential",
         "data": {
@@ -123,40 +90,6 @@
               "type": "named",
               "data": {
                 "name": "Start Ground Pickup"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "End Ground Pickup",
-      "waypointRelativePos": 2.9,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "End Ground Pickup"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "Launch",
-      "waypointRelativePos": 4.9,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launch"
               }
             }
           ]

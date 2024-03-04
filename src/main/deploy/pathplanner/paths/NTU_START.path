@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3248595941636327,
-        "y": 5.482657189272713
+        "x": 1.4792905801089378,
+        "y": 1.4538684806536284
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2884352157593206,
-        "y": 6.852660302542828
+        "x": 4.917358332980554,
+        "y": 1.1915071225975793
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.421667301667937,
-        "y": 7.0080692198421435
+        "x": 7.857420827688877,
+        "y": 0.7594185240453822
       },
       "prevControl": {
-        "x": 1.3731173388272708,
-        "y": 6.99856771935766
-      },
-      "nextControl": {
-        "x": 2.716792686424288,
-        "y": 7.010743516809976
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.4070514686168263,
-        "y": 5.479557148350408
-      },
-      "prevControl": {
-        "x": 1.518193374349712,
-        "y": 7.008959985512564
+        "x": 5.034833567931025,
+        "y": 0.9524368614709456
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Start Ground Pickup",
-      "waypointRelativePos": 0.0,
+      "name": "Ground Pickup",
+      "waypointRelativePos": 0.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -72,12 +56,15 @@
     "maxAngularAcceleration": 270.0
   },
   "goalEndState": {
-    "velocity": 0.0,
+    "velocity": 0,
     "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
-  "previewStartingState": null,
+  "folder": "NOTE_TOWARDS_US",
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

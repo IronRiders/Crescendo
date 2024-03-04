@@ -63,23 +63,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "Launch",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launcher Initialize"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {

@@ -89,6 +89,7 @@ public class RobotCommands {
                                 manipulator.set(Manipulator.State.STOP),
                                 manipulator.getManipulator()::hasNote
                         ),
+                        launcher.initialize(false),
                         endGroundPickup()
                 )
         );
@@ -100,7 +101,7 @@ public class RobotCommands {
                         pivot.set(Pivot.State.LAUNCHER),
                         drive.setHeadingMode(Drive.HeadingMode.STRAIGHT)
                 ),
-                pivot.set(Pivot.State.STOWED_TO_PERIMETER),
+                pivot.set(Pivot.State.STOWED),
                 manipulator.getManipulator()::hasNote
         );
     }

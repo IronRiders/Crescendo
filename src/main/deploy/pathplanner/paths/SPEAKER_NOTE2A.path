@@ -79,23 +79,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "Initialize Launcher",
-      "waypointRelativePos": 2.75,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launcher Initialize"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {

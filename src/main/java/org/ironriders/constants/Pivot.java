@@ -12,7 +12,7 @@ public class Pivot {
     public enum State {
         GROUND(30),
         AMP(30),
-        STOWED_TO_PERIMETER(169),
+        STOWED(169),
         LAUNCHER(246);
 
         final double position;

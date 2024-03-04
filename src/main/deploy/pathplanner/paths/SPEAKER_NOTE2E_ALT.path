@@ -91,23 +91,6 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Launcher Initialize",
-      "waypointRelativePos": 3.75,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launcher Initialize"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Start Ground Pickup",
       "waypointRelativePos": 0.45,
       "command": {
