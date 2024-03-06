@@ -33,8 +33,7 @@ public class LightingSubsystem extends SubsystemBase {
         blueChannel.setPulseTimeMicroseconds((int) Math.round(b * PULSE_WIDTH));
     }
     public void periodic(){
-
-        vision.getPoseEstimate().ifPresent(estimatedRobotPose->setColorRGB(255,0,0));
+        vision.getPoseEstimate().ifPresent(estimatedRobotPose->setColorRGB((int)(estimatedRobotPose.estimatedPose.toPose2d().getX()),(int)(estimatedRobotPose.estimatedPose.toPose2d().getRotation().getDegrees()),(int)(estimatedRobotPose.estimatedPose.toPose2d().getY())));
     }
 
 }
