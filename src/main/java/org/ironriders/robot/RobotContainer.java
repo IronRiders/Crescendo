@@ -105,6 +105,7 @@ public class RobotContainer {
     }
 
     public Command getEnableCommand() {
+
         return pivot.getCommands().reset();
     }
 
