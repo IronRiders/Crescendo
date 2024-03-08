@@ -46,9 +46,11 @@ public class PivotSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        motor.set(pid.calculate(getRotation()));
+        double output = pid.calculate(getRotation());
+        motor.set(output);
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rotation", getRotation());
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "output", output);
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", pid.getGoal().position);
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "forwardSwitch", forwardSwitch.isPressed());
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "reverseSwitch", reverseSwitch.isPressed());

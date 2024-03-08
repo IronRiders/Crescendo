@@ -37,7 +37,7 @@ public class RobotContainer {
     private final ClimberCommands climberCommands = climber.getCommands();
     @SuppressWarnings("unused")
     private final LightingSubsystem lighting = new LightingSubsystem();
-    private final RobotCommands commands = new RobotCommands(drive, launcher, pivot, manipulator);
+    private final RobotCommands commands = new RobotCommands(drive, launcher, pivot, manipulator, lighting);
 
     private final CommandXboxController primaryController =
             new CommandXboxController(Identifiers.Controllers.PRIMARY_CONTROLLER);
@@ -53,6 +53,8 @@ public class RobotContainer {
         }
         autoOptionsSelector.setDefaultOption(DEFAULT_AUTO, DEFAULT_AUTO);
         SmartDashboard.putData("auto/Auto Option", autoOptionsSelector);
+
+        lighting.setDefaultCommand(commands.updateLighting());
 
         configureBindings();
     }

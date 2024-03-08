@@ -4,25 +4,25 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Drive;
+import org.ironriders.constants.Lighting;
 import org.ironriders.constants.Manipulator;
 import org.ironriders.constants.Pivot;
-import org.ironriders.subsystems.DriveSubsystem;
-import org.ironriders.subsystems.LauncherSubsystem;
-import org.ironriders.subsystems.ManipulatorSubsystem;
-import org.ironriders.subsystems.PivotSubsystem;
+import org.ironriders.subsystems.*;
 
 public class RobotCommands {
     private final DriveCommands drive;
     private final LauncherCommands launcher;
     private final PivotCommands pivot;
     private final ManipulatorCommands manipulator;
+    private final LightingSubsystem lighting;
 
     public RobotCommands(DriveSubsystem drive, LauncherSubsystem launcher, PivotSubsystem pivot,
-                         ManipulatorSubsystem manipulator) {
+                         ManipulatorSubsystem manipulator, LightingSubsystem lighting) {
         this.drive = drive.getCommands();
         this.launcher = launcher.getCommands();
         this.pivot = pivot.getCommands();
         this.manipulator = manipulator.getCommands();
+        this.lighting = lighting;
 
         NamedCommands.registerCommand("Apm", amp());
         NamedCommands.registerCommand("Launch", launch());
@@ -103,6 +103,19 @@ public class RobotCommands {
                 ),
                 pivot.set(Pivot.State.STOWED),
                 manipulator.getManipulator()::hasNote
+        );
+    }
+
+    public Command updateLighting() {
+        ManipulatorSubsystem manipulatorSubsystem = manipulator.getManipulator();
+        boolean hasNote = manipulatorSubsystem.hasNote();
+
+        return lighting.runOnce(
+                () -> lighting.setRGB(
+                        hasNote ? Lighting.HAS_NOTE.R : Lighting.DOES_NOT_HAVE_NOTE.R,
+                        hasNote ? Lighting.HAS_NOTE.G : Lighting.DOES_NOT_HAVE_NOTE.G,
+                        hasNote ? Lighting.HAS_NOTE.B : Lighting.DOES_NOT_HAVE_NOTE.B
+                )
         );
     }
 }

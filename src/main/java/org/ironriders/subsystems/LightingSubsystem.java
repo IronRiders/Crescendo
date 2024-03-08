@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static org.ironriders.constants.Lighting.Color.*;
 import static org.ironriders.constants.Lighting.DASHBOARD_PREFIX;
 import static org.ironriders.constants.Lighting.PULSE_WIDTH;
 
@@ -19,11 +18,9 @@ public class LightingSubsystem extends SubsystemBase {
         SmartDashboard.putData(DASHBOARD_PREFIX + "redChannel", redChannel);
         SmartDashboard.putData(DASHBOARD_PREFIX + "greenChannel", greenChannel);
         SmartDashboard.putData(DASHBOARD_PREFIX + "blueChannel", blueChannel);
-
-        setColorRGB(R, G, B);
     }
 
-    public void setColorRGB(int r, int g, int b) {
+    public void setRGB(int r, int g, int b) {
         redChannel.setPulseTimeMicroseconds((int) Math.round(r * PULSE_WIDTH));
         greenChannel.setPulseTimeMicroseconds((int) Math.round(g * PULSE_WIDTH));
         blueChannel.setPulseTimeMicroseconds((int) Math.round(b * PULSE_WIDTH));
