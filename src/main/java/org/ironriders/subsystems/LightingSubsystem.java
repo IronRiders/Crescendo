@@ -1,28 +1,28 @@
 package org.ironriders.subsystems;
 
-
-import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.ironriders.constants.Identifiers;
 
-import static org.ironriders.constants.Lighting.DASHBOARD_PREFIX;
-import static org.ironriders.constants.Lighting.PULSE_WIDTH;
+import static org.ironriders.constants.Lighting.DOES_NOT_HAVE_NOTE;
+import static org.ironriders.constants.Lighting.STRIP_LENGTH;
 
 public class LightingSubsystem extends SubsystemBase {
-
-    public PWM redChannel = new PWM(1, false);
-    public PWM greenChannel = new PWM(2, false);
-    public PWM blueChannel = new PWM(3, false);
+    public AddressableLED addressableLED = new AddressableLED(Identifiers.Lighting.PORT);
 
     public LightingSubsystem() {
-        SmartDashboard.putData(DASHBOARD_PREFIX + "redChannel", redChannel);
-        SmartDashboard.putData(DASHBOARD_PREFIX + "greenChannel", greenChannel);
-        SmartDashboard.putData(DASHBOARD_PREFIX + "blueChannel", blueChannel);
+        addressableLED.setLength(STRIP_LENGTH);
+        setRGB(DOES_NOT_HAVE_NOTE.R, DOES_NOT_HAVE_NOTE.G, DOES_NOT_HAVE_NOTE.B);
+        addressableLED.start();
     }
 
     public void setRGB(int r, int g, int b) {
-        redChannel.setPulseTimeMicroseconds((int) Math.round(r * PULSE_WIDTH));
-        greenChannel.setPulseTimeMicroseconds((int) Math.round(g * PULSE_WIDTH));
-        blueChannel.setPulseTimeMicroseconds((int) Math.round(b * PULSE_WIDTH));
+        AddressableLEDBuffer buffer = new AddressableLEDBuffer(STRIP_LENGTH);
+        for (int i = 0; i < STRIP_LENGTH; i++) {
+            buffer.setRGB(i, r, g, b);
+        }
+
+        addressableLED.setData(buffer);
     }
 }

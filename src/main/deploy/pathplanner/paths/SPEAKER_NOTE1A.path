@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3248595941636327,
-        "y": 5.482657189272713
+        "x": 1.3569205437021985,
+        "y": 5.5052140659836875
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2884352157593206,
-        "y": 6.852660302542828
+        "x": 1.402482987257641,
+        "y": 6.42209195876725
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.421667301667937,
-        "y": 7.0080692198421435
+        "x": 2.305818596012192,
+        "y": 6.995191629272147
       },
       "prevControl": {
-        "x": 1.3731173388272708,
-        "y": 6.99856771935766
+        "x": 1.4398058483616967,
+        "y": 6.95880693844721
       },
       "nextControl": {
-        "x": 2.716792686424288,
-        "y": 7.010743516809976
+        "x": 2.600695956226451,
+        "y": 7.007580617323163
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4070514686168263,
-        "y": 5.479557148350408
+        "x": 1.3569205437021985,
+        "y": 5.5052140659836875
       },
       "prevControl": {
-        "x": 1.518193374349712,
-        "y": 7.008959985512564
+        "x": 1.4680624494350842,
+        "y": 7.034616903145843
       },
       "nextControl": null,
       "isLocked": false,
@@ -63,11 +63,28 @@
           ]
         }
       }
+    },
+    {
+      "name": "Inital",
+      "waypointRelativePos": 1.55,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Launcher Initialize"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.75,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 270.0
   },
@@ -79,5 +96,5 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": null,
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

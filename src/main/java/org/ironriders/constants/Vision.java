@@ -9,6 +9,8 @@ public class Vision {
 
     public static final String DASHBOARD_PREFIX = "vision/";
 
+    public static final double TARGET_RANGE = Units.feetToMeters(6);
+
     public static final Transform3d CAMERA_POSITION =
             new Transform3d(
                     Units.inchesToMeters(-13.5),

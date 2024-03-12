@@ -36,7 +36,7 @@ public class Drive {
     }
 
     public static class HeadingController {
-        public static final double SPEED_CAP = 2.5;
+        public static final double SPEED_CAP = 3.5;
 
         public static final double P = 0.1;
         public static final double I = 0;

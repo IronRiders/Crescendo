@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4173305516749923,
-        "y": 5.527689362670391
+        "x": 1.3729510184714813,
+        "y": 5.535806575085373
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.850546910617974,
-        "y": 5.345441622710366
+        "x": 2.8061673774144626,
+        "y": 5.353558835125348
       },
       "isLocked": false,
       "linkedName": null
@@ -52,24 +52,24 @@
         "y": 4.280861061722123
       },
       "prevControl": {
-        "x": 6.107511413775727,
-        "y": 3.4267898630661695
+        "x": 5.7723169873423075,
+        "y": 3.6771688821155424
       },
       "nextControl": {
-        "x": 3.689375017638924,
-        "y": 5.38541380034149
+        "x": 3.7088874564201,
+        "y": 5.409078203141384
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4173305516749923,
-        "y": 5.527689362670391
+        "x": 1.2712615182174807,
+        "y": 5.546371188228488
       },
       "prevControl": {
-        "x": 2.9492995299982123,
-        "y": 5.41755836416607
+        "x": 2.8032304965407118,
+        "y": 5.436240189724167
       },
       "nextControl": null,
       "isLocked": false,
@@ -80,8 +80,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Start Ground Pickup",
-      "waypointRelativePos": 1.05,
+      "name": "Ground Pickup",
+      "waypointRelativePos": 0.9,
       "command": {
         "type": "sequential",
         "data": {
@@ -95,11 +95,28 @@
           ]
         }
       }
+    },
+    {
+      "name": "Inital",
+      "waypointRelativePos": 3.45,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Launcher Initialize"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.75,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 270.0
   },
@@ -111,5 +128,5 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": null,
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

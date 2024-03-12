@@ -83,13 +83,11 @@ public class RobotCommands {
                         Commands.either(
                                 Commands.sequence(
                                         manipulator.centerNote(),
-                                        manipulator.centerNote(),
                                         manipulator.centerNote()
                                 ),
                                 manipulator.set(Manipulator.State.STOP),
                                 manipulator.getManipulator()::hasNote
                         ),
-                        launcher.initialize(false),
                         endGroundPickup()
                 )
         );

@@ -3,53 +3,64 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3871051526825275,
-        "y": 5.51341285842294
+        "x": 0.7389110698360285,
+        "y": 4.497863926283409
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4095900772820065,
-        "y": 5.041253180885992
+        "x": 1.8634101243896932,
+        "y": 2.56825161219767
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.260011412383936,
-        "y": 4.145805331541219
+        "x": 7.643314053989219,
+        "y": 0.7861767720063224
       },
       "prevControl": {
-        "x": 1.469051625603251,
-        "y": 4.155995191041308
+        "x": 5.475936759165184,
+        "y": 0.9182956213134654
       },
       "nextControl": {
-        "x": 2.4969796533012114,
-        "y": 4.142752492292894
+        "x": 7.982412265663739,
+        "y": 0.7655060444705405
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3871051526825275,
-        "y": 5.51341285842294
+        "x": 0.7389110698360285,
+        "y": 4.497863926283409
       },
       "prevControl": {
-        "x": 1.4258831515348216,
-        "y": 4.418008621318169
+        "x": 1.8395887573025147,
+        "y": 2.5797543956199025
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.75,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 1.35,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Start Ground Pickup",
-      "waypointRelativePos": 0.0,
+      "name": "Ground Pickup",
+      "waypointRelativePos": 0.65,
       "command": {
         "type": "sequential",
         "data": {
@@ -66,7 +77,7 @@
     },
     {
       "name": "Inital",
-      "waypointRelativePos": 1.35,
+      "waypointRelativePos": 1.7,
       "command": {
         "type": "sequential",
         "data": {
@@ -83,18 +94,21 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 270.0
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 0,
+    "velocity": 0,
+    "rotation": -60.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": -60.0,
+    "velocity": 0
+  },
   "useDefaultConstraints": false
 }

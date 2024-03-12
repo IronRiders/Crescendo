@@ -40,7 +40,7 @@ public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     private final PIDController headingPID = new PIDController(P, I, D);
-    private HeadingMode headingMode = HeadingMode.STRAIGHT;
+    private HeadingMode headingMode = HeadingMode.FREE;
 
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,
@@ -78,6 +78,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        getVision().getPoseEstimate().ifPresent(estimatedRobotPose -> swerveDrive.addVisionMeasurement(
+                estimatedRobotPose.estimatedPose.toPose2d(),
+                estimatedRobotPose.timestampSeconds
+        ));
+
         PathPlannerLogging.setLogActivePathCallback((poses) -> {
             if (poses.isEmpty()) return;
 
@@ -90,11 +95,6 @@ public class DriveSubsystem extends SubsystemBase {
 
             swerveDrive.postTrajectory(new Trajectory(states));
         });
-
-        getVision().getPoseEstimate().ifPresent(estimatedRobotPose -> swerveDrive.addVisionMeasurement(
-                estimatedRobotPose.estimatedPose.toPose2d(),
-                estimatedRobotPose.timestampSeconds
-        ));
 
         headingPID.enableContinuousInput(0, 360);
 

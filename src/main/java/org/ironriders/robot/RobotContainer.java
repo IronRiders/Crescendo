@@ -107,7 +107,10 @@ public class RobotContainer {
     }
 
     public Command getEnableCommand() {
-        return pivot.getCommands().reset();
+        return Commands.parallel(
+                driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT),
+                pivot.getCommands().reset()
+        );
     }
 
     public Command getAutonomousCommand() {

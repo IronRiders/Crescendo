@@ -3,48 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3871051526825275,
-        "y": 5.51341285842294
+        "x": 0.7464164320689752,
+        "y": 6.604015412891937
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4095900772820065,
-        "y": 5.041253180885992
+        "x": 1.1108344004882453,
+        "y": 6.956400327731211
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.260011412383936,
-        "y": 4.145805331541219
+        "x": 2.394659242443485,
+        "y": 6.991969218313437
       },
       "prevControl": {
-        "x": 1.469051625603251,
-        "y": 4.155995191041308
+        "x": 1.6900933628256145,
+        "y": 6.962763569624361
       },
       "nextControl": {
-        "x": 2.4969796533012114,
-        "y": 4.142752492292894
+        "x": 2.721173546761891,
+        "y": 7.005503881770392
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.3871051526825275,
-        "y": 5.51341285842294
+        "x": 0.7464164320689752,
+        "y": 6.604015412891937
       },
       "prevControl": {
-        "x": 1.4258831515348216,
-        "y": 4.418008621318169
+        "x": 1.1265385551604437,
+        "y": 6.95909246853216
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7,
+      "rotationDegrees": 0,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 1.5,
+      "rotationDegrees": 0,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
@@ -63,38 +74,24 @@
           ]
         }
       }
-    },
-    {
-      "name": "Inital",
-      "waypointRelativePos": 1.35,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Launcher Initialize"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.5,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 2.75,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 270.0
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 0,
+    "rotation": 60.0,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": null,
-  "useDefaultConstraints": false
+  "previewStartingState": {
+    "rotation": 60.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
 }

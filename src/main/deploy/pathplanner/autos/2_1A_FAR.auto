@@ -5,7 +5,7 @@
       "x": 0.7464164320689752,
       "y": 6.604015412891937
     },
-    "rotation": -60.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPEAKER_NOTE1C_ALT"
+            "pathName": "SPEAKER_NOTE1A_ALT"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPEAKER_LEAVE_A"
+            "pathName": "SPEAKER_LEAVE_B"
           }
         }
       ]

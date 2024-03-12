@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3901236135805604,
+        "x": 1.3452047394266913,
         "y": 5.556242371165298
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6343915040003278,
+        "x": 1.5894726298464588,
         "y": 5.539610665823504
       },
       "isLocked": false,
@@ -16,28 +16,28 @@
     },
     {
       "anchor": {
-        "x": 2.391436831484774,
-        "y": 5.564726693689499
+        "x": 2.3029632951627015,
+        "y": 5.556242371165298
       },
       "prevControl": {
-        "x": 2.1202428146417915,
-        "y": 5.572167006676444
+        "x": 2.031769278319719,
+        "y": 5.563682684152242
       },
       "nextControl": {
-        "x": 2.6626308483277565,
-        "y": 5.557286380702554
+        "x": 2.574157312005684,
+        "y": 5.548802058178353
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4015856069906583,
-        "y": 5.55852661184489
+        "x": 1.3452047394266913,
+        "y": 5.54374383604075
       },
       "prevControl": {
-        "x": 1.9729307346227436,
-        "y": 5.578125995830827
+        "x": 1.9165498670587766,
+        "y": 5.563343220026686
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,14 +47,14 @@
   "rotationTargets": [],
   "constraintZones": [
     {
-      "name": "New Constraints Zone",
+      "name": "Slow",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 1.0,
+      "maxWaypointRelativePos": 1.2,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 0.5,
+        "maxVelocity": 1.3,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 360.0,
-        "maxAngularAcceleration": 180.0
+        "maxAngularAcceleration": 270.0
       }
     }
   ],
@@ -75,11 +75,28 @@
           ]
         }
       }
+    },
+    {
+      "name": "Inital",
+      "waypointRelativePos": 1.5,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Launcher Initialize"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.75,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 270.0
   },
@@ -91,5 +108,5 @@
   "reversed": false,
   "folder": null,
   "previewStartingState": null,
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
