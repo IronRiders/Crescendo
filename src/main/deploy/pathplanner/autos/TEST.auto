@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.297045950573383,
-      "y": 5.545075682743958
+      "x": 0.7424190108796884,
+      "y": 4.503696898018796
     },
-    "rotation": 0.0
+    "rotation": -60.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPEAKER_NOTE2C"
+            "pathName": "SPEAKER_NOTE2E_ALT"
           }
         },
         {

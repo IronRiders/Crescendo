@@ -118,8 +118,11 @@ public class RobotContainer {
             return Commands.none();
         }
 
-        return driveCommands.useVisionForPoseEstimation(
-                AutoBuilder.buildAuto(autoOptionsSelector.getSelected())
+        return Commands.sequence(
+                pivot.getCommands().reset(),
+                driveCommands.useVisionForPoseEstimation(
+                        AutoBuilder.buildAuto(autoOptionsSelector.getSelected())
+                )
         );
     }
 }

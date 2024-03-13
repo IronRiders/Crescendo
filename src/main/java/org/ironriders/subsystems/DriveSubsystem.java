@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -106,6 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+        headingMode = DriverStation.isAutonomous() ? HeadingMode.FREE : headingMode;
         if (headingMode.isNotFree()) {
             rotation = MathUtil.clamp(
                     headingPID.calculate(swerveDrive.getOdometryHeading().getDegrees(), headingMode.getHeading()),

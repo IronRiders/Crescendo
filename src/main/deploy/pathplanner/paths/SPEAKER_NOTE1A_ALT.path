@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 0.7464164320689752,
-        "y": 6.604015412891937
+        "x": 0.6580244757711737,
+        "y": 6.654146337806565
       },
       "prevControl": {
-        "x": 1.1265385551604437,
-        "y": 6.95909246853216
+        "x": 1.0381465988626424,
+        "y": 7.009223393446788
       },
       "nextControl": null,
       "isLocked": false,
@@ -56,7 +56,19 @@
       "rotateFast": true
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 1.05,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 1.3,
+        "maxAngularVelocity": 360.0,
+        "maxAngularAcceleration": 270.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "Start Ground Pickup",
