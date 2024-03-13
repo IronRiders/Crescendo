@@ -22,6 +22,18 @@
           "data": {
             "pathName": "NTU_1"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NTU_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NTU_3"
+          }
         }
       ]
     }
