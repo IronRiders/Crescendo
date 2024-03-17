@@ -101,6 +101,23 @@
           "commands": []
         }
       }
+    },
+    {
+      "name": "Inital",
+      "waypointRelativePos": 0.85,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Launcher Initialize"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
