@@ -1,10 +1,11 @@
 package org.ironriders.commands;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Drive;
-import org.ironriders.constants.Lighting;
 import org.ironriders.constants.Manipulator;
 import org.ironriders.constants.Pivot;
 import org.ironriders.subsystems.*;
@@ -15,19 +16,29 @@ public class RobotCommands {
     private final PivotCommands pivot;
     private final ManipulatorCommands manipulator;
     private final LightingSubsystem lighting;
+    private final GenericHID controller;
 
     public RobotCommands(DriveSubsystem drive, LauncherSubsystem launcher, PivotSubsystem pivot,
-                         ManipulatorSubsystem manipulator, LightingSubsystem lighting) {
+                         ManipulatorSubsystem manipulator, LightingSubsystem lighting, GenericHID controller) {
         this.drive = drive.getCommands();
         this.launcher = launcher.getCommands();
         this.pivot = pivot.getCommands();
         this.manipulator = manipulator.getCommands();
         this.lighting = lighting;
+        this.controller = controller;
 
         NamedCommands.registerCommand("Apm", amp());
         NamedCommands.registerCommand("Launch", launch());
         NamedCommands.registerCommand("Start Ground Pickup", startGroundPickup());
         NamedCommands.registerCommand("End Ground Pickup", endGroundPickup());
+    }
+
+    public Command rumble() {
+        return Commands.sequence(
+                Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 1)),
+                Commands.waitSeconds(0.3),
+                Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0))
+        ).unless(DriverStation::isAutonomous);
     }
 
     public Command amp() {
@@ -64,6 +75,7 @@ public class RobotCommands {
                         launcher.initialize(true),
                         pivot.set(Pivot.State.LAUNCHER)
                 ),
+                Commands.runOnce(() -> lighting.srtLighting(false)),
                 manipulator.set(Manipulator.State.EJECT_TO_LAUNCHER),
                 manipulator.setHasNote(false),
                 launcher.deactivate()
@@ -80,15 +92,19 @@ public class RobotCommands {
                 ),
                 manipulator.setHasNote(true),
                 Commands.parallel(
-                        Commands.either(
-                                Commands.sequence(
-                                        manipulator.centerNote(),
-                                        manipulator.centerNote()
+                        rumble(),
+                        Commands.runOnce(() -> lighting.srtLighting(true)),
+                        Commands.parallel(
+                                Commands.either(
+                                        Commands.sequence(
+                                                manipulator.centerNote(),
+                                                manipulator.centerNote()
+                                        ),
+                                        manipulator.set(Manipulator.State.STOP),
+                                        manipulator.getManipulator()::hasNote
                                 ),
-                                manipulator.set(Manipulator.State.STOP),
-                                manipulator.getManipulator()::hasNote
-                        ),
-                        endGroundPickup()
+                                endGroundPickup()
+                        )
                 )
         );
     }
@@ -101,19 +117,6 @@ public class RobotCommands {
                 ),
                 pivot.set(Pivot.State.STOWED),
                 manipulator.getManipulator()::hasNote
-        );
-    }
-
-    public Command updateLighting() {
-        ManipulatorSubsystem manipulatorSubsystem = manipulator.getManipulator();
-        boolean hasNote = manipulatorSubsystem.hasNote();
-
-        return lighting.runOnce(
-                () -> lighting.setRGB(
-                        hasNote ? Lighting.HAS_NOTE.R : Lighting.DOES_NOT_HAVE_NOTE.R,
-                        hasNote ? Lighting.HAS_NOTE.G : Lighting.DOES_NOT_HAVE_NOTE.G,
-                        hasNote ? Lighting.HAS_NOTE.B : Lighting.DOES_NOT_HAVE_NOTE.B
-                )
         );
     }
 }

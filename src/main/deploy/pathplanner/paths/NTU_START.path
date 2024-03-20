@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4792905801089378,
-        "y": 1.4538684806536284
+        "x": 1.4789403004731938,
+        "y": 1.4622809245618498
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.917358332980554,
-        "y": 1.1915071225975793
+        "x": 4.91700805334481,
+        "y": 1.1999195665058007
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.857420827688877,
-        "y": 0.7594185240453822
+        "x": 8.0150818681267,
+        "y": 0.6969944449148158
       },
       "prevControl": {
-        "x": 5.034833567931025,
-        "y": 0.9524368614709456
+        "x": 5.192494608368848,
+        "y": 0.8900127823403792
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,12 +31,12 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.05,
-      "rotationDegrees": -80.0,
+      "rotationDegrees": -60.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 0.2,
-      "rotationDegrees": -80.0,
+      "rotationDegrees": -60.0,
       "rotateFast": false
     },
     {
@@ -53,7 +53,14 @@
       "command": {
         "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Start Ground Pickup"
+              }
+            }
+          ]
         }
       }
     },

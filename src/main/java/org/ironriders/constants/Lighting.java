@@ -4,7 +4,7 @@ package org.ironriders.constants;
 
 public class Lighting {
     public static final String DASHBOARD_PREFIX = "lighting/";
-    public static final int STRIP_LENGTH = 20;
+    public static final int STRIP_LENGTH = 30;
 
     public static class DOES_NOT_HAVE_NOTE {
         public static final int R = 0;

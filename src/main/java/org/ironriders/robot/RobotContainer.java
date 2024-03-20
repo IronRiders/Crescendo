@@ -6,6 +6,7 @@
 package org.ironriders.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,13 +38,14 @@ public class RobotContainer {
     private final ClimberCommands climberCommands = climber.getCommands();
     @SuppressWarnings("unused")
     private final LightingSubsystem lighting = new LightingSubsystem();
-    private final RobotCommands commands = new RobotCommands(drive, launcher, pivot, manipulator, lighting);
 
     private final CommandXboxController primaryController =
             new CommandXboxController(Identifiers.Controllers.PRIMARY_CONTROLLER);
     private final CommandGenericHID secondaryController =
             new CommandGenericHID(Identifiers.Controllers.SECONDARY_CONTROLLER);
 
+    private final RobotCommands commands =
+            new RobotCommands(drive, launcher, pivot, manipulator, lighting, primaryController.getHID());
     private final SendableChooser<String> autoOptionsSelector = new SendableChooser<>();
 
     public RobotContainer() {
@@ -54,8 +56,6 @@ public class RobotContainer {
         autoOptionsSelector.setDefaultOption(DEFAULT_AUTO, DEFAULT_AUTO);
         SmartDashboard.putData("auto/Auto Option", autoOptionsSelector);
 
-        lighting.setDefaultCommand(commands.updateLighting());
-
         configureBindings();
     }
 
@@ -63,6 +63,8 @@ public class RobotContainer {
         if (RobotBase.isSimulation()) return;
 
         // Primary Driver
+        primaryController.getHID().setRumble(GenericHID.RumbleType.kBothRumble, 0);
+
         drive.setDefaultCommand(
                 driveCommands.teleopCommand(
                         () -> controlCurve(primaryController.getLeftY()),
@@ -109,7 +111,8 @@ public class RobotContainer {
     public Command getEnableCommand() {
         return Commands.parallel(
                 driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT),
-                pivot.getCommands().reset()
+                pivot.getCommands().reset(),
+                commands.rumble()
         );
     }
 
@@ -119,7 +122,10 @@ public class RobotContainer {
         }
 
         return Commands.sequence(
-                pivot.getCommands().reset(),
+                Commands.parallel(
+                        commands.rumble(),
+                        pivot.getCommands().reset()
+                ),
                 driveCommands.useVisionForPoseEstimation(
                         AutoBuilder.buildAuto(autoOptionsSelector.getSelected())
                 )
