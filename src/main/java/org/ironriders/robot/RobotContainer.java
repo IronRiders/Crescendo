@@ -123,7 +123,6 @@ public class RobotContainer {
 
         return Commands.sequence(
                 Commands.parallel(
-                        commands.rumble(),
                         pivot.getCommands().reset()
                 ),
                 driveCommands.useVisionForPoseEstimation(

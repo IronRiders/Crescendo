@@ -97,12 +97,13 @@ public class Utils {
      * @return The modified output value after applying the control curve.
      */
     public static double controlCurve(double input, double exponent, double deadband) {
-        input = deadband(input, deadband);
-        if (input == 0) {
-            return 0;
-        }
-
-        return sign(input) * Math.pow((Math.abs(input) - deadband) / (1 - deadband), exponent);
+//        input = deadband(input, deadband);
+//        if (input == 0) {
+//            return 0;
+//        }
+//
+//        return sign(input) * Math.pow((Math.abs(input) - deadband) / (1 - deadband), exponent);
+        return Math.pow(input, exponent);
     }
 
     public static Translation2d invertTranslation(Translation2d translation) {

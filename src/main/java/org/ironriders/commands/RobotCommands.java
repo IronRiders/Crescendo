@@ -1,7 +1,6 @@
 package org.ironriders.commands;
 
 import com.pathplanner.lib.auto.NamedCommands;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -38,7 +37,7 @@ public class RobotCommands {
                 Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 1)),
                 Commands.waitSeconds(0.3),
                 Commands.runOnce(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0))
-        ).unless(DriverStation::isAutonomous);
+        ).handleInterrupt(() -> controller.setRumble(GenericHID.RumbleType.kBothRumble, 0));
     }
 
     public Command amp() {
