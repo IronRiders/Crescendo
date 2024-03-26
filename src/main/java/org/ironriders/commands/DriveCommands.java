@@ -2,12 +2,15 @@ package org.ironriders.commands;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Drive;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.DriveSubsystem;
 import org.ironriders.subsystems.VisionSubsystem;
+import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 
 import java.util.Optional;
@@ -27,21 +30,25 @@ public class DriveCommands {
         this.swerve = drive.getSwerveDrive();
     }
 
-    /**
-     * Creates a teleoperated command for swerve drive using joystick inputs.
-     *
-     * @param x The x-axis joystick input.
-     * @param y The y-axis joystick input.
-     * @param r The rotation joystick input.
-     * @return a command to control the swerve drive during teleop.
-     */
-    public Command teleopCommand(DoubleSupplier x, DoubleSupplier y, DoubleSupplier r) {
-        return drive.runOnce(() -> drive.drive(
-                new Translation2d(x.getAsDouble() * MAX_SPEED, y.getAsDouble() * MAX_SPEED),
-                r.getAsDouble() * swerve.getSwerveController().config.maxAngularVelocity,
-                true,
-                false
-        ));
+    public Command teleopCommand(DoubleSupplier x, DoubleSupplier y, DoubleSupplier hX, DoubleSupplier hY) {
+        return drive.runOnce(() -> {
+            if (DriverStation.isAutonomous()) return;
+
+            ChassisSpeeds desiredSpeeds = swerve.getSwerveController().getTargetSpeeds(
+                    x.getAsDouble(),
+                    y.getAsDouble(),
+                    hX.getAsDouble(),
+                    hY.getAsDouble(),
+                    swerve.getOdometryHeading().getRadians(),
+                    MAX_SPEED
+            );
+
+            drive.drive(
+                    SwerveController.getTranslation2d(desiredSpeeds),
+                    desiredSpeeds.omegaRadiansPerSecond,
+                    true
+            );
+        });
     }
 
     public Command setHeadingMode(Drive.HeadingMode heading) {

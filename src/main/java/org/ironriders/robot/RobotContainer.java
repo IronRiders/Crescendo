@@ -69,7 +69,8 @@ public class RobotContainer {
                 driveCommands.teleopCommand(
                         () -> controlCurve(primaryController.getLeftY()),
                         () -> controlCurve(primaryController.getLeftX()),
-                        () -> -controlCurve(primaryController.getRightX()) * 0.5
+                        () -> -controlCurve(primaryController.getRightX()),
+                        () -> -controlCurve(primaryController.getRightY())
                 )
         );
 

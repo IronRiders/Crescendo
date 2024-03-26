@@ -4,12 +4,10 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -106,19 +104,10 @@ public class DriveSubsystem extends SubsystemBase {
         }
     }
 
-    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        headingMode = DriverStation.isAutonomous() ? HeadingMode.FREE : headingMode;
-        if (headingMode.isNotFree()) {
-            rotation = MathUtil.clamp(
-                    headingPID.calculate(swerveDrive.getOdometryHeading().getDegrees(), headingMode.getHeading()),
-                    -SPEED_CAP,
-                    SPEED_CAP
-            );
-        }
+    public void drive(Translation2d translation, double radiansPerSecond, boolean fieldRelative) {
+        translation = Utils.getAlliance().equals(Alliance.Blue) ? Utils.invertTranslation(translation) : translation;
 
-        translation = Utils.getAlliance() == Alliance.Blue ? Utils.invertTranslation(translation) : translation;
-
-        swerveDrive.drive(translation, rotation, fieldRelative, isOpenLoop);
+        swerveDrive.drive(translation, radiansPerSecond, fieldRelative, false);
     }
 
     public void setHeadingMode(HeadingMode headingMode) {
