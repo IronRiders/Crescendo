@@ -11,8 +11,7 @@ public class Drive {
     public static final double MAX_SPEED = 4.7;
     public static final double CLIMBING_MODE_SPEED = 0.5;
 
-    public enum HeadingMode {
-        FREE(null),
+    public enum Heading {
         AMP(-180.0),
         STRAIGHT(0.0),
         SPEAKER_LEFT(58.0),
@@ -22,7 +21,7 @@ public class Drive {
 
         private final Double heading;
 
-        HeadingMode(Double heading) {
+        Heading(Double heading) {
             this.heading = heading;
         }
 

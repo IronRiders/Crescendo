@@ -24,7 +24,6 @@ import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
 import static org.ironriders.constants.Auto.DEFAULT_AUTO;
-import static org.ironriders.constants.Drive.CLIMBING_MODE_SPEED;
 import static org.ironriders.constants.Teleop.Controllers.Joystick;
 
 public class RobotContainer {
@@ -69,8 +68,8 @@ public class RobotContainer {
                 driveCommands.teleopCommand(
                         () -> controlCurve(primaryController.getLeftY()),
                         () -> controlCurve(primaryController.getLeftX()),
-                        () -> -controlCurve(primaryController.getRightX()),
-                        () -> -controlCurve(primaryController.getRightY())
+                        () -> controlCurve(primaryController.getRightX()),
+                        () -> controlCurve(primaryController.getRightY())
                 )
         );
 
@@ -86,13 +85,13 @@ public class RobotContainer {
         primaryController.b().onTrue(climberCommands.setClimbingMode(false));
 
         // Secondary Controller
-        secondaryController.button(1).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_LEFT));
-        secondaryController.button(2).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
-        secondaryController.button(4).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.SPEAKER_RIGHT));
+        secondaryController.button(1).onTrue(driveCommands.setHeading(Drive.Heading.SPEAKER_LEFT));
+        secondaryController.button(2).onTrue(driveCommands.setHeading(Drive.Heading.STRAIGHT));
+        secondaryController.button(4).onTrue(driveCommands.setHeading(Drive.Heading.SPEAKER_RIGHT));
 
-        secondaryController.button(5).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_LEFT));
-        secondaryController.button(6).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT));
-        secondaryController.button(8).onTrue(driveCommands.setHeadingMode(Drive.HeadingMode.STAGE_RIGHT));
+        secondaryController.button(5).onTrue(driveCommands.setHeading(Drive.Heading.STAGE_LEFT));
+        secondaryController.button(6).onTrue(driveCommands.setHeading(Drive.Heading.STRAIGHT));
+        secondaryController.button(8).onTrue(driveCommands.setHeading(Drive.Heading.STAGE_RIGHT));
 
         secondaryController.button(9).onTrue(climberCommands.setClimbingMode(false));
         secondaryController.button(10).onTrue(climberCommands.setClimbingMode(true));
@@ -105,13 +104,12 @@ public class RobotContainer {
     }
 
     private double controlCurve(double input) {
-        return Utils.controlCurve(input, Joystick.EXPONENT, Joystick.DEADBAND) *
-                (climber.getClimbingMode() ? CLIMBING_MODE_SPEED : 1);
+        return Utils.controlCurve(input, Joystick.EXPONENT, Joystick.DEADBAND);
     }
 
     public Command getEnableCommand() {
         return Commands.parallel(
-                driveCommands.setHeadingMode(Drive.HeadingMode.STRAIGHT),
+                driveCommands.setHeading(Drive.Heading.STRAIGHT),
                 pivot.getCommands().reset(),
                 commands.rumble()
         );

@@ -3,6 +3,7 @@ package org.ironriders.commands;
 import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -34,11 +35,13 @@ public class DriveCommands {
         return drive.runOnce(() -> {
             if (DriverStation.isAutonomous()) return;
 
+            double invert = Utils.getAlliance().equals(DriverStation.Alliance.Blue) ? -1 : 1;
+
             ChassisSpeeds desiredSpeeds = swerve.getSwerveController().getTargetSpeeds(
                     x.getAsDouble(),
                     y.getAsDouble(),
-                    hX.getAsDouble(),
-                    hY.getAsDouble(),
+                    hX.getAsDouble() * invert,
+                    hY.getAsDouble() * invert,
                     swerve.getOdometryHeading().getRadians(),
                     MAX_SPEED
             );
@@ -51,31 +54,12 @@ public class DriveCommands {
         });
     }
 
-    public Command setHeadingMode(Drive.HeadingMode heading) {
-        return Commands.runOnce(() -> drive.setHeadingMode(heading));
+    public Command setHeading(Drive.Heading heading) {
+        return Commands.runOnce(() -> swerve.getSwerveController().lastAngleScalar = Units.degreesToRadians(heading.getHeading()));
     }
 
     public Command zeroGyro() {
         return drive.runOnce(swerve::zeroGyro);
-    }
-
-    /**
-     * Creates a command to drive the swerve robot using specified speeds and control options. Must be repeated to
-     * work.
-     *
-     * @param speeds       The supplier providing the desired chassis speeds.
-     * @param fieldCentric Whether the control is field-centric.
-     * @param openLoop     Whether the control is open loop.
-     * @return A command to drive the swerve robot with the specified speeds and control options.
-     */
-    public Command drive(Supplier<Translation2d> speeds, DoubleSupplier rotation, boolean fieldCentric,
-                         boolean openLoop) {
-        return drive.runOnce(() -> swerve.drive(
-                speeds.get(),
-                rotation.getAsDouble(),
-                fieldCentric,
-                openLoop
-        ));
     }
 
     /**

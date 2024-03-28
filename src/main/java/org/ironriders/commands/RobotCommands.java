@@ -42,7 +42,7 @@ public class RobotCommands {
 
     public Command amp() {
         return Commands.sequence(
-                drive.setHeadingMode(Drive.HeadingMode.AMP),
+                drive.setHeading(Drive.Heading.AMP),
                 pivot.set(Pivot.State.AMP),
                 manipulator.set(Manipulator.State.EJECT_TO_AMP)
         );
@@ -85,7 +85,6 @@ public class RobotCommands {
         return Commands.sequence(
                 Commands.deadline(
                         Commands.waitUntil(manipulator.getManipulator()::hasNoteSwitchTriggered),
-                        drive.setHeadingMode(Drive.HeadingMode.FREE),
                         pivot.set(Pivot.State.GROUND),
                         manipulator.set(Manipulator.State.GRAB)
                 ),
@@ -93,6 +92,7 @@ public class RobotCommands {
                 Commands.parallel(
                         rumble(),
                         Commands.runOnce(() -> lighting.srtLighting(true)),
+                        launcher.initialize(false),
                         Commands.parallel(
                                 Commands.either(
                                         Commands.sequence(
@@ -112,7 +112,7 @@ public class RobotCommands {
         return Commands.either(
                 Commands.parallel(
                         pivot.set(Pivot.State.LAUNCHER),
-                        drive.setHeadingMode(Drive.HeadingMode.STRAIGHT)
+                        drive.setHeading(Drive.Heading.STRAIGHT)
                 ),
                 pivot.set(Pivot.State.STOWED),
                 manipulator.getManipulator()::hasNote

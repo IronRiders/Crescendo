@@ -20,18 +20,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "SPEAKER_NOTE1A_ALT"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Launch"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "SPEAKER_LEAVE_2A"
           }
         },

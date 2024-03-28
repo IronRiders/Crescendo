@@ -27,8 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.ironriders.constants.Auto.PathfindingConstraintProfile;
-import static org.ironriders.constants.Drive.*;
+import static org.ironriders.constants.Drive.DASHBOARD_PREFIX;
 import static org.ironriders.constants.Drive.HeadingController.*;
+import static org.ironriders.constants.Drive.MAX_SPEED;
 import static org.ironriders.constants.Drive.Wheels.DRIVE_CONVERSION_FACTOR;
 import static org.ironriders.constants.Drive.Wheels.STEERING_CONVERSION_FACTOR;
 import static org.ironriders.constants.Robot.Dimensions;
@@ -39,7 +40,6 @@ public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     private final PIDController headingPID = new PIDController(P, I, D);
-    private HeadingMode headingMode = HeadingMode.FREE;
 
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,
@@ -97,21 +97,13 @@ public class DriveSubsystem extends SubsystemBase {
 
         headingPID.enableContinuousInput(0, 360);
 
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "heading", swerveDrive.getYaw().getDegrees());
-        SmartDashboard.putString(DASHBOARD_PREFIX + "headingMode", headingMode.toString());
-        if (headingMode.isNotFree()) {
-            SmartDashboard.putNumber(DASHBOARD_PREFIX + "headingModeSetpoint", headingMode.getHeading());
-        }
+        SmartDashboard.putNumber(DASHBOARD_PREFIX + "heading", swerveDrive.getOdometryHeading().getDegrees());
     }
 
     public void drive(Translation2d translation, double radiansPerSecond, boolean fieldRelative) {
         translation = Utils.getAlliance().equals(Alliance.Blue) ? Utils.invertTranslation(translation) : translation;
 
         swerveDrive.drive(translation, radiansPerSecond, fieldRelative, false);
-    }
-
-    public void setHeadingMode(HeadingMode headingMode) {
-        this.headingMode = headingMode;
     }
 
     public VisionSubsystem getVision() {
