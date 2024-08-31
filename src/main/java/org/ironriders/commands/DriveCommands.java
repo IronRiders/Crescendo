@@ -37,19 +37,13 @@ public class DriveCommands {
 
             double invert = Utils.getAlliance().equals(DriverStation.Alliance.Blue) ? -1 : 1;
 
-            ChassisSpeeds desiredSpeeds = swerve.getSwerveController().getTargetSpeeds(
-                    x.getAsDouble(),
-                    y.getAsDouble(),
-                    hX.getAsDouble() * invert,
-                    hY.getAsDouble() * invert,
-                    swerve.getOdometryHeading().getRadians(),
-                    MAX_SPEED
-            );
-
             drive.drive(
-                    SwerveController.getTranslation2d(desiredSpeeds),
-                    desiredSpeeds.omegaRadiansPerSecond,
-                    true
+                new Translation2d(
+                    x.getAsDouble() * MAX_SPEED,
+                    y.getAsDouble() * MAX_SPEED
+                ),
+                hX.getAsDouble() * MAX_SPEED,
+                true
             );
         });
     }

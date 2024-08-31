@@ -8,7 +8,11 @@ import swervelib.math.SwerveMath;
 public class Drive {
     public static final String SWERVE_CONFIG_LOCATION = "swerve";
     public static final String DASHBOARD_PREFIX = "drive/";
+<<<<<<< HEAD
     public static final double MAX_SPEED = 7;
+=======
+    public static final double MAX_SPEED = 6.0; // We can figure this out later
+>>>>>>> dce9e8c (Updated photonlib, added kraken support, and changed rotation control)
     public static final double CLIMBING_MODE_SPEED = 0.5;
 
     public enum Heading {
@@ -43,9 +47,7 @@ public class Drive {
     }
 
     public static class Wheels {
-        public static double STEERING_CONVERSION_FACTOR =
-                SwerveMath.calculateDegreesPerSteeringRotation(21.4285714286, 1);
-        public static double DRIVE_CONVERSION_FACTOR =
-                SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(3.951), 6.75, 1);
+        public static double STEERING_CONVERSION_FACTOR = 16.8;
+        public static double DRIVE_CONVERSION_FACTOR = 0.047286787200699704;
     }
 }
