@@ -8,11 +8,7 @@ import swervelib.math.SwerveMath;
 public class Drive {
     public static final String SWERVE_CONFIG_LOCATION = "swerve";
     public static final String DASHBOARD_PREFIX = "drive/";
-<<<<<<< HEAD
-    public static final double MAX_SPEED = 7;
-=======
     public static final double MAX_SPEED = 6.0; // We can figure this out later
->>>>>>> dce9e8c (Updated photonlib, added kraken support, and changed rotation control)
     public static final double CLIMBING_MODE_SPEED = 0.5;
 
     public enum Heading {
