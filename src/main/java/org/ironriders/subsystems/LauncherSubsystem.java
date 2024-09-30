@@ -24,7 +24,7 @@ public class LauncherSubsystem extends SubsystemBase {
     private double setPoint = 0;
     private boolean isInitialized = false;
 
-    public LauncherSubsystem() {
+    public LauncherSubsystem(VisionSubsystem vision) {
         applyConfig(right);
         applyConfig(left);
 
@@ -32,7 +32,7 @@ public class LauncherSubsystem extends SubsystemBase {
 
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
 
-        commands = new LauncherCommands(this);
+        commands = new LauncherCommands(this, vision);
     }
 
     private void applyConfig(CANSparkMax motor) {
@@ -57,6 +57,10 @@ public class LauncherSubsystem extends SubsystemBase {
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightVelocity", getRightVelocity());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftVelocity", getLeftVelocity());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", setPoint);
+    }
+
+    public void aim(double targetAngle) {
+        // move shooter
     }
 
     public void run() {

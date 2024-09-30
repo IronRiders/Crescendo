@@ -1,5 +1,6 @@
 package org.ironriders.subsystems;
 
+import com.fasterxml.jackson.core.TreeNode;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -36,7 +37,7 @@ import static org.ironriders.constants.Robot.Dimensions;
 
 public class DriveSubsystem extends SubsystemBase {
     private final DriveCommands commands;
-    private final VisionSubsystem vision = new VisionSubsystem();
+    private final VisionSubsystem vision;
     private final SwerveDrive swerveDrive;
 
     private final PIDController headingPID = new PIDController(P, I, D);
@@ -47,7 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
             Auto.DASHBOARD_PREFIX + "pathfindingConstraintProfile"
     );
 
-    public DriveSubsystem() {
+    public DriveSubsystem(VisionSubsystem vision) {
         try {
             swerveDrive = new SwerveParser(
                     new File(Filesystem.getDeployDirectory(), Drive.SWERVE_CONFIG_LOCATION)
@@ -55,6 +56,8 @@ public class DriveSubsystem extends SubsystemBase {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        this.vision = vision;
 
         SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
 
@@ -101,10 +104,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void drive(Translation2d translation, double radiansPerSecond, boolean fieldRelative) {
+        SmartDashboard.putNumber("AAAAARG X", translation.getX());
+        SmartDashboard.putNumber("AAAAARG Y", translation.getY());
         translation = Utils.getAlliance().equals(Alliance.Blue) ? Utils.invertTranslation(translation) : translation;
-
-        SmartDashboard.putNumber("AAAAAAGGGGGHHHH", translation.getX());
-        SmartDashboard.putNumber("AAAAAARRRGGGGGH", translation.getY());
         swerveDrive.drive(translation, radiansPerSecond, fieldRelative, true);
     }
 

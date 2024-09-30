@@ -22,20 +22,25 @@ import org.ironriders.constants.Drive;
 import org.ironriders.constants.Identifiers;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.ironriders.constants.Identifiers;
 
+import static org.ironriders.constants.Lighting.*;
 import static org.ironriders.constants.Auto.DEFAULT_AUTO;
 import static org.ironriders.constants.Teleop.Controllers.Joystick;
 
 public class RobotContainer {
-    private final DriveSubsystem drive = new DriveSubsystem();
+    private final VisionSubsystem vision = new VisionSubsystem();
+    private final DriveSubsystem drive = new DriveSubsystem(vision);
     private final DriveCommands driveCommands = drive.getCommands();
-    private final LauncherSubsystem launcher = new LauncherSubsystem();
+    private final LauncherSubsystem launcher = new LauncherSubsystem(vision);
     private final LauncherCommands launcherCommands = launcher.getCommands();
     private final PivotSubsystem pivot = new PivotSubsystem();
     private final ManipulatorSubsystem manipulator = new ManipulatorSubsystem();
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final ClimberCommands climberCommands = climber.getCommands();
-    @SuppressWarnings("unused")
     private final LightingSubsystem lighting = new LightingSubsystem();
 
     private final CommandXboxController primaryController =
@@ -83,6 +88,7 @@ public class RobotContainer {
 
         primaryController.a().onTrue(climberCommands.setClimbingMode(true));
         primaryController.b().onTrue(climberCommands.setClimbingMode(false));
+        primaryController.x().onTrue(commands.ejectNoteToGround());
 
         // Secondary Controller
         secondaryController.button(1).onTrue(driveCommands.setHeading(Drive.Heading.SPEAKER_LEFT));

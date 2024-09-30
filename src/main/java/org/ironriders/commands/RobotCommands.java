@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Drive;
 import org.ironriders.constants.Manipulator;
 import org.ironriders.constants.Pivot;
+import org.ironriders.constants.Lighting.*;
 import org.ironriders.subsystems.*;
 
 public class RobotCommands {
@@ -48,6 +49,16 @@ public class RobotCommands {
         );
     }
 
+    public Command ejectNoteToGround() {
+        return Commands.sequence(
+                pivot.set(Pivot.State.GROUND),
+                Commands.waitUntil(pivot.getPivot()::atPosition),
+                manipulator.set(Manipulator.State.EJECT),
+                lighting.runOnce(() -> { lighting.setLighting(LightState.OFF); }),
+                manipulator.setHasNote(false)
+        );
+    }
+
     /**
      * Manual override command
      */
@@ -74,7 +85,7 @@ public class RobotCommands {
                         launcher.initialize(true),
                         pivot.set(Pivot.State.LAUNCHER)
                 ),
-                Commands.runOnce(() -> lighting.srtLighting(false)),
+                Commands.runOnce(() -> lighting.setLighting(LightState.OFF)),
                 manipulator.set(Manipulator.State.EJECT_TO_LAUNCHER),
                 manipulator.setHasNote(false),
                 launcher.deactivate()
@@ -91,7 +102,7 @@ public class RobotCommands {
                 manipulator.setHasNote(true),
                 Commands.parallel(
                         rumble(),
-                        Commands.runOnce(() -> lighting.srtLighting(true)),
+                        Commands.runOnce(() -> lighting.setLighting(LightState.GREEN)),
                         launcher.initialize(false),
                         Commands.parallel(
                                 Commands.either(
