@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
-import static org.ironriders.constants.Drive.MAX_SPEED;
+import static org.ironriders.constants.Drive.*;
 
 public class DriveCommands {
     private final DriveSubsystem drive;
@@ -42,7 +42,7 @@ public class DriveCommands {
                     x.getAsDouble() * MAX_SPEED,
                     y.getAsDouble() * MAX_SPEED
                 ),
-                hX.getAsDouble() * MAX_SPEED,
+                hX.getAsDouble() * MAX_ROTATION_SPEED,
                 true
             );
         });

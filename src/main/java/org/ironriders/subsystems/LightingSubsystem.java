@@ -10,22 +10,35 @@ import static org.ironriders.constants.Lighting.*;
 public class LightingSubsystem extends SubsystemBase {
     private final AddressableLED addressableLED = new AddressableLED(Identifiers.Lighting.PORT);
     private final AddressableLEDBuffer buffer = new AddressableLEDBuffer(STRIP_LENGTH);
+    
+    private LightState lightState = LightState.OFF;
 
     public LightingSubsystem() {
         addressableLED.setLength(buffer.getLength());
-        srtLighting(false);
-        addressableLED.start();
-    }
-
-    public void srtLighting(boolean hasNote) {
-        int r = hasNote ? HAS_NOTE.R : DOES_NOT_HAVE_NOTE.R;
-        int g = hasNote ? HAS_NOTE.G : DOES_NOT_HAVE_NOTE.G;
-        int b = hasNote ? HAS_NOTE.B : DOES_NOT_HAVE_NOTE.B;
-
-        for (int i = 0; i < buffer.getLength(); i++) {
-            buffer.setRGB(i, r, g, b);
+        
+        for (int i = 0; i < buffer.getLength(); i++) { 
+            buffer.setRGB(i, lightState.r, lightState.g, lightState.b); 
         }
 
         addressableLED.setData(buffer);
+        addressableLED.start();
+    }
+
+    public void setLighting(LightState state) {
+        lightState = state;
+    }
+
+    @Override
+    public void periodic() {
+        for (int i = 0; i < buffer.getLength(); i++) {
+            buffer.setRGB(
+                i, 
+                lightState.r,
+                lightState.g,
+                lightState.b
+            );
+       }
+
+       addressableLED.setData(buffer);
     }
 }

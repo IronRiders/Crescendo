@@ -4,17 +4,20 @@ package org.ironriders.constants;
 
 public class Lighting {
     public static final String DASHBOARD_PREFIX = "lighting/";
-    public static final int STRIP_LENGTH = 30;
+    public static final int STRIP_LENGTH = 29;
 
-    public static class DOES_NOT_HAVE_NOTE {
-        public static final int R = 0;
-        public static final int G = 0;
-        public static final int B = 0;
-    }
+    public enum LightState {
+        OFF   (0, 0, 0),
+        GREEN (0, 255, 0);
 
-    public static class HAS_NOTE {
-        public static final int R = 0;
-        public static final int G = 255;
-        public static final int B = 0;
+        public int r;
+        public int g;
+        public int b;
+
+        LightState(int r, int g, int b) {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+        }
     }
 }

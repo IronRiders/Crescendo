@@ -33,6 +33,19 @@ public class Robot extends TimedRobot implements Logged {
         robotContainer = new RobotContainer();
 
         Monologue.setupMonologue(this, "Robot", true, true);
+
+        // AddressableLED m_led = new AddressableLED(0);
+
+        // AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(29);
+        // m_led.setLength(m_ledBuffer.getLength());
+
+        // for (int i = 0; i < m_ledBuffer.getLength(); i++) {
+        //     m_ledBuffer.setRGB(i, 0, 100, 0);
+        // }
+    
+        // // Set the data
+        // m_led.setData(m_ledBuffer);
+        // m_led.start();
     }
 
     /**
