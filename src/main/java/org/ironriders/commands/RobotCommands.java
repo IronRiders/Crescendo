@@ -122,8 +122,8 @@ public class RobotCommands {
     public Command endGroundPickup() {
         return Commands.either(
                 Commands.parallel(
-                        pivot.set(Pivot.State.LAUNCHER),
-                        drive.setHeading(Drive.Heading.STRAIGHT)
+                        pivot.set(Pivot.State.LAUNCHER)//,
+                        //drive.setHeading(Drive.Heading.STRAIGHT)
                 ),
                 pivot.set(Pivot.State.STOWED),
                 manipulator.getManipulator()::hasNote
