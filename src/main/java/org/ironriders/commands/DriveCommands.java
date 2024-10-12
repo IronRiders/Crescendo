@@ -36,20 +36,32 @@ public class DriveCommands {
             if (DriverStation.isAutonomous()) return;
 
             double invert = Utils.getAlliance().equals(DriverStation.Alliance.Blue) ? -1 : 1;
+            
+            double rotation;
+            if (drive.isPrimaryControlEnabled()) {
+                rotation = hX.getAsDouble() * MAX_ROTATION_SPEED;
+            } else {
+                rotation = swerve.getSwerveController().headingCalculate(
+                    swerve.getOdometryHeading().getRadians(), 
+                    Math.toRadians(drive.getDesiredHeading())
+                );
+            }
 
             drive.drive(
                 new Translation2d(
                     x.getAsDouble() * MAX_SPEED,
                     y.getAsDouble() * MAX_SPEED
                 ),
-                hX.getAsDouble() * MAX_ROTATION_SPEED,
+                rotation,
                 true
             );
         });
     }
 
     public Command setHeading(Drive.Heading heading) {
-        return Commands.runOnce(() -> swerve.getSwerveController().lastAngleScalar = Units.degreesToRadians(heading.getHeading()));
+        return Commands.runOnce(() -> {
+            drive.setTargetHeading(heading);
+        });
     }
 
     public Command zeroGyro() {

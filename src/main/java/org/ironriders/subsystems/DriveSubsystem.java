@@ -15,11 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.DriveCommands;
 import org.ironriders.constants.Auto;
+import org.ironriders.constants.Drive.*;
 import org.ironriders.constants.Drive;
 import org.ironriders.lib.Utils;
 import org.ironriders.lib.sendable_choosers.EnumSendableChooser;
 import swervelib.SwerveDrive;
+import swervelib.SwerveDrive.*;
 import swervelib.parser.SwerveParser;
+import edu.wpi.first.math.MathUtil;
 import swervelib.telemetry.SwerveDriveTelemetry;
 
 import java.io.File;
@@ -41,6 +44,10 @@ public class DriveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
 
     private final PIDController headingPID = new PIDController(P, I, D);
+
+    // stuff for secondary driver control
+    private boolean primaryControlEnabled = true;
+    private Drive.Heading targetHeading;
 
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,
@@ -98,16 +105,42 @@ public class DriveSubsystem extends SubsystemBase {
             swerveDrive.postTrajectory(new Trajectory(states));
         });
 
+        // Check if reached desired angle from sec. driver
+        if (!primaryControlEnabled) {
+            SmartDashboard.putNumber("! targetHeading", targetHeading.getHeading());
+            SmartDashboard.putNumber("! currentHeading", swerveDrive.getOdometryHeading().getDegrees());
+            if (
+                Math.abs(
+                    targetHeading.getHeading() - 
+                    swerveDrive.getOdometryHeading().getDegrees()
+                )
+                <= Drive.ANGLE_TOLERANCE
+            ) {
+                primaryControlEnabled = true;
+            }
+        }
+
         headingPID.enableContinuousInput(0, 360);
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "heading", swerveDrive.getOdometryHeading().getDegrees());
     }
 
     public void drive(Translation2d translation, double radiansPerSecond, boolean fieldRelative) {
-        SmartDashboard.putNumber("AAAAARG X", translation.getX());
-        SmartDashboard.putNumber("AAAAARG Y", translation.getY());
         translation = Utils.getAlliance().equals(Alliance.Blue) ? Utils.invertTranslation(translation) : translation;
         swerveDrive.drive(translation, radiansPerSecond, fieldRelative, true);
+    }
+
+    public boolean isPrimaryControlEnabled() {
+        return primaryControlEnabled;
+    }
+
+    public void setTargetHeading(Drive.Heading heading) {
+        primaryControlEnabled = false;
+        targetHeading = heading;
+    }
+
+    public double getDesiredHeading() {
+        return targetHeading.getHeading();
     }
 
     public VisionSubsystem getVision() {

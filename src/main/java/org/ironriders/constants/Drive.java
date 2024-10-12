@@ -11,6 +11,7 @@ public class Drive {
     public static final double MAX_SPEED = 7.6; // We can figure this out later
     public static final double MAX_ROTATION_SPEED = 9.0;
     public static final double CLIMBING_MODE_SPEED = 0.5;
+    public static final double ANGLE_TOLERANCE = 3.0; // Degrees
 
     public enum Heading {
         AMP(-180.0),
@@ -27,7 +28,7 @@ public class Drive {
         }
 
         public Double getHeading() {
-            return Utils.absoluteRotation(heading + (Utils.getAlliance() == DriverStation.Alliance.Red ? 180 : 0));
+            return heading * (Utils.getAlliance() == DriverStation.Alliance.Red ? -1 : 1);
         }
 
         public boolean isNotFree() {
