@@ -58,6 +58,10 @@ public class DriveCommands {
         });
     }
 
+    public Command setAngleScalar(Drive.Heading heading) {
+        return Commands.runOnce(() -> swerve.getSwerveController().lastAngleScalar = Units.degreesToRadians(heading.getHeading()));
+    }
+
     public Command setHeading(Drive.Heading heading) {
         return Commands.runOnce(() -> {
             drive.setTargetHeading(heading);

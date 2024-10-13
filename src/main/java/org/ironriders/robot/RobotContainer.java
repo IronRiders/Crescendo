@@ -115,7 +115,7 @@ public class RobotContainer {
 
     public Command getEnableCommand() {
         return Commands.parallel(
-                driveCommands.setHeading(Drive.Heading.STRAIGHT),
+                driveCommands.setAngleScalar(Drive.Heading.STRAIGHT),
                 pivot.getCommands().reset(),
                 commands.rumble()
         );
