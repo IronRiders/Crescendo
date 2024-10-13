@@ -89,6 +89,7 @@ public class RobotContainer {
         primaryController.a().onTrue(climberCommands.setClimbingMode(true));
         primaryController.b().onTrue(climberCommands.setClimbingMode(false));
         primaryController.x().onTrue(commands.ejectNoteToGround());
+        // primaryController.y().onTrue(driveCommands.resetOdometry()); // expirmental please test
 
         // Secondary Controller
         secondaryController.button(1).onTrue(driveCommands.setHeading(Drive.Heading.SPEAKER_LEFT));
