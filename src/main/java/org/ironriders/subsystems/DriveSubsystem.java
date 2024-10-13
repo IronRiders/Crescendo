@@ -104,8 +104,6 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void drive(Translation2d translation, double radiansPerSecond, boolean fieldRelative) {
-        SmartDashboard.putNumber("AAAAARG X", translation.getX());
-        SmartDashboard.putNumber("AAAAARG Y", translation.getY());
         translation = Utils.getAlliance().equals(Alliance.Blue) ? Utils.invertTranslation(translation) : translation;
         swerveDrive.drive(translation, radiansPerSecond, fieldRelative, true);
     }
