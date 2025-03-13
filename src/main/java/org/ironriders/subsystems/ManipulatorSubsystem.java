@@ -1,33 +1,33 @@
 package org.ironriders.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkLimitSwitch;
+import com.revrobotics.spark.SparkLimitSwitch;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.ManipulatorCommands;
+import org.ironriders.constants.Climber.Limit;
 import org.ironriders.constants.Identifiers;
+import org.ironriders.constants.Manipulator.State;
 
-import static com.revrobotics.CANSparkBase.IdleMode.kBrake;
-import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
-import static com.revrobotics.SparkLimitSwitch.Type.kNormallyClosed;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SoftLimitConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import static org.ironriders.constants.Manipulator.*;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
 
 public class ManipulatorSubsystem extends SubsystemBase {
     private final ManipulatorCommands commands;
 
-    private final CANSparkMax motor = new CANSparkMax(Identifiers.Manipulator.MOTOR, kBrushless);
+    private final SparkMax motor = new SparkMax(Identifiers.Manipulator.MOTOR, MotorType.kBrushless);
 
-    private final SparkLimitSwitch limitSwitch = motor.getForwardLimitSwitch(kNormallyClosed);
+    private final SparkLimitSwitch limitSwitch = motor.getForwardLimitSwitch();
 
     private boolean hasNote = false;
 
     public ManipulatorSubsystem() {
-        motor.restoreFactoryDefaults();
-
-        motor.setSmartCurrentLimit(CURRENT_LIMIT);
-        motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
-        motor.setIdleMode(kBrake);
+        var config= new SparkMaxConfig().idleMode(IdleMode.kBrake).smartCurrentLimit(CURRENT_LIMIT).apply(new SoftLimitConfig().forwardSoftLimit(Limit.FORWARD).reverseSoftLimit(Limit.REVERSE)).voltageCompensation(COMPENSATED_VOLTAGE);
+        motor.configure(config, null, null);
         motor.setControlFramePeriodMs(VELOCITY_FILTERING);
 
         SmartDashboard.putString(DASHBOARD_PREFIX + "state", "STOP");
@@ -57,7 +57,7 @@ public class ManipulatorSubsystem extends SubsystemBase {
     }
 
     public boolean hasNoteSwitchTriggered() {
-        return limitSwitch.isPressed();
+        return !limitSwitch.isPressed();//bad fix proably broken
     }
 
     public double getVelocity() {

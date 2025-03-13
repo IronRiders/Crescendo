@@ -10,24 +10,21 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import org.ironriders.constants.Drive;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.DriveSubsystem;
-import org.ironriders.subsystems.VisionSubsystem;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 
-import java.util.Optional;
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
-import static org.ironriders.constants.Drive.*;
+import static org.ironriders.constants.Drive.MAX_SPEED;
 
 public class DriveCommands {
     private final DriveSubsystem drive;
     private final SwerveDrive swerve;
-    private final VisionSubsystem vision;
+
 
     public DriveCommands(DriveSubsystem drive) {
         this.drive = drive;
-        this.vision = drive.getVision();
+
         this.swerve = drive.getSwerveDrive();
     }
 
@@ -36,36 +33,26 @@ public class DriveCommands {
             if (DriverStation.isAutonomous()) return;
 
             double invert = Utils.getAlliance().equals(DriverStation.Alliance.Blue) ? -1 : 1;
-            
-            double rotation;
-            if (drive.isPrimaryControlEnabled()) {
-                rotation = hX.getAsDouble() * MAX_ROTATION_SPEED;
-            } else {
-                rotation = swerve.getSwerveController().headingCalculate(
-                    swerve.getOdometryHeading().getRadians(), 
-                    Math.toRadians(drive.getDesiredHeading())
-                );
-            }
+
+            ChassisSpeeds desiredSpeeds = swerve.getSwerveController().getTargetSpeeds(
+                    x.getAsDouble(),
+                    y.getAsDouble(),
+                    hX.getAsDouble() * invert,
+                    hY.getAsDouble() * invert,
+                    swerve.getOdometryHeading().getRadians(),
+                    MAX_SPEED
+            );
 
             drive.drive(
-                new Translation2d(
-                    x.getAsDouble() * MAX_SPEED,
-                    y.getAsDouble() * MAX_SPEED
-                ),
-                rotation,
-                true
+                    SwerveController.getTranslation2d(desiredSpeeds),
+                    desiredSpeeds.omegaRadiansPerSecond,
+                    true
             );
         });
     }
 
-    public Command setAngleScalar(Drive.Heading heading) {
-        return Commands.runOnce(() -> swerve.getSwerveController().lastAngleScalar = Units.degreesToRadians(heading.getHeading()));
-    }
-
     public Command setHeading(Drive.Heading heading) {
-        return Commands.runOnce(() -> {
-            drive.setTargetHeading(heading);
-        });
+        return Commands.runOnce(() -> swerve.getSwerveController().lastAngleScalar = Units.degreesToRadians(heading.getHeading()));
     }
 
     public Command zeroGyro() {
@@ -96,12 +83,8 @@ public class DriveCommands {
         return AutoBuilder.pathfindToPose(
                 target,
                 drive.getPathfindingConstraint().getConstraints(),
-                preserveEndVelocity ? drive.getPathfindingConstraint().getConstraints().getMaxVelocityMps() : 0
+                preserveEndVelocity ? drive.getPathfindingConstraint().getConstraints().maxVelocityMPS() : 0
         );
-    }
-
-    public Command pathFindToTag(Supplier<Integer> id) {
-        return pathFindToTag(id, 0);
     }
 
     /**
@@ -112,37 +95,12 @@ public class DriveCommands {
      * @param offset The transformation to be applied to the identified target's pose.
      * @return A Command object representing the generated path to the identified target.
      */
-    public Command pathFindToTag(Supplier<Integer> id, double offset) {
-        Optional<Pose3d> pose = vision.getTag(id.get());
-        if (pose.isEmpty()) {
-            return Commands.none();
-        }
-
-        return useVisionForPoseEstimation(
-                pathFindTo(Utils.accountedPose(pose.get().toPose2d(), offset).plus(
-                        new Transform2d(new Translation2d(), Rotation2d.fromDegrees(180))
-                ))
-        );
-    }
 
     public Command lockPose() {
         return drive.runOnce(swerve::lockPose);
     }
 
-    /**
-     * A utility method that temporarily enables vision-based pose estimation, executes a specified command,
-     * and then disables vision-based pose estimation again.
-     *
-     * @param command The Command object to be executed after enabling vision-based pose estimation.
-     * @return A new Command object representing the sequence of actions including vision-based pose estimation.
-     */
-    public Command useVisionForPoseEstimation(Command command) {
-        return Commands.sequence(
-                Commands.runOnce(() -> vision.useVisionForPoseEstimation(true)),
-                command,
-                Commands.runOnce(() -> vision.useVisionForPoseEstimation(false))
-        );
-    }
+
 
     public Command resetOdometry() {
         return resetOdometry(new Pose2d());

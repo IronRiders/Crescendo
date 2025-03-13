@@ -3,17 +3,14 @@ package org.ironriders.commands;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.ironriders.subsystems.LauncherSubsystem;
-import org.ironriders.subsystems.VisionSubsystem;
 
 import static org.ironriders.constants.Launcher.INITIATION_TIMEOUT;
 
 public class LauncherCommands {
     private final LauncherSubsystem launcher;
-    private final VisionSubsystem vision;
 
-    public LauncherCommands(LauncherSubsystem launcher, VisionSubsystem vision) {
+    public LauncherCommands(LauncherSubsystem launcher) {
         this.launcher = launcher;
-        this.vision = vision;
 
         NamedCommands.registerCommand("Launcher Initialize", initialize(false));
         NamedCommands.registerCommand("Launcher Deactivate", deactivate());

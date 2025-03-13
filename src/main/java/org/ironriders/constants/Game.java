@@ -17,7 +17,6 @@ import org.ironriders.lib.Utils;
  */
 public class Game {
     public static class KeyLocations {
-        private static final double OFFSET_TO_SPEAKER = 0;
         private static final double OFFSET_TO_AMP = 0;
         public static final Location SPEAKER_LEFT =
                 new Location(0, 0, 0, OFFSET_TO_AMP);
@@ -33,7 +32,6 @@ public class Game {
                 new Location(5.320792, 4.105148, 0, OFFSET_TO_AMP);
         public static final Location STAGE_RIGHT =
                 new Location(4.641342, 3.7132259999999997, -120, OFFSET_TO_AMP);
-        private static final double OFFSET_TO_STAGE = 0;
     }
 
     /**

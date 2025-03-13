@@ -1,14 +1,17 @@
 package org.ironriders.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.LauncherCommands;
+import org.ironriders.constants.Climber.Limit;
 import org.ironriders.constants.Identifiers;
 
-import static com.revrobotics.CANSparkBase.IdleMode.kCoast;
-import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SoftLimitConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import static org.ironriders.constants.Launcher.*;
 import static org.ironriders.constants.Launcher.PID.*;
 import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
@@ -16,33 +19,28 @@ import static org.ironriders.constants.Robot.COMPENSATED_VOLTAGE;
 public class LauncherSubsystem extends SubsystemBase {
     private final LauncherCommands commands;
 
-    private final CANSparkMax right = new CANSparkMax(Identifiers.Launcher.RIGHT, kBrushless);
+    private final SparkMax right = new SparkMax(Identifiers.Launcher.RIGHT, MotorType.kBrushless);
     private final PIDController rightPID = new PIDController(P, I, D);
-    private final CANSparkMax left = new CANSparkMax(Identifiers.Launcher.LEFT, kBrushless);
+    private final SparkMax left = new SparkMax(Identifiers.Launcher.LEFT, MotorType.kBrushless);
     private final PIDController leftPID = new PIDController(P, I, D);
 
     private double setPoint = 0;
     private boolean isInitialized = false;
 
-    public LauncherSubsystem(VisionSubsystem vision) {
-        applyConfig(right);
-        applyConfig(left);
-
+    @SuppressWarnings("deprecation")
+    public LauncherSubsystem() {
+        var config= new SparkMaxConfig().idleMode(IdleMode.kCoast).smartCurrentLimit(40).apply(new SoftLimitConfig().forwardSoftLimit(Limit.FORWARD).reverseSoftLimit(Limit.REVERSE)).voltageCompensation(COMPENSATED_VOLTAGE);
+        left.configure(config, null,null);
+        right.configure(config, null, null);
         right.setInverted(true);
+        left.setControlFramePeriodMs(VELOCITY_FILTERING);
+        right.setControlFramePeriodMs(VELOCITY_FILTERING);
 
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
 
-        commands = new LauncherCommands(this, vision);
+        commands = new LauncherCommands(this);
     }
 
-    private void applyConfig(CANSparkMax motor) {
-        motor.restoreFactoryDefaults();
-
-        motor.setSmartCurrentLimit(CURRENT_LIMIT);
-        motor.enableVoltageCompensation(COMPENSATED_VOLTAGE);
-        motor.setIdleMode(kCoast);
-        motor.setControlFramePeriodMs(VELOCITY_FILTERING);
-    }
 
     @Override
     public void periodic() {
@@ -57,10 +55,6 @@ public class LauncherSubsystem extends SubsystemBase {
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightVelocity", getRightVelocity());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftVelocity", getLeftVelocity());
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "setPoint", setPoint);
-    }
-
-    public void aim(double targetAngle) {
-        // move shooter
     }
 
     public void run() {

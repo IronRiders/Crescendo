@@ -9,8 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import monologue.Logged;
-import monologue.Monologue;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the methods corresponding to
@@ -18,7 +17,7 @@ import monologue.Monologue;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot implements Logged {
+public class Robot extends TimedRobot{
     private Command autonomousCommand;
     private RobotContainer robotContainer;
 
@@ -31,21 +30,6 @@ public class Robot extends TimedRobot implements Logged {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
-
-        Monologue.setupMonologue(this, "Robot", true, true);
-
-        // AddressableLED m_led = new AddressableLED(0);
-
-        // AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(29);
-        // m_led.setLength(m_ledBuffer.getLength());
-
-        // for (int i = 0; i < m_ledBuffer.getLength(); i++) {
-        //     m_ledBuffer.setRGB(i, 0, 100, 0);
-        // }
-    
-        // // Set the data
-        // m_led.setData(m_ledBuffer);
-        // m_led.start();
     }
 
     /**
@@ -63,7 +47,7 @@ public class Robot extends TimedRobot implements Logged {
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
 
-        Monologue.updateAll();
+
     }
 
     /**

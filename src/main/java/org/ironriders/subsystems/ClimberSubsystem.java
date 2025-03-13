@@ -1,62 +1,52 @@
 package org.ironriders.subsystems;
 
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.ClimberCommands;
 import org.ironriders.constants.Identifiers;
 
-import static com.revrobotics.CANSparkBase.IdleMode.kBrake;
-import static com.revrobotics.CANSparkBase.SoftLimitDirection.kForward;
-import static com.revrobotics.CANSparkBase.SoftLimitDirection.kReverse;
-import static com.revrobotics.CANSparkLowLevel.MotorType.kBrushless;
-import static org.ironriders.constants.Climber.*;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SoftLimitConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import  org.ironriders.constants.Climber.*;
 
 public class ClimberSubsystem extends SubsystemBase {
     private final ClimberCommands commands;
 
-    private final CANSparkMax right = new CANSparkMax(Identifiers.Climber.RIGHT, kBrushless);
-    private final CANSparkMax left = new CANSparkMax(Identifiers.Climber.LEFT, kBrushless);
+    private final SparkMax right = new SparkMax(Identifiers.Climber.RIGHT, MotorType.kBrushless);
+    private final SparkMax left = new SparkMax(Identifiers.Climber.LEFT, MotorType.kBrushless);
 
     private double input = 0;
     private boolean climbingMode = false;
 
     public ClimberSubsystem() {
-        applyConfig(right);
-        applyConfig(left);
 
-        left.follow(right, true);
+        var config= new SparkMaxConfig().idleMode(IdleMode.kBrake).smartCurrentLimit(40).apply(new SoftLimitConfig().forwardSoftLimit(Limit.FORWARD).reverseSoftLimit(Limit.REVERSE));
+        right.configure(config, null, null);
+        config.follow(right,true);
+        left.configure(config, null,null);
+        
 
         commands = new ClimberCommands(this);
     }
 
-    private void applyConfig(CANSparkMax motor) {
-        motor.restoreFactoryDefaults();
-
-        motor.setSmartCurrentLimit(CURRENT_LIMIT);
-        motor.setIdleMode(kBrake);
-
-        motor.getEncoder().setPositionConversionFactor(1.0 / GEARING);
-
-        motor.setSoftLimit(kReverse, Limit.REVERSE);
-        motor.enableSoftLimit(kReverse, true);
-        motor.setSoftLimit(kForward, Limit.FORWARD);
-        motor.enableSoftLimit(kForward, true);
-    }
-
+    
     @Override
     public void periodic() {
         if (climbingMode) {
-            right.set(input * SPEED);
+            right.set(input * 1);
         } else {
             right.stopMotor();
             left.stopMotor();
         }
 
-        SmartDashboard.putBoolean(DASHBOARD_PREFIX + "climbingModeEnabled", climbingMode);
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "rightPosition", right.getEncoder().getPosition());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "leftPosition", left.getEncoder().getPosition());
-        SmartDashboard.putNumber(DASHBOARD_PREFIX + "input", input);
+        SmartDashboard.putBoolean("climber/" + "climbingModeEnabled", climbingMode);
+        SmartDashboard.putNumber("climber/" + "rightPosition", right.getEncoder().getPosition());
+        SmartDashboard.putNumber("climber/" + "leftPosition", left.getEncoder().getPosition());
+        SmartDashboard.putNumber("climber/" + "input", input);
     }
 
     public void set(double input) {

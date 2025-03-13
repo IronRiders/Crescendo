@@ -1,28 +1,26 @@
 package org.ironriders.subsystems;
 
-import com.fasterxml.jackson.core.TreeNode;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
-import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.ironriders.commands.DriveCommands;
 import org.ironriders.constants.Auto;
-import org.ironriders.constants.Drive.*;
 import org.ironriders.constants.Drive;
 import org.ironriders.lib.Utils;
 import org.ironriders.lib.sendable_choosers.EnumSendableChooser;
 import swervelib.SwerveDrive;
-import swervelib.SwerveDrive.*;
 import swervelib.parser.SwerveParser;
-import edu.wpi.first.math.MathUtil;
 import swervelib.telemetry.SwerveDriveTelemetry;
 
 import java.io.File;
@@ -36,18 +34,12 @@ import static org.ironriders.constants.Drive.HeadingController.*;
 import static org.ironriders.constants.Drive.MAX_SPEED;
 import static org.ironriders.constants.Drive.Wheels.DRIVE_CONVERSION_FACTOR;
 import static org.ironriders.constants.Drive.Wheels.STEERING_CONVERSION_FACTOR;
-import static org.ironriders.constants.Robot.Dimensions;
 
 public class DriveSubsystem extends SubsystemBase {
     private final DriveCommands commands;
-    private final VisionSubsystem vision;
     private final SwerveDrive swerveDrive;
 
     private final PIDController headingPID = new PIDController(P, I, D);
-
-    // stuff for secondary driver control
-    private boolean primaryControlEnabled = true;
-    private Drive.Heading targetHeading;
 
     private final EnumSendableChooser<PathfindingConstraintProfile> constraintProfile = new EnumSendableChooser<>(
             PathfindingConstraintProfile.class,
@@ -55,7 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
             Auto.DASHBOARD_PREFIX + "pathfindingConstraintProfile"
     );
 
-    public DriveSubsystem(VisionSubsystem vision) {
+    public DriveSubsystem() {
         try {
             swerveDrive = new SwerveParser(
                     new File(Filesystem.getDeployDirectory(), Drive.SWERVE_CONFIG_LOCATION)
@@ -64,33 +56,43 @@ public class DriveSubsystem extends SubsystemBase {
             throw new RuntimeException(e);
         }
 
-        this.vision = vision;
-
         SwerveDriveTelemetry.verbosity = SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
-
-        AutoBuilder.configureHolonomic(
-                swerveDrive::getPose,
-                swerveDrive::resetOdometry,
-                swerveDrive::getRobotVelocity,
-                swerveDrive::setChassisSpeeds,
-                new HolonomicPathFollowerConfig(
-                        4.5,
-                        Dimensions.DRIVEBASE_RADIUS,
-                        new ReplanningConfig()
-                ),
-                () -> Utils.getAlliance() == Alliance.Red,
-                this
-        );
-
+        var HOLONOMIC_CONFIG = new PPHolonomicDriveController( // PPHolonomicController
+                                                                                                      // is the built in
+                                                                                                      // path following
+                                                                                                      // controller for
+                                                                                                      // holonomic drive
+                                                                                                      // trains
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID
+            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID
+         );
+        RobotConfig robotConfig = null;
+		try {
+			robotConfig = RobotConfig.fromGUISettings();
+		} catch (Exception e) {
+			throw new RuntimeException("Could not load path planner config", e);
+		}
+        AutoBuilder.configure(
+				swerveDrive::getPose,
+				swerveDrive::resetOdometry,
+				swerveDrive::getRobotVelocity,
+				(speeds, feedforwards) -> swerveDrive.setChassisSpeeds(speeds),
+				HOLONOMIC_CONFIG,
+				robotConfig,
+				() -> {
+					var alliance = DriverStation.getAlliance();
+					if (alliance.isPresent()) {
+						return alliance.get() == DriverStation.Alliance.Red;
+					}
+					return false;
+				},
+				this);
         commands = new DriveCommands(this);
     }
 
     @Override
     public void periodic() {
-        getVision().getPoseEstimate().ifPresent(estimatedRobotPose -> swerveDrive.addVisionMeasurement(
-                estimatedRobotPose.estimatedPose.toPose2d(),
-                estimatedRobotPose.timestampSeconds
-        ));
+
 
         PathPlannerLogging.setLogActivePathCallback((poses) -> {
             if (poses.isEmpty()) return;
@@ -105,21 +107,6 @@ public class DriveSubsystem extends SubsystemBase {
             swerveDrive.postTrajectory(new Trajectory(states));
         });
 
-        // Check if reached desired angle from sec. driver
-        if (!primaryControlEnabled) {
-            SmartDashboard.putNumber("! targetHeading", targetHeading.getHeading());
-            SmartDashboard.putNumber("! currentHeading", swerveDrive.getOdometryHeading().getDegrees());
-            if (
-                Math.abs(
-                    targetHeading.getHeading() - 
-                    swerveDrive.getOdometryHeading().getDegrees()
-                )
-                <= Drive.ANGLE_TOLERANCE
-            ) {
-                primaryControlEnabled = true;
-            }
-        }
-
         headingPID.enableContinuousInput(0, 360);
 
         SmartDashboard.putNumber(DASHBOARD_PREFIX + "heading", swerveDrive.getOdometryHeading().getDegrees());
@@ -127,24 +114,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void drive(Translation2d translation, double radiansPerSecond, boolean fieldRelative) {
         translation = Utils.getAlliance().equals(Alliance.Blue) ? Utils.invertTranslation(translation) : translation;
-        swerveDrive.drive(translation, radiansPerSecond, fieldRelative, true);
-    }
 
-    public boolean isPrimaryControlEnabled() {
-        return primaryControlEnabled;
-    }
-
-    public void setTargetHeading(Drive.Heading heading) {
-        primaryControlEnabled = false;
-        targetHeading = heading;
-    }
-
-    public double getDesiredHeading() {
-        return targetHeading.getHeading();
-    }
-
-    public VisionSubsystem getVision() {
-        return vision;
+        swerveDrive.drive(translation, radiansPerSecond, fieldRelative, false);
     }
 
     public PathfindingConstraintProfile getPathfindingConstraint() {
