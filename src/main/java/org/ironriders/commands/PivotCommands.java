@@ -23,6 +23,20 @@ public class PivotCommands {
                 .handleInterrupt(pivot::reset);
     }
 
+    public Command pivotToShoot() {
+        return pivot
+                .runOnce(() -> pivot.set(org.ironriders.constants.Pivot.State.LAUNCHER.getPosition()))
+                .until(() -> (pivot.atPosition() || pivot.forwardLimitSwitchPressed()))
+                .handleInterrupt(pivot::reset);
+    }
+
+    public Command pivotToGround() {
+        return pivot
+                .runOnce(() -> pivot.set(org.ironriders.constants.Pivot.State.GROUND.getPosition()))
+                .until(() -> (pivot.atPosition() || pivot.reverseLimitSwitchPressed()))
+                .handleInterrupt(pivot::reset);
+    }
+
     public Command reset() {
         return pivot.runOnce(pivot::reset);
     }

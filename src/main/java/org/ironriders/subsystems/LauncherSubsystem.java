@@ -71,7 +71,7 @@ public class LauncherSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean(DASHBOARD_PREFIX + "isRunning", false);
     }
 
-    private void set(double setPoint) {
+    private void set(double setPoint) { // Here you're running one then running the other, that doesn't make sense bc it means that it will curve. TODO: make r & left seperate commands and run in parralell
         this.setPoint = setPoint;
         rightPID.reset();
         rightPID.setSetpoint(setPoint);

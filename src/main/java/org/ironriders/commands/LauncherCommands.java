@@ -24,7 +24,7 @@ public class LauncherCommands {
     public Command initialize(boolean forLaunching) {
         Command command = launcher
                 .run(launcher::run)
-                .onlyIf(launcher::isNotInitialized);
+                .onlyIf(launcher::isNotInitialized); // is this necessary? the launcher.run already refrences it in it's launch code
         if (forLaunching && launcher.isNotInitialized()) {
             return command.withTimeout(INITIATION_TIMEOUT);
         } else {
