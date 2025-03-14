@@ -74,4 +74,12 @@ public class PivotSubsystem extends SubsystemBase {
     public PivotCommands getCommands() {
         return commands;
     }
+
+    public boolean forwardLimitSwitchPressed() {
+        return forwardSwitch.isPressed();
+    }
+
+    public boolean reverseLimitSwitchPressed() {
+        return reverseSwitch.isPressed();
+    }
 }

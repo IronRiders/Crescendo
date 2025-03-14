@@ -18,8 +18,10 @@ import org.ironriders.commands.ClimberCommands;
 import org.ironriders.commands.DriveCommands;
 import org.ironriders.commands.LauncherCommands;
 import org.ironriders.commands.RobotCommands;
+import org.ironriders.commands.PivotCommands;
 import org.ironriders.constants.Drive;
 import org.ironriders.constants.Identifiers;
+import org.ironriders.constants.Pivot.State;
 import org.ironriders.lib.Utils;
 import org.ironriders.subsystems.*;
 
@@ -32,6 +34,7 @@ public class RobotContainer {
     private final LauncherSubsystem launcher = new LauncherSubsystem();
     private final LauncherCommands launcherCommands = launcher.getCommands();
     private final PivotSubsystem pivot = new PivotSubsystem();
+    private final PivotCommands pivotCommands = pivot.getCommands();
     private final ManipulatorSubsystem manipulator = new ManipulatorSubsystem();
     private final ClimberSubsystem climber = new ClimberSubsystem();
     private final ClimberCommands climberCommands = climber.getCommands();
@@ -83,6 +86,7 @@ public class RobotContainer {
 
         primaryController.a().onTrue(climberCommands.setClimbingMode(true));
         primaryController.b().onTrue(climberCommands.setClimbingMode(false));
+        primaryController.y().onTrue(pivotCommands.set(State.GROUND));
 
         // Secondary Controller
         secondaryController.button(1).onTrue(driveCommands.setHeading(Drive.Heading.SPEAKER_LEFT));
